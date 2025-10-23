@@ -1,18 +1,66 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>{% block title %}Welcome!{% endblock %}</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
+<html lang="en">
+<head>
+	{# Charset #}
+	<meta charset="UTF-8">
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
-	</head>
-	<body>
-		{% block body %}{% endblock %}
-	</body>
+	{# Responsive #}
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	{# Remove IE's ability to use compatibility mode #}
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	{# Disable phone formatting on safari #}
+	<meta name="format-detection" content="telephone=no">
+
+	{# Website can be treated as app on phones #}
+	<meta name="mobile-web-app-capable" content="yes">
+
+	{# Favicon #}
+	<link rel="icon" type="image/x-icon" href="{{ asset('build/images/test-image.png') }}">
+
+	{# Mechanism for easily creating animated transitions between different website views #}
+	<meta name="view-transition" content="same-origin">
+
+	{# Title #}
+ 	<title>{% block title %}Index{% endblock %}</title>
+
+	{# Head (SEO, analytics and other...) #}
+	{% block head %}{% endblock %}
+
+	{# Styles #}
+	{% block stylesheets %}
+		{{ encore_entry_link_tags('app') }}
+	{% endblock %}
+</head>
+
+<body>
+	{# Header #}
+	{# {{ include('header.html.twig') }} #}
+
+	{# Main #}
+	<main id="site-content" class="site-content">
+		<div id="app" class="app">
+			<div id="app-inner" class="app-inner">
+				{# Sidebar #}
+				{# {{ include('sidebar.html.twig') }} #}
+
+				{# Content #}
+				<section id="dynamic-content" class="dynamic-content large-column">
+					{% block content %}
+						<h1 class="heading heading-base">Base</h1>
+					{% endblock %}
+				</section>
+			</div>
+		</div>
+	</main>
+
+	{# Footer #}
+	{# {{ include('footer.html.twig') }} #}
+
+	{# Scripts #}
+	{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+	{% endblock %}
+</body>
 </html>
