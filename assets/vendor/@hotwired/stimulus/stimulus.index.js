@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Bundled by jsDelivr using Rollup v2.79.2 and Terser v5.39.0.
  * Original file: /npm/@hotwired/stimulus@3.2.2/dist/stimulus.js

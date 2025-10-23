@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Bundled by jsDelivr using Rollup v2.79.2 and Terser v5.39.0.
  * Original file: /npm/@hotwired/turbo@7.3.0/dist/turbo.es2017-esm.js
