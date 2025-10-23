@@ -40,9 +40,8 @@
 		"webpack-cli": "^5.1.0"
 	},
 	"lint-staged": {
-		"*.scss": "npm run lintStyle",
-		"*.js": "npm run lintJs",
-		"prepare": "husky"
+		"*.{scss,css}": "npm run lintStyle",
+		"*.{js,mjs}": "npm run lintJs"
 	},
 	"scripts": {
 		"dev-server": "encore dev-server",
@@ -50,8 +49,9 @@
 		"watch": "encore dev --watch",
 		"build": "encore production --progress",
 		"lintJs": "eslint",
-		"lintStyle": "stylelint **/*.scss",
-		"lint": "npm run lintJs && npm run lintStyle"
+		"lintStyle": "stylelint **/*.{css,scss,sass}",
+		"lint": "npm run lintJs && npm run lintStyle",
+		"prepare": "husky"
 	},
 	"browserslist": [
 		">= 0.25%"
