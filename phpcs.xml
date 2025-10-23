@@ -1,0 +1,185 @@
+<?xml version="1.0"?>
+<ruleset name="Gym App Coding Standards" namespace="GymApp\CodingStandards">
+	<description>Coding standards for Gym Management App.</description>
+
+	<!-- Config. -->
+	<config name="encoding" value="utf-8" />
+	<config name="testVersion" value="8.2-" />
+
+	<!-- Include paths. -->
+	<file>./config</file>
+	<file>./src</file>
+
+	<!-- Set exclude patterns (just in case). -->
+	<exclude-pattern>/assets/*</exclude-pattern>
+	<exclude-pattern>/migrations/*</exclude-pattern>
+	<exclude-pattern>/public/*</exclude-pattern>
+	<exclude-pattern>/templates/*</exclude-pattern>
+	<exclude-pattern>/tests/*</exclude-pattern>
+	<exclude-pattern>/translations/*</exclude-pattern>
+	<exclude-pattern>/vendor/*</exclude-pattern>
+
+	<!-- Define arguments. -->
+	<arg name="extensions" value="php,inc" />
+	<arg name="basepath" value="." />
+	<arg name="parallel" value="75" />
+	<arg name="tab-width" value="4" />
+	<arg name="colors" />
+	<arg value="sp" />
+
+	<!-- Set the base. -->
+	<rule ref="PSR12" />
+
+	<!-- Use tabs, not spaces. -->
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent" />
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsed" />
+	</rule>
+
+	<!-- Line length. -->
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<property name="lineLimit" value="150" />
+			<property name="absoluteLineLimit" value="0" />
+			<property name="ignoreComments" value="true" />
+		</properties>
+	</rule>
+
+	<!-- Statements in multiple lines - alignment. -->
+	<!-- <rule ref="Generic.Formatting.MultipleStatementAlignment">
+		<properties>
+			<property name="alignAtEnd" value="true" />
+			<property name="maxPadding" value="12" />
+		</properties>
+	</rule> -->
+
+	<!-- Variables - naming. -->
+	<rule ref="Squiz.NamingConventions.ValidVariableName" />
+	<rule ref="Squiz.NamingConventions.ValidVariableName.PrivateNoUnderscore">
+		<severity>0</severity>
+	</rule>
+
+	<!-- Strict types -->
+	<rule ref="Generic.PHP.RequireStrictTypes">
+		<exclude-pattern>./app/Views/</exclude-pattern>
+	</rule>
+
+	<!-- Magic constants to uppercase. -->
+	<rule ref="Universal.Constants.UppercaseMagicConstants" />
+
+	<!-- Use '&&' and '||' instead of 'and' and 'or'. -->
+	<rule ref="Universal.Operators.DisallowLogicalAndOr" />
+
+	<!-- Add space after casting variable. -->
+	<rule ref="Generic.Formatting.SpaceAfterCast" />
+
+	<!-- Disable side effects errors. -->
+	<rule ref="PSR1.Files">
+		<exclude name="PSR1.Files.SideEffects" />
+	</rule>
+
+	<!-- Class property declaration mustn't be with underscore. -->
+	<rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+		<type>error</type>
+	</rule>
+
+	<!-- String concatenation spacing. -->
+	<rule ref="Squiz.Strings.ConcatenationSpacing">
+		<properties>
+			<property name="spacing" value="1" />
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
+
+	<!-- Object operator mustn't have spacing before/after (->), needs to be indented if multiline. -->
+	<rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing">
+		<properties>
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
+	<rule ref="PEAR.WhiteSpace.ObjectOperatorIndent">
+		<properties>
+			<property name="multilevel" value="true" />
+		</properties>
+	</rule>
+
+	<!-- Operators must have 1 spacing before and after (2 + 2). -->
+	<rule ref="Squiz.WhiteSpace.OperatorSpacing" />
+
+	<!-- Use [] instead of array(). -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+
+	<!-- Array brackets spacing. -->
+	<rule ref="Squiz.Arrays.ArrayBracketSpacing" />
+	<rule ref="NormalizedArrays.Arrays.ArrayBraceSpacing" />
+
+	<!-- Disallow mix of everything in array. -->
+	<rule ref="Universal.Arrays.DuplicateArrayKey" />
+	<rule ref="Universal.Arrays.MixedArrayKeyTypes" />
+	<rule ref="Universal.Arrays.MixedKeyedUnkeyedArray" />
+
+	<!-- Function spacing in declaration. -->
+	<rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing">
+		<properties>
+			<property name="equalsSpacing" value="1" />
+		</properties>
+	</rule>
+
+	<!-- Don't allow underscore in methods. -->
+	<rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+		<type>error</type>
+	</rule>
+	<rule ref="Squiz.NamingConventions.ValidFunctionName.PrivateNoUnderscore">
+		<severity>0</severity>
+	</rule>
+
+	<!-- There mustn't be unreachable code. -->
+	<rule ref="Squiz.PHP.NonExecutableCode" />
+
+	<!-- Set warning for unused function parameter. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter" />
+
+	<!-- No spacing after not operator (!$var). -->
+	<rule ref="Generic.Formatting.SpaceAfterNot">
+		<properties>
+			<property name="spacing" value="0" />
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
+
+	<!-- Maximum nesting level of 8, absolute maximum of 12. -->
+	<rule ref="Generic.Metrics.NestingLevel">
+		<properties>
+			<property name="nestingLevel" value="8" />
+			<property name="absoluteNestingLevel" value="12" />
+		</properties>
+	</rule>
+
+	<!-- Spread operator spacing. -->
+	<rule ref="Generic.WhiteSpace.SpreadOperatorSpacingAfter">
+		<properties>
+			<property name="ignoreNewlines" value="true" />
+		</properties>
+	</rule>
+
+	<!-- Allow formatted inline comments. -->
+	<rule ref="Squiz.Commenting.InlineComment" />
+
+	<!-- Define file comments. -->
+	<rule ref="Squiz.Commenting.FileComment">
+		<exclude name="Squiz.Commenting.FileComment.SpacingAfterOpen" />
+		<exclude name="Squiz.Commenting.FileComment.MissingSubpackageTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingAuthorTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingCategoryTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingLinkTag" />
+		<exclude name="Squiz.Commenting.FileComment.MissingVersion" />
+	</rule>
+	<rule ref="Generic.Commenting.DocComment" />
+
+	<!-- Require the use of parentheses when declaring an anonymous class. -->
+	<rule ref="Universal.Classes.RequireAnonClassParentheses" />
+
+	<!-- Enforce that the class keyword is in lowercase (Page::class). -->
+	<rule ref="Universal.Constants.LowercaseClassResolutionKeyword" />
+</ruleset>
