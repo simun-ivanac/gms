@@ -7,7 +7,7 @@
 				"options": {
 					"subjectLength": 50,
 					"bodyLineLength": 72,
-					"checkImperativeBeginningOnly": false
+					"checkImperativeBeginningOnly": true
 				}
 			}
 		]
