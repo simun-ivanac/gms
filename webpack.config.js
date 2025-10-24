@@ -1,3 +1,6 @@
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const Encore = require('@symfony/webpack-encore');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
@@ -26,31 +29,99 @@ Encore
 		config.corejs = '3.38';
 	})
 
-	.enableSassLoader()
-
-	.configureTerserPlugin((options) => {
-		options.parallel = true;
-		options.minify = TerserPlugin.swcMinify;
-		options.terserOptions = {
-			compress: {
-				drop_console: true,
-				passes: 2,
-			},
-			format: {
-				comments: false,
-			},
-		}
-	})
-
-	.configureCssMinimizerPlugin((options) => {
-		options.parallel = true;
-		options.minify = CssMinimizerPlugin.cssoMinify;
-	})
-
 	.configureFilenames({
 		js: '[name]-[contenthash].js',
 		css: '[name]-[contenthash].css',
-	});
+	})
+
+	.configureImageRule({
+		type: 'asset/resource',
+		filename: 'images/[name][ext]',
+	})
+
+	.configureFontRule({
+		type: 'asset/resource',
+		filename: 'fonts/[name][ext]',
+	})
+
+	.addLoader({
+		test: /\.(js|jsx)$/,
+		exclude: /node_modules/,
+		use: [
+			{
+				loader: 'swc-loader',
+				options: {
+					parseMap: true,
+					jsc: {
+						parser: {
+							jsx: true,
+						},
+					},
+				},
+			},
+		],
+	})
+	.addLoader({
+		test: /\.scss$/,
+		exclude: /node_modules/,
+		use: [
+			MiniCssExtractPlugin.loader,
+			{
+				loader: 'css-loader',
+			},
+			{
+				loader: 'postcss-loader',
+			},
+			{
+				loader: 'sass-loader',
+				options: {
+					implementation: require('sass'),
+				},
+			}
+		],
+	})
+	.addLoader({
+		test: /\.css$/,
+		exclude: /node_modules/,
+		use: [
+			MiniCssExtractPlugin.loader,
+			{
+				loader: 'css-loader',
+			},
+			{
+				loader: 'postcss-loader',
+			},
+		],
+	})
 ;
 
-module.exports = Encore.getWebpackConfig();
+const optimization = {
+	minimize: true,
+	minimizer: [
+		// Default .configureTerserPlugin() sucks.
+		new TerserPlugin({
+			parallel: true,
+			minify: TerserPlugin.swcMinify,
+			terserOptions: {
+				compress: {
+					drop_console: Encore.isProduction(),
+					passes: 2,
+				},
+				format: {
+					comments: false,
+				},
+			},
+		}),
+		// Default .configureCssMinimizerPlugin() sucks.
+		new CssMinimizerPlugin({
+			parallel: true,
+			minify: CssMinimizerPlugin.cssoMinify,
+		}),
+	],
+};
+
+module.exports = {
+	...Encore.getWebpackConfig(),
+	cache: true,
+	optimization,
+};
