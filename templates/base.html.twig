@@ -36,14 +36,14 @@
 
 <body>
 	{# Header #}
-	{# {{ include('header.html.twig') }} #}
+	{{ include('_header.html.twig') }}
 
 	{# Main #}
 	<main id="site-content" class="site-content">
 		<div id="app" class="app">
 			<div id="app-inner" class="app-inner">
 				{# Sidebar #}
-				{# {{ include('sidebar.html.twig') }} #}
+				{{ include('_sidebar.html.twig') }}
 
 				{# Content #}
 				<section id="dynamic-content" class="dynamic-content large-column">
@@ -56,7 +56,7 @@
 	</main>
 
 	{# Footer #}
-	{# {{ include('footer.html.twig') }} #}
+	{{ include('_footer.html.twig') }}
 
 	{# Scripts #}
 	{% block javascripts %}

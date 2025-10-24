@@ -1,0 +1,24 @@
+/* Sidebar menu. */
+.menu-list {
+	list-style: none;
+	padding: 0;
+	margin: 2rem 0 0;
+	border-top: 1px solid #E0E0E0;
+
+	&__link {
+		padding: 0.75rem 0;
+		border-bottom: 1px dashed #E0E0E0;
+		cursor: pointer;
+		display: block;
+		color: #21252D;
+
+		&:hover {
+			background-color: #F5F5F5;
+			padding-left: 0.5rem;
+		}
+	}
+
+	&__item:last-child .menu-list__link {
+		border-bottom: none;
+	}
+}

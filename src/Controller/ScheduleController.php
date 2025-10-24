@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dashboard Controller.
+ * Schedule Controller.
  */
 
 declare(strict_types=1);
@@ -13,17 +13,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Class DashboardController.
+ * Class ScheduleController.
  */
-#[Route('/')]
-final class DashboardController extends AbstractController
+#[Route('/schedule')]
+final class ScheduleController extends AbstractController
 {
-	/**
-	 * Handle dashboard main view logic.
-	 */
-	#[Route('/', name: 'dashboard_index')]
+	#[Route('/', name: 'schedule_index')]
 	public function index(): Response
 	{
-		return $this->render('dashboard/index.html.twig');
+		return $this->render('schedule/index.html.twig');
 	}
 }

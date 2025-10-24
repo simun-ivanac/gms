@@ -1,0 +1,102 @@
+:root {
+	--base-font-size: 0.625;
+	--global-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+	--code-font-family: -apple-system, BlinkMacSystemFont, 'Andale Mono', 'Courier New', Monaco, 'Lucida Console', monospace;
+
+	/* Global default values. */
+	--global-main-content-width: 80rem;
+	--global-base-font: DM Sans;
+	--global-z-index-header: 90;
+	--global-z-index-overlay: 100;
+	--global-header-height: 4.375rem;
+
+	/* Colors. */
+	--global-colors-black: #0B1016;
+	--global-colors-white: #FEFEFF;
+	--global-colors-light-blue: #EEF2FC;
+
+	/* Gradients. */
+
+	/* Animations. */
+	--global-easing-ease-in-out: cubic-bezier(0.55, 0, 0.45, 1);
+	--global-easing-slow-down: cubic-bezier(0.25, 0.49, 0.31, 1);
+	--global-easing-long-slow-down: cubic-bezier(0.13, 0.63, 0.4, 0.97);
+	--global-easing-ease-motion: cubic-bezier(0.66, 0.19, 0.29, 0.79);
+	--global-easing-expressive-in-out: cubic-bezier(0.76, 0.09, 0.03, 0.96);
+	--global-easing-fly-in: cubic-bezier(0.08, 0.69, 0.07, 1);
+	--global-easing-fly-out: cubic-bezier(0.54, 0.01, 0.99, 0.26);
+}
+
+html {
+	font-size: 16px;
+	scroll-behavior: smooth;
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 16px;
+	position: relative;
+	overflow-x: hidden;
+	font-family: var(--global-font-family);
+	color: var(--global-colors-black);
+	background-color: var(--global-colors-light-blue);
+}
+
+a {
+	text-decoration: none;
+	color: #006FE6;
+	transition-property: color, background-color, border-color, text-decoration-color, padding;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 0.2s;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 1.5rem;
+	font-weight: bold;
+	letter-spacing: 0;
+	line-height: 1.25;
+	color: var(--global-colors-black);
+	margin: 0;
+	padding: 0;
+	overflow-wrap: anywhere;
+}
+
+h1 {
+	font-size: 2rem;
+}
+
+h2 {
+	font-size: 1.75rem;
+}
+
+h3 {
+	font-size: 1.6rem;
+}
+
+h4 {
+	font-size: 1.45rem;
+}
+
+h5 {
+	font-size: 1.3rem;
+}
+
+h6 {
+	font-size: 1.1rem;
+}
+
+p {
+	font-size: 1rem;
+	font-weight: normal;
+	line-height: 1.4;
+	letter-spacing: 0;
+	color: var(--global-colors-black);
+	overflow-wrap: anywhere;
+	margin: 0;
+}

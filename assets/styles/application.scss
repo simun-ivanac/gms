@@ -1,3 +1,16 @@
-body {
-	background-color: brown;
-}
+// Global styles.
+@use './normalize';
+@use './global-styles';
+
+// Site sections.
+@use './site-sections/base-layout';
+@use './site-sections/header';
+@use './site-sections/sidebar';
+@use './site-sections/footer';
+
+// Components
+@use './components/header-title';
+@use './components/navigation';
+@use './components/footer-title';
+@use './components/copyright';
+@use './components/sidebar-menu';

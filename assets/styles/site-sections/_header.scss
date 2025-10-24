@@ -1,0 +1,17 @@
+.site-header {
+	background-color: #21252D;
+	width: 100%;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) var(--global-main-content-width) minmax(0, 1fr);
+	color: #FFFFFF;
+	height: var(--global-header-height);
+
+	.contained {
+		width: 100%;
+		grid-column: 2 / span 1;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 100%;
+	}
+}

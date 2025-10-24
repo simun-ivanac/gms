@@ -1,0 +1,28 @@
+.site-content {
+	position: relative;
+}
+
+.app {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) var(--global-main-content-width) minmax(0, 1fr);
+}
+
+.app-inner {
+	grid-column: 2 / span 1;
+	display: grid;
+	grid-template-columns: 1fr 3fr;
+	gap: 1.5rem;
+	padding: 2rem 0;
+}
+
+.small-column,
+.large-column {
+	background-color: #FFFFFF;
+	border-radius: 0.5rem;
+	padding: 1.5rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* stylelint-disable-line */
+}
+
+.small-column {
+	height: max-content;
+}
