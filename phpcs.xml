@@ -8,12 +8,12 @@
 
 	<!-- Include paths. -->
 	<file>./config</file>
+	<file>./migrations</file>
 	<file>./src</file>
 	<file>./tests</file>
 
 	<!-- Set exclude patterns (just in case). -->
 	<exclude-pattern>/assets/*</exclude-pattern>
-	<exclude-pattern>/migrations/*</exclude-pattern>
 	<exclude-pattern>/public/*</exclude-pattern>
 	<exclude-pattern>/templates/*</exclude-pattern>
 	<exclude-pattern>/translations/*</exclude-pattern>
