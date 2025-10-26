@@ -3,3 +3,4 @@
  */
 
 import './test-image.png';
+import './placeholder-user-profile.png';

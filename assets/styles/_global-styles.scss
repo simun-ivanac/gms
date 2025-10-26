@@ -91,6 +91,10 @@ h6 {
 	font-size: 1.1rem;
 }
 
+.main-heading {
+	margin-bottom: 2rem;
+}
+
 p {
 	font-size: 1rem;
 	font-weight: normal;
@@ -99,4 +103,79 @@ p {
 	color: var(--global-colors-black);
 	overflow-wrap: anywhere;
 	margin: 0;
+}
+
+input {
+	outline: 0;
+	letter-spacing: 0;
+	font-weight: normal;
+}
+
+input[type='text'],
+input[type='url'],
+input[type='tel'],
+input[type='file'],
+input[type='number'],
+input[type='password'],
+input[type='date'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='time'],
+input[type='week'],
+input[type='month'],
+input[type='search'],
+input[type='email'] {
+	width: 100%;
+	display: block;
+	outline: 0;
+	border: 1px solid #E0E0E0;
+	letter-spacing: 0;
+	font-weight: normal;
+	padding: 0.5rem 1rem;
+	border-radius: 0.625rem;
+	height: 2.5rem;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+	cursor: pointer;
+	width: 1.15rem;
+	height: 1.15rem;
+}
+
+button,
+.button {
+	color: var(--global-colors-white);
+	cursor: pointer;
+	border: 1px solid #21252D;
+	outline: 0;
+	outline-offset: 0;
+	background-color: #21252D;
+	font-size: 1rem;
+	line-height: 1.4;
+	font-weight: 600;
+	padding: 0.875rem 1.25rem;
+	border-radius: 0.625rem;
+	text-decoration: none;
+	width: auto;
+	min-width: 6.875rem;
+	height: 2.5rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25rem;
+}
+
+button.primary,
+.button.primary {
+	color: var(--global-colors-white);
+	border: 1px solid #21252D;
+	background-color: #21252D;
+}
+
+button:disabled {
+	background-color: #E0E0E0;
+	border-color: #E0E0E0;
+	color: #A0A0A0;
+	cursor: not-allowed;
 }

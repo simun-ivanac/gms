@@ -1,0 +1,94 @@
+.form {
+	$form: &;
+
+	// Form Groups.
+	&-group {
+		margin-bottom: 1.75rem;
+
+		&.image #{$form}-label {
+			display: inline-block;
+		}
+
+		&.submit {
+			text-align: right;
+		}
+	}
+
+	// Form Labels.
+	&-label {
+		display: block;
+		font-size: 1rem;
+		font-weight: 500;
+		margin-bottom: 0.5rem;
+		cursor: default;
+	}
+
+	// Image Input.
+	.image-input-container {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.image-preview {
+		width: 6rem;
+		height: 6rem;
+		border: 1px solid #E0E0E0;
+		border-radius: 0.625rem;
+		overflow: hidden;
+		flex-shrink: 0;
+	}
+
+	.image-preview-img {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	// Radio options.
+	.form-group-radio-options {
+		display: flex;
+		gap: 2rem;
+
+		&.display-rows {
+			overflow-y: auto;
+			max-height: 15rem;
+			height: auto;
+			display: block;
+
+			.radio-group {
+				margin-bottom: 1rem;
+
+				// stylelint-disable-next-line
+				.form-label {
+					flex-grow: 1;
+					flex-shrink: 0;
+					padding-left: 0.75rem;
+				}
+
+				// stylelint-disable-next-line
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+	.radio-group {
+		display: flex;
+		align-items: center;
+
+		.form-label {
+			display: inline-block;
+			margin-bottom: 0;
+			font-weight: normal;
+			cursor: pointer;
+			padding-left: 0.4rem;
+		}
+	}
+
+	// Submit Button.
+	.submit-btn {
+		min-width: 8rem;
+	}
+}
