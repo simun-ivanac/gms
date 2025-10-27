@@ -19,8 +19,7 @@
 
 Simple app intended for handling gym memberships. I use it solely for practice and improving my skills.
 
-This is work in progress. So, imperfect and not ready for some big things.
-Still, I'm happy with the progress.
+This is work in progress. So, imperfect and mostly basic in nature (for now). If you'd like to know more background and implementation logic behind it, feel free to check this [Notion page](https://www.notion.so/just-simun/Gym-Management-System-GMS-299ca0e180ff800bae26ccac47d8f4c5).
 
 <div align="right">
 
