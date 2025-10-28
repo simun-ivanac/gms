@@ -20,7 +20,7 @@ Encore
 	// Displays build status system notifications to the user
 	// .enableBuildNotifications()
 
-	.enableSourceMaps(!Encore.isProduction())
+	.enableSourceMaps()
 	.enableVersioning(Encore.isProduction())
 
 	// enables and configure @babel/preset-env polyfills
