@@ -1,0 +1,31 @@
+.action-bar {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	align-items: center;
+	margin-bottom: 3rem;
+
+	.add-entry {
+		text-align: right;
+	}
+
+	.view-filters {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.filter-select-dropdown {
+		border: 1px solid #E0E0E0;
+		border-radius: 0.625rem;
+	}
+
+	.filter-select {
+		height: 2.5rem;
+		border: none;
+		border-left: 0.7rem solid transparent;
+		border-right: 0.7rem solid transparent;
+		background-color: transparent;
+		width: 100%;
+		display: block;
+	}
+}

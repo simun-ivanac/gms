@@ -19,7 +19,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class DashboardController extends AbstractController
 {
 	/**
-	 * Handle dashboard main view logic.
+	 * Dashboard main view.
+	 *
+	 * @return Response HTTP response
 	 */
 	#[Route('/', name: 'dashboard_index')]
 	public function index(): Response

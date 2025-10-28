@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{# Title #}
+{% block title %}Members{% endblock %}
+
+{# Content #}
+{% block content %}
+	<h1 class="heading main-heading heading-members">Members</h1>
+	<div id="members" class="members">
+		<div class="action-bar">
+			<div id="view-filters" class="view-filters">
+				<div class="view-filter search">
+					<input type="text" id="search-input" name="search" placeholder="Search members..." class="filter-input">
+				</div>
+				<div class="view-filter status">
+					<div class="filter-select-dropdown">
+						<select id="status-select" name="status" class="filter-select">
+							<option value="" disabled="" selected="" hidden="">Status:</option>
+							<option value="all">All</option>
+							<option value="active">Active</option>
+							<option value="inactive">Inactive</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="add-entry">
+				<a href="{{ path('members_new') }}" class="button">Add Member</a>
+			</div>
+		</div>
+		<div class="data-view">
+			<table class="table members-index">
+				<thead class="table-head">
+					<tr class="table-head-row">
+						<th class="table-head-heading">Photo</th>
+						<th class="table-head-heading">Name</th>
+						<th class="table-head-heading">ID</th>
+						<th class="table-head-heading">Email</th>
+						<th class="table-head-heading">Age</th>
+						<th class="table-head-heading">Status</th>
+						<th class="table-head-heading">Actions</th>
+					</tr>
+				</thead>
+				<tbody class="table-body">
+					{% for member in members %}
+						<tr class="table-body-row">
+							<td class="table-data image">
+								<picture class="user-profile-picture">
+									<img src="{{ asset('build/images/placeholder-user-profile.png') }}" alt="{{ member.firstName ~ ' ' ~ member.lastName }}" class="user-profile-img">
+								</picture>
+							</td>
+							<td class="table-data">{{ member.firstName ~ ' ' ~ member.lastName }}</td>
+							<td class="table-data">{{ member.id }}</td>
+							<td class="table-data">{{ member.email }}</td>
+							<td class="table-data">{{ date().diff(date(member.dateOfBirth)).y }}</td>
+							<td class="table-data">{{ member.isActive ? 'active' : 'inactive' }}</td>
+							<td class="table-data edit">
+								<a href="member-edit.html" class="edit-link">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="edit-svg" width="20" height="20" fill="none">
+										<path d="m16.25 7-3-3 2.5-2.5 3 3-2.5 2.5Z" fill="currentColor" fill-opacity="0.3"></path>
+										<path d="m12.863 3.903 3.484 3.484m-3.484-3.484L2.746 13.458a1.5 1.5 0 0 0-.435.765l-.87 3.915a.5.5 0 0 0 .647.583L6.14 17.37a1.5 1.5 0 0 0 .586-.362l9.62-9.62m-3.483-3.485 1.843-1.842a1.5 1.5 0 0 1 2.12 0l1.363 1.362a1.5 1.5 0 0 1 0 2.122l-1.842 1.842" stroke="currentColor" fill="none"></path>
+									</svg>
+								</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot class="table-footer"></tfoot>
+			</table>
+		</div>
+	</div>
+{% endblock %}
+
