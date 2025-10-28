@@ -11,6 +11,7 @@ namespace App\Entity;
 use App\Repository\MemberRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Member.
@@ -31,54 +32,72 @@ class Member
 	 * Photo.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\Image(maxSize: '2M')]
+	#[Assert\Length(min: 1, max: 255)]
 	private ?string $photo = null;
 
 	/**
 	 * First name.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 2, max: 255)]
 	private ?string $firstName = null;
 
 	/**
 	 * Last name.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 2, max: 255)]
 	private ?string $lastName = null;
 
 	/**
 	 * Date of birth.
 	 */
 	#[ORM\Column(type: Types::DATE_MUTABLE)]
+	#[Assert\NotBlank]
+	#[Assert\Type('\DateTimeInterface')]
 	private ?\DateTime $dateOfBirth = null;
 
 	/**
 	 * Gender.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\NotBlank]
+	#[Assert\Choice(['male', 'female', 'null'])]
 	private ?string $gender = null;
 
 	/**
 	 * Email.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\Email]
+	#[Assert\Length(min: 4, max: 255)]
 	private ?string $email = null;
 
 	/**
 	 * Phone number.
+	 * (+385981119999, no spaces, optional '+', 7-14 characters)
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\Regex("/^\\+?[1-9][0-9]{7,14}$/")]
 	private ?string $phoneNumber = null;
 
 	/**
 	 * Personal identification number.
 	 */
 	#[ORM\Column(type: Types::BIGINT)]
+	#[Assert\NotBlank]
+	#[Assert\Positive]
+	#[Assert\Length(exactly: 11)]
 	private ?string $pin = null;
 
 	/**
 	 * Is member active.
 	 */
 	#[ORM\Column]
+	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
 
 	/**

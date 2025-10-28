@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Repository\GroupRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Group.
@@ -30,42 +31,52 @@ class Group
 	 * Name.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 2, max: 255)]
 	private ?string $name = null;
 
 	/**
 	 * Price.
 	 */
 	#[ORM\Column]
+	#[Assert\NotBlank]
+	#[Assert\Positive]
 	private ?int $price = null;
 
 	/**
 	 * Currency.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\Currency]
 	private ?string $currency = null;
 
 	/**
 	 * Repeatability.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Choice(['recurring', 'one-session'])]
 	private ?string $repeatability = null;
 
 	/**
 	 * Number of sessions per week.
 	 */
 	#[ORM\Column(nullable: true)]
+	#[Assert\Positive]
 	private ?int $numOfSessionsPerWeek = null;
 
 	/**
 	 * Payment frequency in days.
 	 */
 	#[ORM\Column(nullable: true)]
+	#[Assert\Positive]
 	private ?int $paymentFrequencyInDays = null;
 
 	/**
 	 * Is group active.
 	 */
 	#[ORM\Column]
+	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
 
 	/**
@@ -133,7 +144,7 @@ class Group
 	 */
 	public function getCurrency(): ?string
 	{
-		return $this->currency;
+		return $this->currency ?: 'eur';
 	}
 
 	/**

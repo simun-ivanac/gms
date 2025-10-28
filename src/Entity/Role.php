@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Role.
@@ -29,12 +30,15 @@ class Role
 	 * Team Member Role.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Choice(['owner', 'trainer', 'receptionist', 'staff'])]
 	private ?string $teamMemberRole = null;
 
 	/**
 	 * Permissions.
 	 */
 	#[ORM\Column(nullable: true)]
+	#[Assert\Type('array')]
 	private ?array $permissions = null;
 
 	/**

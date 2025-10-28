@@ -40,6 +40,7 @@ class MemberFormType extends AbstractType
 		$builder
 			->add('photo', FileType::class, [
 				'required' => false,
+				'mapped' => false,
 			])
 			->add('firstName', TextType::class)
 			->add('lastName', TextType::class)
@@ -63,10 +64,15 @@ class MemberFormType extends AbstractType
 			->add('phoneNumber', TelType::class, [
 				'required' => false,
 				'attr' => [
-					'pattern' => '[0-9]{3}-[0-9]{3}-[0-9]{4}'
+					'pattern' => "\+?[1-9][0-9]{7,14}"
 				],
 			])
-			->add('pin', IntegerType::class)
+			->add('pin', IntegerType::class, [
+				'attr' => [
+					'min' => '10000000000',
+					'max' => '99999999999',
+				],
+			])
 			->add('save', SubmitType::class)
 		;
 	}

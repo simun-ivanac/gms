@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Plan.
@@ -29,48 +30,61 @@ class Plan
 	 * Name.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 2, max: 255)]
 	private ?string $name = null;
 
 	/**
 	 * Type.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Choice(['recurring', 'one-time'])]
 	private ?string $type = null;
 
 	/**
 	 * Price.
 	 */
 	#[ORM\Column]
+	#[Assert\NotBlank]
+	#[Assert\Positive]
 	private ?int $price = null;
 
 	/**
 	 * Currency.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\Currency]
 	private ?string $currency = null;
 
 	/**
 	 * Duration in days.
 	 */
 	#[ORM\Column]
+	#[Assert\NotBlank]
+	#[Assert\Positive]
 	private ?int $durationInDays = null;
 
 	/**
 	 * Are visitations limited? (yes: define manually limit, no: unlimited).
 	 */
 	#[ORM\Column]
+	#[Assert\NotBlank]
+	#[Assert\Type('bool')]
 	private ?bool $areVisitationsLimited = null;
 
 	/**
 	 * Number of visitations per week (if limited).
 	 */
 	#[ORM\Column(nullable: true)]
+	#[Assert\Positive]
 	private ?int $numOfVisitationsPerWeek = null;
 
 	/**
 	 * Is plan active.
 	 */
 	#[ORM\Column]
+	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
 
 	/**
@@ -162,7 +176,7 @@ class Plan
 	 */
 	public function getCurrency(): ?string
 	{
-		return $this->currency;
+		return $this->currency ?: 'eur';
 	}
 
 	/**

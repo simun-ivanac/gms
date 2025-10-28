@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class TeamMember.
@@ -35,60 +36,81 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	 * Photo.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\Image(maxSize: '2M')]
+	#[Assert\Length(min: 1, max: 255)]
 	private ?string $photo = null;
 
 	/**
 	 * First name.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 2, max: 255)]
 	private ?string $firstName = null;
 
 	/**
 	 * Last name.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Length(min: 2, max: 255)]
 	private ?string $lastName = null;
 
 	/**
 	 * Date of birth.
 	 */
 	#[ORM\Column(type: Types::DATE_MUTABLE)]
+	#[Assert\NotBlank]
+	#[Assert\Type('\DateTimeInterface')]
 	private ?\DateTime $dateOfBirth = null;
 
 	/**
 	 * Gender.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\NotBlank]
+	#[Assert\Choice(['male', 'female', 'null'])]
 	private ?string $gender = null;
 
 	/**
 	 * Email.
 	 */
 	#[ORM\Column(length: 180)]
+	#[Assert\NotBlank]
+	#[Assert\Email]
+	#[Assert\Length(min: 4, max: 255)]
 	private ?string $email = null;
 
 	/**
 	 * Phone number.
 	 */
 	#[ORM\Column(length: 255)]
+	#[Assert\NotBlank]
+	#[Assert\Regex("/^\\+?[1-9][0-9]{7,14}$/")]
 	private ?string $phoneNumber = null;
 
 	/**
 	 * Personal identification number.
 	 */
 	#[ORM\Column(type: Types::BIGINT)]
+	#[Assert\NotBlank]
+	#[Assert\Positive]
+	#[Assert\Length(exactly: 11)]
 	private ?string $pin = null;
 
 	/**
 	 * Is team member active.
 	 */
 	#[ORM\Column]
+	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
 
 	/**
 	 *The user roles.
 	 */
 	#[ORM\Column]
+	#[Assert\NotBlank]
+	#[Assert\Choice(['owner', 'trainer', 'receptionist', 'staff'], multiple: true)]
 	private array $roles = [];
 
 	/**
