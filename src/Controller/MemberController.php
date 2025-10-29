@@ -20,7 +20,6 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * Class MemberController.
  */
-#[Route('/members')]
 final class MemberController extends AbstractController
 {
 	/**
@@ -30,10 +29,10 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/', name: 'members_index')]
+	#[Route('/members', name: 'member_index')]
 	public function index(MemberRepository $repository): Response
 	{
-		return $this->render('members/index.html.twig', [
+		return $this->render('member/index.html.twig', [
 			'members' => $repository->findAll(),
 		]);
 	}
@@ -46,7 +45,7 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/new', name: 'members_new')]
+	#[Route('/member/new', name: 'member_new')]
 	public function new(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$member = new Member();
@@ -58,10 +57,13 @@ final class MemberController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->persist($member);
 			$entityManager->flush();
-			return $this->redirectToRoute('members_index', [], Response::HTTP_SEE_OTHER);
+
+			$this->addFlash('success', 'New member is created successfully!');
+
+			return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
 		}
 
-		return $this->render('members/new.html.twig', [
+		return $this->render('member/new.html.twig', [
 			'memberForm' => $form,
 		]);
 	}

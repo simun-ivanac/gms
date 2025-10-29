@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 /**
  * Class MemberFormType.
@@ -41,14 +42,26 @@ class MemberFormType extends AbstractType
 			->add('photo', FileType::class, [
 				'required' => false,
 				'mapped' => false,
+				'help' => 'Max size: 2MB.',
+				'constraints' => [
+					new File(
+						maxSize: '2M',
+						extensions: [
+							'jpg',
+							'jpeg',
+							'png',
+							'gif',
+							'webp',
+							'bmp',
+							'svg',
+							'tiff',
+						],
+					)
+				],
 			])
 			->add('firstName', TextType::class)
 			->add('lastName', TextType::class)
-			->add('dateOfBirth', DateType::class, [
-				'attr' => [
-					'max' => date('Y-m-d'),
-				],
-			])
+			->add('dateOfBirth', DateType::class)
 			->add('gender', ChoiceType::class, [
 				'choices'  => [
 					'Male' => 'male',
@@ -63,16 +76,9 @@ class MemberFormType extends AbstractType
 			])
 			->add('phoneNumber', TelType::class, [
 				'required' => false,
-				'attr' => [
-					'pattern' => "\+?[1-9][0-9]{7,14}"
-				],
+				'help' => 'e.g. +385115559999',
 			])
-			->add('pin', IntegerType::class, [
-				'attr' => [
-					'min' => '10000000000',
-					'max' => '99999999999',
-				],
-			])
+			->add('pin', IntegerType::class)
 			->add('save', SubmitType::class)
 		;
 	}

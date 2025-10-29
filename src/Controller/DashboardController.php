@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * Class DashboardController.
  */
-#[Route('/')]
 final class DashboardController extends AbstractController
 {
 	/**

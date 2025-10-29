@@ -47,6 +47,10 @@
 
 				{# Content #}
 				<section id="dynamic-content" class="dynamic-content large-column">
+					{# Flash Messages #}
+					{{ include('_flash_messages.html.twig') }}
+
+					{# Main Content #}
 					{% block content %}
 						<h1 class="heading heading-base">Base</h1>
 					{% endblock %}

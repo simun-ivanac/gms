@@ -1,0 +1,14 @@
+{% if app.request.hasPreviousSession %}
+	<div class="flash-messages">
+		{% for type, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="notice {{ type }}">
+					<p class="notice-message">{{ message }}</p>
+					<button class="notice-close" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endfor %}
+		{% endfor %}
+	</div>
+{% endif %}

@@ -15,10 +15,14 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * Class ScheduleController.
  */
-#[Route('/schedule')]
 final class ScheduleController extends AbstractController
 {
-	#[Route('/', name: 'schedule_index')]
+	/**
+	 * Schedule main view.
+	 *
+	 * @return Response HTTP response
+	 */
+	#[Route('/schedule', name: 'schedule_index')]
 	public function index(): Response
 	{
 		return $this->render('schedule/index.html.twig');
