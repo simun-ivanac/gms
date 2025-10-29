@@ -9,15 +9,16 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Member;
+use App\Form\EventSubscriber\SetIsActiveFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
@@ -81,6 +82,9 @@ class MemberFormType extends AbstractType
 			->add('pin', IntegerType::class)
 			->add('save', SubmitType::class)
 		;
+
+		// Set default member status to "inactive".
+		$builder->addEventSubscriber(new SetIsActiveFieldSubscriber());
 	}
 
 	/**

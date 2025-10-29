@@ -52,8 +52,6 @@ final class MemberController extends AbstractController
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
-		$member->setIsActive(false);
-
 		$form = $this->createForm(MemberFormType::class, $member);
 		$form->handleRequest($request);
 
