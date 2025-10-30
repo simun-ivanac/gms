@@ -11,6 +11,7 @@ namespace App\Entity;
 use App\Repository\MemberRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -32,9 +33,26 @@ class Member
 	 * Photo.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
-	#[Assert\Image(maxSize: '2M')]
 	#[Assert\Length(min: 1, max: 255)]
-	private ?string $photo = null;
+	private ?string $photoFilename = null;
+
+	/**
+	 * Temporary field for handling uploaded images/photos.
+	 */
+	#[Assert\Image(
+		maxSize: '2M',
+		mimeTypes: [
+			'image/jpeg',
+			'image/jpg',
+			'image/png',
+			'image/webp',
+			'image/gif',
+			'image/bmp',
+			'image/svg',
+			'image/tiff',
+		],
+	)]
+	private ?File $photoFile = null;
 
 	/**
 	 * First name.
@@ -111,25 +129,49 @@ class Member
 	}
 
 	/**
-	 * Get photo.
+	 * Get photo filename.
 	 *
 	 * @return string|null
 	 */
-	public function getPhoto(): ?string
+	public function getPhotoFilename(): ?string
 	{
-		return $this->photo;
+		return $this->photoFilename;
 	}
 
 	/**
-	 * Set photo.
+	 * Set photo filename.
 	 *
-	 * @param string|null $photo Photo.
+	 * @param string|null $photo Photo Filename.
 	 *
 	 * @return static
 	 */
-	public function setPhoto(?string $photo): static
+	public function setPhotoFilename(?string $photoFilename): static
 	{
-		$this->photo = $photo;
+		$this->photoFilename = $photoFilename;
+
+		return $this;
+	}
+
+	/**
+	 * Get photo file.
+	 *
+	 * @return File|null
+	 */
+	public function getPhotoFile(): ?File
+	{
+		return $this->photoFile;
+	}
+
+	/**
+	 * Set photo file.
+	 *
+	 * @param File|null $file File.
+	 *
+	 * @return static
+	 */
+	public function setPhotoFile(?File $file): static
+	{
+		$this->photoFile = $file;
 
 		return $this;
 	}

@@ -40,7 +40,7 @@ class MemberFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
-			->add('photo', FileType::class, [
+			->add('photoFile', FileType::class, [
 				'required' => false,
 				'mapped' => false,
 				'help' => 'Max size: 2MB.',

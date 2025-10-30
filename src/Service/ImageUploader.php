@@ -8,10 +8,11 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class ImageUploader.
@@ -24,11 +25,13 @@ class ImageUploader
 	 * @param string            $targetDirectory Target directory.
 	 * @param SluggerInterface  $slugger         Slugger.
 	 * @param LoggerInterface   $logger          Logger.
+	 * @param Filesystem        $filesystem      Filesystem.
 	 */
 	public function __construct(
 		private string $targetDirectory,
 		private SluggerInterface $slugger,
 		private LoggerInterface $logger,
+		private Filesystem $filesystem,
 	) {
 	}
 
@@ -41,20 +44,56 @@ class ImageUploader
 	 *
 	 * @return string
 	 */
-	public function upload(UploadedFile $imageFile): string
+	public function uploadFile(UploadedFile $newImageFile): string
 	{
-		$originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+		$originalFilename = pathinfo($newImageFile->getClientOriginalName(), PATHINFO_FILENAME);
 		$safeFilename = $this->slugger->slug(strtolower($originalFilename));
-		$newFileName = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+		$newFileName = $safeFilename . '-' . uniqid() . '.' . $newImageFile->guessExtension();
 
 		try {
-			$imageFile->move($this->getTargetDirectory(), $newFileName);
+			$newImageFile->move($this->getTargetDirectory(), $newFileName);
 		} catch (FileException $e) {
 			$this->logger->error($e->getMessage());
-			throw new FileException('Unable to process image file.');
+			throw new FileException('Unable to upload image file.');
 		}
 
 		return $newFileName;
+	}
+
+	/**
+	 * Delete image.
+	 *
+	 * @param string $oldImageFile Old image file.
+	 *
+	 * @return bool
+	 */
+	public function deleteFile(string $oldImageFile)
+	{
+		if (!$oldImageFile) {
+			return false;
+		}
+
+		// Log error if it fails, but continue anyway.
+		try {
+			$this->filesystem->remove($this->getTargetFile($oldImageFile));
+		} catch (FileException $e) {
+			$this->logger->error($e->getMessage());
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get full target path.
+	 *
+	 * @param string $filename File name.
+	 *
+	 * @return string
+	 */
+	public function getTargetFile(string $filename): string
+	{
+		return $this->getTargetDirectory() . DIRECTORY_SEPARATOR . $filename;
 	}
 
 	/**
