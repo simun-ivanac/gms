@@ -15,9 +15,10 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: "../src/"
+    # add other service definitions
     App\Service\ImageUploader:
         arguments:
             $targetDirectory: "%kernel.project_dir%/public/uploads/user-photos"
-
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Service\TwigHelpers:
+        tags:
+            - { name: twig.extension }
