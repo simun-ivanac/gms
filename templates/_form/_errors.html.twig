@@ -1,0 +1,7 @@
+{% if displayErrors|length %}
+	<ul class="form-errors">
+		{% for error in displayErrors %}
+			<li class="form-error-message">{{ error.message }}</li>
+		{% endfor %}
+	</ul>
+{% endif %}

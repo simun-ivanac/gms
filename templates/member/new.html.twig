@@ -11,13 +11,7 @@
 	<h1 class="heading main-heading heading-new-member">Add member</h1>
 	<div id="new-member" class="new-member">
 		{# Global form errors #}
-		{% if memberForm.vars.errors|length %}
-			<ul class="form-errors">
-				{% for error in memberForm.vars.errors %}
-					<li class="form-error-message">{{ error.message }}</li>
-				{% endfor %}
-			</ul>
-		{% endif %}
+		{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.vars.errors} only %}
 
 		{{ form_start(memberForm, {
 			'attr': {'class': 'form form-new-member'}
@@ -25,27 +19,27 @@
 
 			{# Photo #}
 			<div class="form-group image">
-				{{ form_label(memberForm.photo, 'Photo', {
-					'label_attr': {'class': 'form-label'}
-				})}}
+				<div class="form-label">Photo</div>
 				<div class="image-input-container">
 					<div class="image-preview">
-						<img src="{{ asset('build/images/placeholder-user-profile.png') }}" alt="Image Preview" class="image-preview-img">
+						<img
+							src="{{ asset('build/images/placeholder-user-profile.png') }}"
+							alt="Image Preview"
+							class="image-preview-img"
+						>
 					</div>
-					{{ form_widget(memberForm.photo, {
-						'attr': {'class': 'form-input'}
+					{{ form_widget(memberForm.photoFile, {
+						'attr': {'class': 'form-input hidden'}
 					})}}
+					<label for="{{ memberForm.photoFile.vars.id }}" class="form-file-placeholder">
+						<span class="form-file-browse">Upload file</span>
+						<span class="form-file-name">No file selected.</span>
+					</label>
 				</div>
-				{{ form_help(memberForm.photo, {
+				{{ form_help(memberForm.photoFile, {
 					'help_attr': {'class': 'form-help'}
 				})}}
-				{% if memberForm.photo.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.photo.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.photoFile.vars.errors} only %}
 			</div>
 
 			{# First Name #}
@@ -56,13 +50,7 @@
 				{{ form_widget(memberForm.firstName, {
 					'attr': {'class': 'form-input'}
 				})}}
-				{% if memberForm.firstName.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.firstName.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.firstName.vars.errors} only %}
 			</div>
 
 			{# Last Name #}
@@ -73,13 +61,7 @@
 				{{ form_widget(memberForm.lastName, {
 					'attr': {'class': 'form-input'}
 				})}}
-				{% if memberForm.lastName.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.lastName.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.lastName.vars.errors} only %}
 			</div>
 
 			{# Date of Birth #}
@@ -93,13 +75,7 @@
 						'max': 'now'|date('Y-m-d'),
 					}
 				})}}
-				{% if memberForm.dateOfBirth.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.dateOfBirth.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.dateOfBirth.vars.errors} only %}
 			</div>
 
 			{# Gender #}
@@ -119,13 +95,7 @@
 						{% endfor -%}
 					{%- endblock choice_widget_expanded -%}
 				</div>
-				{% if memberForm.gender.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.gender.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.gender.vars.errors} only %}
 			</div>
 
 			{# Email #}
@@ -139,13 +109,7 @@
 						'autocomplete': 'on',
 					}
 				})}}
-				{% if memberForm.email.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.email.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.email.vars.errors} only %}
 			</div>
 
 			{# Phone Number #}
@@ -163,13 +127,7 @@
 				{{ form_help(memberForm.phoneNumber, {
 					'help_attr': {'class': 'form-help'}
 				})}}
-				{% if memberForm.phoneNumber.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.phoneNumber.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.phoneNumber.vars.errors} only %}
 			</div>
 
 			{# PIN #}
@@ -185,13 +143,7 @@
 						'maxlength': '11',
 					}
 				})}}
-				{% if memberForm.pin.vars.errors|length %}
-					<ul class="form-errors">
-						{% for error in memberForm.pin.vars.errors %}
-							<li class="form-error-message">{{ error.message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.pin.vars.errors} only %}
 			</div>
 
 			{# Submit Button #}

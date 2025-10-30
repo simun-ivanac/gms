@@ -1,6 +1,24 @@
 .form {
 	$form: &;
 
+	// stylelint-disable
+	&.disabled,
+	&:disabled {
+		#{$form}-input,
+		#{$form}-label,
+		#{$form}-radio,
+		#{$form}-select,
+		.submit-btn {
+			user-select: text !important;
+			cursor: default !important;
+		}
+
+		#{$form}-file-placeholder {
+			cursor: not-allowed !important;
+		}
+	}
+	// stylelint-enable
+
 	// Form Groups.
 	&-group {
 		margin-bottom: 1.75rem;
@@ -70,6 +88,24 @@
 		width: 100%;
 		height: 100%;
 		display: block;
+	}
+
+	&-file-placeholder {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		cursor: pointer;
+	}
+
+	&-file-browse {
+		border: 1px solid #E0E0E0;
+		border-radius: 0.625rem;
+		padding: 0.5rem 1rem;
+		color: #606770;
+	}
+
+	&-file-name {
+		color: #606770;
 	}
 
 	// Select.

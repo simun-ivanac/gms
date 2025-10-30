@@ -1,0 +1,35 @@
+{% extends "base.html.twig" %}
+
+{# Title #}
+{% block title %}Edit Member{% endblock %}
+
+{# Content #}
+{% block content %}
+	<h1 class="heading main-heading heading-edit-member">Edit Member</h1>
+	{% block tabContent %}{% endblock %}
+	<div id="edit-member" class="edit-member">
+		<div class="tabs">
+			<a href="#personal-details" class="tab-btn active" data-target="personal-details">Personal Details</a>
+			<a href="#memberships" class="tab-btn" data-target="membership">Memberships</a>
+			<a href="#visitations" class="tab-btn" data-target="visitations">Visitations</a>
+			<a href="#payments" class="tab-btn" data-target="payments">Payments</a>
+			<a href="#settings" class="tab-btn" data-target="settings">Settings</a>
+		</div>
+		<div class="tab-content active" data-tab="personal-details">
+			{{ include('member/tabs/_personal_details.html.twig') }}
+		</div>
+		<div class="tab-content" data-tab="memberships">
+			{{ include('member/tabs/_memberships.html.twig') }}
+		</div>
+		<div class="tab-content" data-tab="visitations">
+			{{ include('member/tabs/_visitations.html.twig') }}
+		</div>
+		<div class="tab-content" data-tab="payments">
+			{{ include('member/tabs/_payments.html.twig') }}
+		</div>
+		<div class="tab-content" data-tab="settings">
+			{{ include('member/tabs/_settings.html.twig') }}
+		</div>
+	</div>
+{% endblock %}
+
