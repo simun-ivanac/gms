@@ -34,7 +34,7 @@ This is work in progress. So, imperfect and mostly basic in nature (for now). If
 - Symfony: 7.3.4
 - Symfony CLI: 5.15.1
 - PHP: 8.2.24
-- MySQL: 8.0.33
+- MySQL: 8
 - Composer: 2.5.8
 - Node: 24.10.0
 - NPM: 11.6.1
@@ -65,11 +65,17 @@ Install composer packages:
 composer install
 ```
 
-> In case you change something regarding PHP classes, don't forget to dump autoload:
+Run migrations:
 
-> ```
-> composer dump-autoload -o
-> ```
+```
+php bin/console doctrine:migrations:migrate
+```
+
+Run fixtures:
+
+```
+php bin/console doctrine:fixtures:load
+```
 
 Install node modules:
 
@@ -82,6 +88,12 @@ Build public folder:
 ```
 npm run build
 ```
+
+If using symfony CLI for running web server, run:
+```
+symfony server:start
+```
+
 
 <div align="right">
 
