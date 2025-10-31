@@ -20,6 +20,8 @@ class MemberFixtures extends BaseFixture
 	 * Load member fixture.
 	 *
 	 * @param ObjectManager $manager Object manager.
+	 *
+	 * @return void
 	 */
 	public function loadData(ObjectManager $manager): void
 	{
