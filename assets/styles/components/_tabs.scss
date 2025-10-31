@@ -1,8 +1,10 @@
 .tabs {
-	display: flex;
-	margin: 0 0 2rem;
-	gap: 1.5rem;
-	border-bottom: 1px solid #E0E0E0;
+	.tablinks {
+		display: flex;
+		margin: 0 0 2rem;
+		gap: 1.5rem;
+		border-bottom: 1px solid #E0E0E0;
+	}
 
 	.tab-btn {
 		cursor: pointer;

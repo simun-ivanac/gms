@@ -8,4 +8,4 @@ function dynamicImport(paths) {
 
 // Register all scripts.
 // eslint-disable-next-line
-dynamicImport(require.context('./', true, /\.js$/));
+dynamicImport(require.context('./', true, /index\.js$/));
