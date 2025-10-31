@@ -65,6 +65,12 @@ Install composer packages:
 composer install
 ```
 
+Setup database configuration and create one manually, or run:
+
+```
+php bin/console doctrine:database:create
+```
+
 Run migrations:
 
 ```
