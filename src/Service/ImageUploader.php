@@ -69,7 +69,8 @@ class ImageUploader
 	 */
 	public function deleteFile(string $oldImageFile)
 	{
-		if (!$oldImageFile) {
+		// Exclude default user photos from deleting.
+		if (!$oldImageFile || str_starts_with(strtolower($oldImageFile), 'user-photo-')) {
 			return false;
 		}
 
