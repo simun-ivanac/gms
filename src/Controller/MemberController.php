@@ -35,7 +35,10 @@ final class MemberController extends AbstractController
 	public function index(MemberRepository $repository): Response
 	{
 		return $this->render('member/index.html.twig', [
-			'members' => $repository->findAll(),
+			'members' => $repository->findLatest([
+				'perPage' => 15,
+				'order' => 'DESC',
+			]),
 		]);
 	}
 
