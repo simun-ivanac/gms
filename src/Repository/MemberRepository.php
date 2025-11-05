@@ -9,9 +9,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Member;
-use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
