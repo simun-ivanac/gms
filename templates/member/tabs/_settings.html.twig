@@ -15,8 +15,16 @@
 	</form>
 	<div class="danger-zone">
 		<div class="danger-zone-option deactivate-account">
-			<button class="button deactivate-account-btn" disabled>Freeze User</button>
-			<p class="action-description">Put user account in suspend mode. It can be reactivated at any time.</p>
+			<form action="{{ url(member.isDeactivated ? 'member_activate' : 'member_deactivate', {id: member.id}) }}" method="post">
+				<input type="hidden" name="token" value="{{ csrf_token(member.isDeactivated ? 'activate' : 'deactivate') }}" />
+				<button type="submit" class="button deactivate-account-btn">{{ member.isDeactivated ? 'Reactivate' : 'Freeze' }} User</button>
+			</form>
+			<p class="action-description">
+				{{member.isDeactivated ?
+					'The user account is in suspend mode. It can be reactivated at any time.' :
+					'Put user account in suspend mode. It can be reactivated at any time.'
+				}}
+			</p>
 		</div>
 		<div class="danger-zone-option delete-account">
 			<form action="{{ url('member_delete', {id: member.id}) }}" method="post">

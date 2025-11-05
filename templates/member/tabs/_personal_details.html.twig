@@ -1,5 +1,8 @@
+{# Override some default blocks #}
+{% form_theme memberForm _self %}
+
 <div class="personal-details">
-	{% set disabled = isDisabled ?? false %}
+	{% set disabled = isEditingDisabled ?? false %}
 
 	{# Global form errors #}
 	{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.vars.errors} only %}

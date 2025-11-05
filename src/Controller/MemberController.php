@@ -134,8 +134,66 @@ final class MemberController extends AbstractController
 		return $this->render('member/edit.html.twig', [
 			'memberForm' => $form,
 			'member' => $member,
-			'isDisabled' => false,
+			'isEditingDisabled' => false,
 		]);
+	}
+
+	/**
+	 * Deactivate Member.
+	 *
+	 * @param Member                 $member        Member entity.
+	 * @param Request                $request       HTTP request.
+	 * @param EntityManagerInterface $entityManager Entity Manager.
+	 *
+	 * @return Response HTTP response.
+	 */
+	#[Route(path: '/member/deactivate/{id<\d+>}', name: 'member_deactivate', methods: ['POST'])]
+	public function deactivate(Member $member, Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$token = $request->getPayload()->get('token');
+
+		if (!$this->isCsrfTokenValid('deactivate', $token)) {
+			$this->addFlash('error', 'Some security thing failed!');
+
+			return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+		}
+
+		$member->setIsDeactivated(true);
+		$entityManager->persist($member);
+		$entityManager->flush();
+
+		$this->addFlash('success', 'Member deactivated successfully!');
+
+		return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+	}
+
+	/**
+	 * Activate Member.
+	 *
+	 * @param Member                 $member        Member entity.
+	 * @param Request                $request       HTTP request.
+	 * @param EntityManagerInterface $entityManager Entity Manager.
+	 *
+	 * @return Response HTTP response.
+	 */
+	#[Route(path: '/member/activate/{id<\d+>}', name: 'member_activate', methods: ['POST'])]
+	public function activate(Member $member, Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$token = $request->getPayload()->get('token');
+
+		if (!$this->isCsrfTokenValid('activate', $token)) {
+			$this->addFlash('error', 'Some security thing failed!');
+
+			return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+		}
+
+		$member->setIsDeactivated(false);
+		$entityManager->persist($member);
+		$entityManager->flush();
+
+		$this->addFlash('success', 'Member activated successfully!');
+
+		return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
 	}
 
 	/**
@@ -147,8 +205,16 @@ final class MemberController extends AbstractController
 	 * @return Response HTTP response.
 	 */
 	#[Route(path: '/member/delete/{id<\d+>}', name: 'member_delete', methods: ['POST'])]
-	public function delete(Member $member, EntityManagerInterface $entityManager): Response
+	public function delete(Member $member, Request $request, EntityManagerInterface $entityManager): Response
 	{
+		$token = $request->getPayload()->get('token');
+
+		if (!$this->isCsrfTokenValid('delete', $token)) {
+			$this->addFlash('error', 'Some security thing is not good!');
+
+			return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+		}
+
 		$entityManager->remove($member);
 		$entityManager->flush();
 
