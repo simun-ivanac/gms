@@ -40,11 +40,11 @@ class MemberRepository extends ServiceEntityRepository
 	{
 		$offset = $options['offset'] ?? 0;
 		$perPage = $options['perPage'] ?? 20;
-		$orderBy = $options['orderBy'] ?? 'id';
 		$order = $options['order'] ?? 'ASC';
 
 		$qb = $this->createQueryBuilder('m')
-			->orderBy("m.{$orderBy}", $order)
+			->addOrderBy('m.createdAt', $order)
+			->addOrderBy('m.id', $order)
 			->setFirstResult($offset)
 			->setMaxResults($perPage)
 			->getQuery();

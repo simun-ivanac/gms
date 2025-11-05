@@ -11,6 +11,7 @@ namespace App\Entity;
 use App\Repository\MemberRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -117,6 +118,48 @@ class Member
 	#[ORM\Column]
 	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
+
+	/**
+	 * Is member deactivated.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Assert\Type('bool')]
+	private ?bool $isDeactivated = null;
+
+	/**
+	 * Is member deleted.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Assert\Type('bool')]
+	private ?bool $isDeleted = null;
+
+	/**
+	 * Created at.
+	 */
+	#[ORM\Column]
+	#[Timestampable(on: 'create')]
+	private ?\DateTimeImmutable $createdAt = null;
+
+	/**
+	 * Updated at.
+	 */
+	#[ORM\Column]
+	#[Timestampable(on: 'update')]
+	private ?\DateTimeImmutable $updatedAt = null;
+
+	/**
+	 * Deactivated at.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Timestampable(on: 'change', field: 'isDeactivated', value: true)]
+	private ?\DateTimeImmutable $deactivatedAt = null;
+
+	/**
+	 * Deleted at.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Timestampable(on: 'change', field: 'isDeleted', value: true)]
+	private ?\DateTimeImmutable $deletedAt = null;
 
 	/**
 	 * Get id.
@@ -364,6 +407,150 @@ class Member
 	public function setIsActive(bool $isActive): static
 	{
 		$this->isActive = $isActive;
+
+		return $this;
+	}
+
+	/**
+	 * Get is deactivated.
+	 *
+	 * @return bool|null
+	 */
+	public function getIsDeactivated(): ?bool
+	{
+		return $this->isDeactivated;
+	}
+
+	/**
+	 * Set is deactivated.
+	 *
+	 * @param bool $isDeactivated Is deactivated.
+	 *
+	 * @return static
+	 */
+	public function setIsDeactivated(bool $isDeactivated): static
+	{
+		$this->isDeactivated = $isDeactivated;
+
+		return $this;
+	}
+
+	/**
+	 * Get is deleted.
+	 *
+	 * @return bool|null
+	 */
+	public function getIsDeleted(): ?bool
+	{
+		return $this->isDeleted;
+	}
+
+	/**
+	 * Set is deleted.
+	 *
+	 * @param bool $isDeleted Is deleted.
+	 *
+	 * @return static
+	 */
+	public function setIsDeleted(bool $isDeleted): static
+	{
+		$this->isDeleted = $isDeleted;
+
+		return $this;
+	}
+
+	/**
+	 * Get created datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getCreatedAt(): ?\DateTimeImmutable
+	{
+		return $this->createdAt;
+	}
+
+	/**
+	 * Set created datetime.
+	 *
+	 * @param \DateTimeImmutable $createdAt Created at.
+	 *
+	 * @return static
+	 */
+	public function setCreatedAt(\DateTimeImmutable $createdAt): static
+	{
+		$this->createdAt = $createdAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get updated datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getUpdatedAt(): ?\DateTimeImmutable
+	{
+		return $this->updatedAt;
+	}
+
+	/**
+	 * Set updated datetime.
+	 *
+	 * @param \DateTimeImmutable $updatedAt Updated at.
+	 *
+	 * @return static
+	 */
+	public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+	{
+		$this->updatedAt = $updatedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get deactivated datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getDeactivatedAt(): ?\DateTimeImmutable
+	{
+		return $this->deactivatedAt;
+	}
+
+	/**
+	 * Set deactivated datetime.
+	 *
+	 * @param \DateTimeImmutable $deactivatedAt Deactivated at.
+	 *
+	 * @return static
+	 */
+	public function setDeactivatedAt(\DateTimeImmutable $deactivatedAt): static
+	{
+		$this->deactivatedAt = $deactivatedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get deleted datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getDeletedAt(): ?\DateTimeImmutable
+	{
+		return $this->deletedAt;
+	}
+
+	/**
+	 * Set deleted datetime.
+	 *
+	 * @param \DateTimeImmutable|null $deletedAt Deleted at.
+	 *
+	 * @return static
+	 */
+	public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
+	{
+		$this->deletedAt = $deletedAt;
 
 		return $this;
 	}
