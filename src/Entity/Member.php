@@ -12,6 +12,7 @@ use App\Repository\MemberRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Timestampable;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 #[ORM\Table(name: '`member`')]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: false)]
 class Member
 {
 	/**
@@ -158,7 +160,6 @@ class Member
 	 * Deleted at.
 	 */
 	#[ORM\Column(nullable: true)]
-	#[Timestampable(on: 'change', field: 'isDeleted', value: true)]
 	private ?\DateTimeImmutable $deletedAt = null;
 
 	/**

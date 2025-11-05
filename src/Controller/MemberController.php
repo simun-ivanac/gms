@@ -137,4 +137,23 @@ final class MemberController extends AbstractController
 			'isDisabled' => false,
 		]);
 	}
+
+	/**
+	 * Delete Member.
+	 *
+	 * @param Member                 $member        Member entity.
+	 * @param EntityManagerInterface $entityManager Entity Manager.
+	 *
+	 * @return Response HTTP response.
+	 */
+	#[Route(path: '/member/delete/{id<\d+>}', name: 'member_delete', methods: ['POST'])]
+	public function delete(Member $member, EntityManagerInterface $entityManager): Response
+	{
+		$entityManager->remove($member);
+		$entityManager->flush();
+
+		$this->addFlash('success', 'Member deleted successfully!');
+
+		return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+	}
 }
