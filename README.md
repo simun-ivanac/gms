@@ -77,6 +77,16 @@ Run migrations:
 php bin/console doctrine:migrations:migrate
 ```
 
+> In case you're pulling new changes and need to run migrations or fixtures again, make sure to nuke everything before that:
+> ```
+> php bin/console doctrine:schema:drop --force
+> php bin/console doctrine:query:sql 'TRUNCATE TABLE doctrine_migration_versions;'
+> ```
+> I'm not concerning myself with versioning at the moment, as I'd have zillion files. Now you can run:
+> ```
+> php bin/console doctrine:migrations:migrate
+> ```
+
 Run fixtures:
 
 ```
