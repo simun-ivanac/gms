@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Member Form.
+ * Member Form - personal details.
  */
 
 declare(strict_types=1);
@@ -24,9 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
 /**
- * Class MemberFormType.
+ * Class MemberPersonalDataFormType.
  */
-class MemberFormType extends AbstractType
+class MemberPersonalDataFormType extends AbstractType
 {
 	/**
 	 * Generate form.

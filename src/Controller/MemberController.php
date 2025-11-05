@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Member;
-use App\Form\MemberFormType;
+use App\Form\MemberPersonalDataFormType;
 use App\Repository\MemberRepository;
 use App\Service\ImageUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -55,7 +55,7 @@ final class MemberController extends AbstractController
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
-		$form = $this->createForm(MemberFormType::class, $member);
+		$form = $this->createForm(MemberPersonalDataFormType::class, $member);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
@@ -98,7 +98,7 @@ final class MemberController extends AbstractController
 	#[Route('/member/{id<\d+>}', name: 'member_edit')]
 	public function edit(Member $member, Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
-		$form = $this->createForm(MemberFormType::class, $member);
+		$form = $this->createForm(MemberPersonalDataFormType::class, $member);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
