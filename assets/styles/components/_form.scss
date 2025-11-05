@@ -30,6 +30,54 @@
 		&.submit {
 			text-align: right;
 		}
+
+		&.toggle-switch {
+			.form-label {
+				margin-bottom: 0;
+				font-weight: normal;
+				display: inline-block;
+				cursor: pointer;
+			}
+
+			.form-checkbox-slider {
+				position: relative;
+				display: inline-block;
+				width: 2.5rem;
+				height: 1.25rem;
+				margin-right: 0.5rem;
+			}
+
+			.form-checkbox-toggle-el {
+				position: absolute;
+				cursor: pointer;
+				inset: 0;
+				background-color: #CCCCCC;
+				transition: 0.3s;
+				border-radius: 1.25rem;
+
+				&::before {
+					position: absolute;
+					content: '';
+					height: 0.85rem;
+					width: 0.85rem;
+					left: 0.25rem;
+					bottom: 0.2rem;
+					background-color: #FFFFFF;
+					transition: 0.3s;
+					border-radius: 50%;
+				}
+			}
+
+			// stylelint-disable-next-line
+			.form-checkbox:checked + .form-checkbox-toggle-el {
+				background-color: #006FE6;
+			}
+
+			// stylelint-disable-next-line
+			.form-checkbox:checked + .form-checkbox-toggle-el::before {
+				transform: translateX(1.15rem);
+			}
+		}
 	}
 
 	// Form Labels.

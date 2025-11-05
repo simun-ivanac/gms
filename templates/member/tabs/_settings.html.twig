@@ -1,0 +1,29 @@
+<div class="settings">
+	<form action method="post" class="form form-edit-settings">
+		<div class="form-group toggle-switch">
+			<label for="toggle-user-edit" class="switch form-label">
+				<div class="form-checkbox-slider">
+					<input type="checkbox" id="toggle-user-edit" name="toggle-user-edit" class="form-checkbox hidden">
+					<span class="form-checkbox-toggle-el"></span>
+				</div>
+				<span class="form-label-text">Allow editing user details</span>
+			</label>
+		</div>
+		<div class="form-group submit">
+			<button type="submit" class="button submit-btn" disabled>Update</button>
+		</div>
+	</form>
+	<div class="danger-zone">
+		<div class="danger-zone-option deactivate-account">
+			<button class="button deactivate-account-btn" disabled>Freeze User</button>
+			<p class="action-description">Put user account in suspend mode. It can be reactivated at any time.</p>
+		</div>
+		<div class="danger-zone-option delete-account">
+			<form action="{{ url('member_delete', {id: member.id}) }}" method="post">
+				<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+				<button type="submit" class="button delete-account-btn">Delete User</button>
+			</form>
+			<p class="action-description">Delete user permanently. This action is irreversible.</p>
+		</div>
+	</div>
+</div>

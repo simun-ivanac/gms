@@ -1,0 +1,31 @@
+.settings {
+	.form-edit-settings {
+		margin-bottom: 6rem;
+	}
+
+	.danger-zone {
+		border-top: 1px solid #C32232;
+		padding-top: 1.5rem;
+
+		&-option {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			margin-bottom: 1.5rem;
+		}
+	}
+
+	.deactivate-account-btn {
+		background-color: #006FE6;
+		border: 1px solid #006FE6;
+	}
+
+	.delete-account-btn {
+		background-color: #C32232;
+		border: 1px solid #C32232;
+	}
+
+	.action-description {
+		font-size: 0.875rem;
+	}
+}
