@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Member Form - personal details.
+ * Member Personal Data Form.
  */
 
 declare(strict_types=1);

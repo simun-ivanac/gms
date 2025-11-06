@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {# Override some default blocks #}
-{% form_theme memberForm _self %}
+{% form_theme newMemberForm _self %}
 
 {# Title #}
 {% block title %}Add Member{% endblock %}
@@ -11,9 +11,9 @@
 	<h1 class="heading main-heading heading-new-member">Add member</h1>
 	<div id="new-member" class="new-member">
 		{# Global form errors #}
-		{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.vars.errors} only %}
+		{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.vars.errors} only %}
 
-		{{ form_start(memberForm, {
+		{{ form_start(newMemberForm, {
 			'attr': {'class': 'form form-new-member'}
 		})}}
 
@@ -28,54 +28,54 @@
 							class="image-preview-img"
 						>
 					</div>
-					{{ form_widget(memberForm.photoFile, {
+					{{ form_widget(newMemberForm.photoFile, {
 						'attr': {'class': 'form-input hidden'}
 					})}}
-					<label for="{{ memberForm.photoFile.vars.id }}" class="form-file-placeholder">
+					<label for="{{ newMemberForm.photoFile.vars.id }}" class="form-file-placeholder">
 						<span class="form-file-browse">Upload file</span>
 						<span class="form-file-name">No file selected.</span>
 					</label>
 				</div>
-				{{ form_help(memberForm.photoFile, {
+				{{ form_help(newMemberForm.photoFile, {
 					'help_attr': {'class': 'form-help'}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.photoFile.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.photoFile.vars.errors} only %}
 			</div>
 
 			{# First Name #}
 			<div class="form-group first-name">
-				{{ form_label(memberForm.firstName, 'First Name *', {
+				{{ form_label(newMemberForm.firstName, 'First Name *', {
 					'label_attr': {'class': 'form-label'}
 				})}}
-				{{ form_widget(memberForm.firstName, {
+				{{ form_widget(newMemberForm.firstName, {
 					'attr': {'class': 'form-input'}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.firstName.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.firstName.vars.errors} only %}
 			</div>
 
 			{# Last Name #}
 			<div class="form-group last-name">
-				{{ form_label(memberForm.lastName, 'Last Name *', {
+				{{ form_label(newMemberForm.lastName, 'Last Name *', {
 					'label_attr': {'class': 'form-label'}
 				})}}
-				{{ form_widget(memberForm.lastName, {
+				{{ form_widget(newMemberForm.lastName, {
 					'attr': {'class': 'form-input'}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.lastName.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.lastName.vars.errors} only %}
 			</div>
 
 			{# Date of Birth #}
 			<div class="form-group date-of-birth">
-				{{ form_label(memberForm.dateOfBirth, 'Date of Birth *', {
+				{{ form_label(newMemberForm.dateOfBirth, 'Date of Birth *', {
 					'label_attr': {'class': 'form-label'}
 				})}}
-				{{ form_widget(memberForm.dateOfBirth, {
+				{{ form_widget(newMemberForm.dateOfBirth, {
 					'attr': {
 						'class': 'form-input',
 						'max': 'now'|date('Y-m-d'),
 					}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.dateOfBirth.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.dateOfBirth.vars.errors} only %}
 			</div>
 
 			{# Gender #}
@@ -83,7 +83,7 @@
 				<div class="form-label">Gender *</div>
 				<div class="form-group-radio-options">
 					{%- block choice_widget_expanded -%}
-						{%- for child in memberForm.gender %}
+						{%- for child in newMemberForm.gender %}
 							<div class="radio-group">
 								{{- form_widget(child, {
 									'attr': {'class': 'form-radio'}
@@ -95,47 +95,47 @@
 						{% endfor -%}
 					{%- endblock choice_widget_expanded -%}
 				</div>
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.gender.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.gender.vars.errors} only %}
 			</div>
 
 			{# Email #}
 			<div class="form-group email">
-				{{ form_label(memberForm.email, 'Email', {
+				{{ form_label(newMemberForm.email, 'Email', {
 					'label_attr': {'class': 'form-label'}
 				})}}
-				{{ form_widget(memberForm.email, {
+				{{ form_widget(newMemberForm.email, {
 					'attr': {
 						'class': 'form-input',
 						'autocomplete': 'on',
 					}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.email.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.email.vars.errors} only %}
 			</div>
 
 			{# Phone Number #}
 			<div class="form-group phone-number">
-				{{ form_label(memberForm.phoneNumber, 'Phone Number', {
+				{{ form_label(newMemberForm.phoneNumber, 'Phone Number', {
 					'label_attr': {'class': 'form-label'}
 				})}}
-				{{ form_widget(memberForm.phoneNumber, {
+				{{ form_widget(newMemberForm.phoneNumber, {
 					'attr': {
 						'class': 'form-input',
 						'autocomplete': 'on',
 						'pattern': "\\+?[1-9][0-9]{7,14}",
 					}
 				})}}
-				{{ form_help(memberForm.phoneNumber, {
+				{{ form_help(newMemberForm.phoneNumber, {
 					'help_attr': {'class': 'form-help'}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.phoneNumber.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.phoneNumber.vars.errors} only %}
 			</div>
 
 			{# PIN #}
 			<div class="form-group pin">
-				{{ form_label(memberForm.pin, 'PIN *', {
+				{{ form_label(newMemberForm.pin, 'PIN *', {
 					'label_attr': {'class': 'form-label'}
 				})}}
-				{{ form_widget(memberForm.pin, {
+				{{ form_widget(newMemberForm.pin, {
 					'attr': {
 						'class': 'form-input',
 						'min': '10000000000',
@@ -143,18 +143,18 @@
 						'maxlength': '11',
 					}
 				})}}
-				{% include '_form/_errors.html.twig' with {'displayErrors': memberForm.pin.vars.errors} only %}
+				{% include '_form/_errors.html.twig' with {'displayErrors': newMemberForm.pin.vars.errors} only %}
 			</div>
 
 			{# Submit Button #}
 			<div class="form-group submit">
-				{{ form_widget(memberForm.save, {
+				{{ form_widget(newMemberForm.save, {
 					'label': 'Add',
 					'attr': {'class': 'button submit-btn'}
 				})}}
 			</div>
 
-		{{ form_end(memberForm) }}
+		{{ form_end(newMemberForm) }}
 	</div>
 {% endblock %}
 

@@ -55,11 +55,11 @@ final class MemberController extends AbstractController
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
-		$form = $this->createForm(MemberPersonalDataFormType::class, $member);
-		$form->handleRequest($request);
+		$newMemberform = $this->createForm(MemberPersonalDataFormType::class, $member);
+		$newMemberform->handleRequest($request);
 
-		if ($form->isSubmitted() && $form->isValid()) {
-			$imageFile = $form->get('photoFile')->getData();
+		if ($newMemberform->isSubmitted() && $newMemberform->isValid()) {
+			$imageFile = $newMemberform->get('photoFile')->getData();
 
 			if ($imageFile) {
 				try {
@@ -82,7 +82,7 @@ final class MemberController extends AbstractController
 		}
 
 		return $this->render('member/new.html.twig', [
-			'memberForm' => $form,
+			'newMemberForm' => $newMemberform,
 		]);
 	}
 
@@ -98,11 +98,11 @@ final class MemberController extends AbstractController
 	#[Route('/member/{id<\d+>}', name: 'member_edit')]
 	public function edit(Member $member, Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
-		$form = $this->createForm(MemberPersonalDataFormType::class, $member);
-		$form->handleRequest($request);
+		$personalDataForm = $this->createForm(MemberPersonalDataFormType::class, $member);
+		$personalDataForm->handleRequest($request);
 
-		if ($form->isSubmitted() && $form->isValid()) {
-			$imageFile = $form->get('photoFile')->getData();
+		if ($personalDataForm->isSubmitted() && $personalDataForm->isValid()) {
+			$imageFile = $personalDataForm->get('photoFile')->getData();
 
 			if ($imageFile) {
 				try {
@@ -132,8 +132,8 @@ final class MemberController extends AbstractController
 		}
 
 		return $this->render('member/edit.html.twig', [
-			'memberForm' => $form,
 			'member' => $member,
+			'personalDataForm' => $personalDataForm,
 			'isEditingDisabled' => false,
 		]);
 	}
