@@ -1,23 +1,11 @@
 .form {
 	$form: &;
 
-	// stylelint-disable
-	&.disabled,
-	&:disabled {
-		#{$form}-input,
-		#{$form}-label,
-		#{$form}-radio,
-		#{$form}-select,
-		.submit-btn {
-			user-select: text !important;
-			cursor: default !important;
-		}
-
-		#{$form}-file-placeholder {
-			cursor: not-allowed !important;
-		}
+	// Disabled fields.
+	input:disabled + label,
+	input:disabled + .form-label {
+		cursor: default;
 	}
-	// stylelint-enable
 
 	// Form Groups.
 	&-group {

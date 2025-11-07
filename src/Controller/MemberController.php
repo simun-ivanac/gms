@@ -57,7 +57,7 @@ final class MemberController extends AbstractController
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
-		$newMemberform = $this->createForm(MemberPersonalDataFormType::class, $member);
+		$newMemberform = $this->createForm(MemberPersonalDataFormType::class, $member, ['formAction' => 'new', 'disabled' => false]);
 		$newMemberform->handleRequest($request);
 
 		if ($newMemberform->isSubmitted() && $newMemberform->isValid()) {
@@ -78,13 +78,14 @@ final class MemberController extends AbstractController
 			$entityManager->persist($member);
 			$entityManager->flush();
 
-			$this->addFlash('success', 'New member is created successfully!');
+			$this->addFlash('success', 'New member created successfully!');
 
 			return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
 		}
 
 		return $this->render('member/new.html.twig', [
-			'newMemberForm' => $newMemberform,
+			'member' => $member,
+			'personalDataForm' => $newMemberform,
 		]);
 	}
 
@@ -106,9 +107,10 @@ final class MemberController extends AbstractController
 		MemberSettingsInCookie $memberSettingsInCookie,
 	): Response {
 		$memberId = $member->getId();
+		$isEditingAllowed = $memberSettingsInCookie->getCookieKey($memberId, MemberSettingsInCookie::IS_EDITING_ALLOWED, false);
 
 		// Personal data form.
-		$personalDataForm = $this->createForm(MemberPersonalDataFormType::class, $member);
+		$personalDataForm = $this->createForm(MemberPersonalDataFormType::class, $member, ['formAction' => 'edit', 'disabled' => !$isEditingAllowed]);
 		$personalDataForm->handleRequest($request);
 
 		if ($personalDataForm->isSubmitted() && $personalDataForm->isValid()) {
@@ -142,7 +144,6 @@ final class MemberController extends AbstractController
 		}
 
 		// Settings form.
-		$isEditingAllowed = $memberSettingsInCookie->getCookieKey($memberId, MemberSettingsInCookie::IS_EDITING_ALLOWED, false);
 		$settingsForm = $this->createForm(
 			MemberSettingsFormType::class,
 			$member,
@@ -169,7 +170,6 @@ final class MemberController extends AbstractController
 			'member' => $member,
 			'personalDataForm' => $personalDataForm,
 			'settingsForm' => $settingsForm,
-			'isEditingAllowed' => $isEditingAllowed,
 		]);
 	}
 

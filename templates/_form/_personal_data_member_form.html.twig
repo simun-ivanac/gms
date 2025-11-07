@@ -1,0 +1,168 @@
+{# Override some default blocks #}
+{% form_theme personalDataForm _self %}
+
+{# Global form errors #}
+{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.vars.errors} only %}
+
+{{ form_start(personalDataForm, {
+	'attr': {'class': 'form form-member-personal-data'}
+})}}
+
+	{# Photo #}
+	<div class="form-group image">
+		<div class="form-label">Photo</div>
+		<div class="image-input-container">
+			<div class="image-preview">
+				<img
+					src="{{ asset(member.photoFilename ? 'uploads/user-photos/' ~ member.photoFilename : 'build/images/placeholder-user-profile.png') }}"
+					alt="{{ member.firstName and member.lastName ? member.firstName ~ ' ' ~ member.lastName ~ 'photo' : 'Image Preview' }}"
+					class="image-preview-img"
+				>
+			</div>
+			{{ form_widget(personalDataForm.photoFile, {
+				'attr': {'class': 'form-input hidden'}
+			})}}
+			<label for="{{ personalDataForm.photoFile.vars.id }}" class="form-file-placeholder">
+				<span class="form-file-browse">{{ member.photoFilename ? 'Change' : 'Upload'}} file</span>
+
+				<span class="form-file-name">
+					{{ member.photoFilename ? truncateTextInMiddle(member.photoFilename) : 'No file selected.' }}
+				</span>
+			</label>
+		</div>
+		{{ form_help(personalDataForm.photoFile, {
+			'help_attr': {'class': 'form-help'}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.photoFile.vars.errors} only %}
+	</div>
+
+	{# Member ID #}
+	{% if personalDataForm.id is defined %}
+		<div class="form-group first-name">
+			{{ form_label(personalDataForm.id, 'Member ID', {
+				'label_attr': {'class': 'form-label'}
+			})}}
+			{{ form_widget(personalDataForm.id, {
+				'attr': {'class': 'form-input'}
+			})}}
+			{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.id.vars.errors} only %}
+		</div>
+	{% endif %}
+
+
+	{# First Name #}
+	<div class="form-group first-name">
+		{{ form_label(personalDataForm.firstName, 'First Name *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(personalDataForm.firstName, {
+			'attr': {'class': 'form-input'}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.firstName.vars.errors} only %}
+	</div>
+
+
+	{# Last Name #}
+	<div class="form-group last-name">
+		{{ form_label(personalDataForm.lastName, 'Last Name *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(personalDataForm.lastName, {
+			'attr': {'class': 'form-input'}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.lastName.vars.errors} only %}
+	</div>
+
+	{# Date of Birth #}
+	<div class="form-group date-of-birth">
+		{{ form_label(personalDataForm.dateOfBirth, 'Date of Birth *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(personalDataForm.dateOfBirth, {
+			'attr': {
+				'class': 'form-input',
+				'max': 'now'|date('Y-m-d'),
+			}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.dateOfBirth.vars.errors} only %}
+	</div>
+
+	{# Gender #}
+	<div class="form-group gender">
+		<div class="form-label">Gender *</div>
+		<div class="form-group-radio-options">
+			{%- block choice_widget_expanded -%}
+				{%- for child in personalDataForm.gender %}
+					<div class="radio-group">
+						{{- form_widget(child, {
+							'attr': {'class': 'form-radio'}
+						})-}}
+						{{- form_label(child, child.vars.label, {
+							'label_attr': {'class': 'form-label'}
+						})-}}
+					</div>
+				{% endfor -%}
+			{%- endblock choice_widget_expanded -%}
+		</div>
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.gender.vars.errors} only %}
+	</div>
+
+	{# Email #}
+	<div class="form-group email">
+		{{ form_label(personalDataForm.email, 'Email', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(personalDataForm.email, {
+			'attr': {
+				'class': 'form-input',
+				'autocomplete': 'on',
+			}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.email.vars.errors} only %}
+	</div>
+
+	{# Phone Number #}
+	<div class="form-group phone-number">
+		{{ form_label(personalDataForm.phoneNumber, 'Phone Number', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(personalDataForm.phoneNumber, {
+			'attr': {
+				'class': 'form-input',
+				'autocomplete': 'on',
+				'pattern': "\\+?[1-9][0-9]{7,14}",
+			}
+		})}}
+		{{ form_help(personalDataForm.phoneNumber, {
+			'help_attr': {'class': 'form-help'}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.phoneNumber.vars.errors} only %}
+	</div>
+
+	{# PIN #}
+	<div class="form-group pin">
+		{{ form_label(personalDataForm.pin, 'PIN *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(personalDataForm.pin, {
+			'attr': {
+				'class': 'form-input',
+				'min': '10000000000',
+				'max': '99999999999',
+				'maxlength': '11',
+			}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.pin.vars.errors} only %}
+	</div>
+
+	{# Submit Button #}
+	{% if personalDataForm.save is defined %}
+		<div class="form-group submit">
+			{{ form_widget(personalDataForm.save, {
+				'label': 'Update',
+				'attr': {'class': 'button submit-btn'}
+			})}}
+		</div>
+	{% endif %}
+
+{{ form_end(personalDataForm) }}

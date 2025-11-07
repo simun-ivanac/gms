@@ -63,7 +63,5 @@ class MemberSettingsFormType extends AbstractType
 			'data_class' => Member::class,
 			MemberSettingsInCookie::IS_EDITING_ALLOWED => false,
 		]);
-
-		$resolver->setAllowedTypes(MemberSettingsInCookie::IS_EDITING_ALLOWED, 'bool');
 	}
 }
