@@ -2,7 +2,7 @@
 {% form_theme personalDataForm _self %}
 
 <div class="personal-details">
-	{% set disabled = isEditingDisabled ?? false %}
+	{% set disabled = isEditingAllowed ? false : true %}
 
 	{# Global form errors #}
 	{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.vars.errors} only %}

@@ -1,21 +1,35 @@
 <div class="settings">
-	<form action method="post" class="form form-edit-settings">
+	{{ form_start(settingsForm, {
+		'attr': { 'class': 'form form-edit-member-settings' }
+	})}}
+
+		{# Allow editing user? (toggle) #}
 		<div class="form-group toggle-switch">
-			<label for="toggle-user-edit" class="switch form-label">
+			<label for="{{ settingsForm.userEdit.vars.id }}" class="switch form-label {{ settingsForm.userEdit.vars.required ? 'required' }}">
 				<div class="form-checkbox-slider">
-					<input type="checkbox" id="toggle-user-edit" name="toggle-user-edit" class="form-checkbox hidden">
+					{{ form_widget(settingsForm.userEdit, {
+						'attr': { 'class': 'form-checkbox hidden' }
+					})}}
 					<span class="form-checkbox-toggle-el"></span>
 				</div>
-				<span class="form-label-text">Allow editing user details</span>
+				<span class="form-label-text">{{ settingsForm.userEdit.vars.label }}</span>
 			</label>
+			{% include '_form/_errors.html.twig' with {'displayErrors': settingsForm.userEdit.vars.errors} only %}
 		</div>
+
+		{# Submit Button #}
 		<div class="form-group submit">
-			<button type="submit" class="button submit-btn" disabled>Update</button>
+			{{ form_widget(settingsForm.update, {
+				'label': 'Update',
+				'attr': {'class': 'button submit-btn'}
+			})}}
 		</div>
-	</form>
+
+	{{ form_end(settingsForm) }}
+
 	<div class="danger-zone">
 		<div class="danger-zone-option deactivate-account">
-			<form action="{{ url(member.isDeactivated ? 'member_activate' : 'member_deactivate', {id: member.id}) }}" method="post">
+			<form action="{{ path(member.isDeactivated ? 'member_activate' : 'member_deactivate', {id: member.id}) }}" method="post">
 				<input type="hidden" name="token" value="{{ csrf_token(member.isDeactivated ? 'activate' : 'deactivate') }}" />
 				<button type="submit" class="button deactivate-account-btn">{{ member.isDeactivated ? 'Reactivate' : 'Freeze' }} User</button>
 			</form>
@@ -27,7 +41,7 @@
 			</p>
 		</div>
 		<div class="danger-zone-option delete-account">
-			<form action="{{ url('member_delete', {id: member.id}) }}" method="post">
+			<form action="{{ path('member_delete', {id: member.id}) }}" method="post">
 				<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
 				<button type="submit" class="button delete-account-btn">Delete User</button>
 			</form>

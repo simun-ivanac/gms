@@ -10,8 +10,10 @@ namespace App\Controller;
 
 use App\Entity\Member;
 use App\Form\MemberPersonalDataFormType;
+use App\Form\MemberSettingsFormType;
 use App\Repository\MemberRepository;
 use App\Service\ImageUploader;
+use App\Service\MemberSettingsInCookie;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -31,7 +33,7 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/members', name: 'member_index')]
+	#[Route('/members', name: 'member_index', methods: ['GET'])]
 	public function index(MemberRepository $repository): Response
 	{
 		return $this->render('member/index.html.twig', [
@@ -51,7 +53,7 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/member/new', name: 'member_new')]
+	#[Route('/member/new', name: 'member_new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
@@ -95,9 +97,17 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/member/{id<\d+>}', name: 'member_edit')]
-	public function edit(Member $member, Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
-	{
+	#[Route('/member/{id<\d+>}', name: 'member_edit', methods: ['GET', 'POST'])]
+	public function edit(
+		Member $member,
+		Request $request,
+		EntityManagerInterface $entityManager,
+		ImageUploader $imageUploader,
+		MemberSettingsInCookie $memberSettingsInCookie,
+	): Response {
+		$memberId = $member->getId();
+
+		// Personal data form.
 		$personalDataForm = $this->createForm(MemberPersonalDataFormType::class, $member);
 		$personalDataForm->handleRequest($request);
 
@@ -126,15 +136,40 @@ final class MemberController extends AbstractController
 			$this->addFlash('success', 'Member updated successfully!');
 
 			return $this->redirectToRoute('member_edit', [
-				'id' => $member->getId(),
+				'id' => $memberId,
 				'httpResponse' => Response::HTTP_SEE_OTHER,
 			]);
+		}
+
+		// Settings form.
+		$isEditingAllowed = $memberSettingsInCookie->getCookieKey($memberId, MemberSettingsInCookie::IS_EDITING_ALLOWED, false);
+		$settingsForm = $this->createForm(
+			MemberSettingsFormType::class,
+			$member,
+			[MemberSettingsInCookie::IS_EDITING_ALLOWED => $isEditingAllowed],
+		);
+
+		$settingsForm->handleRequest($request);
+
+		if ($settingsForm->isSubmitted() && $settingsForm->isValid()) {
+			$allowUserEdit = $settingsForm->get('userEdit')->getData();
+
+			$response = $this->redirectToRoute('member_edit', [
+				'id' => $memberId,
+				'httpResponse' => Response::HTTP_SEE_OTHER,
+			]);
+
+			$memberSettingsInCookie->updateCookie($memberId, [MemberSettingsInCookie::IS_EDITING_ALLOWED => $allowUserEdit], $response);
+			$this->addFlash('success', 'Settings saved!');
+
+			return $response;
 		}
 
 		return $this->render('member/edit.html.twig', [
 			'member' => $member,
 			'personalDataForm' => $personalDataForm,
-			'isEditingDisabled' => false,
+			'settingsForm' => $settingsForm,
+			'isEditingAllowed' => $isEditingAllowed,
 		]);
 	}
 
@@ -164,7 +199,7 @@ final class MemberController extends AbstractController
 
 		$this->addFlash('success', 'Member deactivated successfully!');
 
-		return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+		return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
 	}
 
 	/**
@@ -193,7 +228,7 @@ final class MemberController extends AbstractController
 
 		$this->addFlash('success', 'Member activated successfully!');
 
-		return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+		return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
 	}
 
 	/**
