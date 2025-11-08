@@ -83,8 +83,8 @@ class TeamMemberPersonalDataFormType extends AbstractType
 				'choice_label' => function (TeamMemberRole $role): string {
 					return ucfirst($role->getRole());
 				},
+				'expanded' => true,
 				'multiple' => true,
-				'expanded' => false,
 			])
 			->add('save', SubmitType::class)
 		;

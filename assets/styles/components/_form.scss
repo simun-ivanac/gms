@@ -202,6 +202,28 @@
 		}
 	}
 
+	// Checkbox options.
+	.form-group-checkbox-options {
+		overflow-y: auto;
+		max-height: 15rem;
+		height: auto;
+	}
+
+	.checkbox-group {
+		display: flex;
+		margin-bottom: 1rem;
+		align-items: center;
+
+		.form-label {
+			margin-bottom: 0;
+			font-weight: normal;
+			flex-grow: 1;
+			flex-shrink: 0;
+			cursor: pointer;
+			padding-left: 0.75rem;
+		}
+	}
+
 	// Submit Button.
 	.submit-btn {
 		min-width: 8rem;
