@@ -129,13 +129,6 @@ class Member
 	private ?bool $isDeactivated = null;
 
 	/**
-	 * Is member deleted.
-	 */
-	#[ORM\Column(nullable: true)]
-	#[Assert\Type('bool')]
-	private ?bool $isDeleted = null;
-
-	/**
 	 * Created at.
 	 */
 	#[ORM\Column]
@@ -432,30 +425,6 @@ class Member
 	public function setIsDeactivated(bool $isDeactivated): static
 	{
 		$this->isDeactivated = $isDeactivated;
-
-		return $this;
-	}
-
-	/**
-	 * Get is deleted.
-	 *
-	 * @return bool|null
-	 */
-	public function getIsDeleted(): ?bool
-	{
-		return $this->isDeleted;
-	}
-
-	/**
-	 * Set is deleted.
-	 *
-	 * @param bool $isDeleted Is deleted.
-	 *
-	 * @return static
-	 */
-	public function setIsDeleted(bool $isDeleted): static
-	{
-		$this->isDeleted = $isDeleted;
 
 		return $this;
 	}
