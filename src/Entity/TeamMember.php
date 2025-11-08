@@ -9,9 +9,14 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TeamMemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,7 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: TeamMemberRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email.')]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: false)]
 class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	/**
@@ -36,9 +42,26 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	 * Photo.
 	 */
 	#[ORM\Column(length: 255, nullable: true)]
-	#[Assert\Image(maxSize: '2M')]
 	#[Assert\Length(min: 1, max: 255)]
-	private ?string $photo = null;
+	private ?string $photoFilename = null;
+
+	/**
+	 * Temporary field for handling uploaded images/photos.
+	 */
+	#[Assert\Image(
+		maxSize: '2M',
+		mimeTypes: [
+			'image/jpeg',
+			'image/jpg',
+			'image/png',
+			'image/webp',
+			'image/gif',
+			'image/bmp',
+			'image/svg',
+			'image/tiff',
+		],
+	)]
+	private ?File $photoFile = null;
 
 	/**
 	 * First name.
@@ -83,6 +106,7 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 
 	/**
 	 * Phone number.
+	 * (+385981119999, no spaces, optional '+', 7-14 characters)
 	 */
 	#[ORM\Column(length: 255)]
 	#[Assert\NotBlank]
@@ -101,23 +125,65 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	/**
 	 * Is team member active.
 	 */
-	#[ORM\Column]
+	#[ORM\Column(nullable: true)]
 	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
 
 	/**
-	 *The user roles.
+	 * Is member deactivated.
 	 */
-	#[ORM\Column]
-	#[Assert\NotBlank]
-	#[Assert\Choice(['owner', 'trainer', 'receptionist', 'staff'], multiple: true)]
-	private array $roles = [];
+	#[ORM\Column(nullable: true)]
+	#[Assert\Type('bool')]
+	private ?bool $isDeactivated = null;
 
 	/**
 	 * The hashed password.
 	 */
-	#[ORM\Column]
+	#[ORM\Column(nullable: true)]
 	private ?string $password = null;
+
+	/**
+	 * Created at.
+	 */
+	#[ORM\Column]
+	#[Timestampable(on: 'create')]
+	private ?\DateTimeImmutable $createdAt = null;
+
+	/**
+	 * Updated at.
+	 */
+	#[ORM\Column]
+	#[Timestampable(on: 'update')]
+	private ?\DateTimeImmutable $updatedAt = null;
+
+	/**
+	 * Deactivated at.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Timestampable(on: 'change', field: 'isDeactivated', value: true)]
+	private ?\DateTimeImmutable $deactivatedAt = null;
+
+	/**
+	 * Deleted at.
+	 */
+	#[ORM\Column(nullable: true)]
+	private ?\DateTimeImmutable $deletedAt = null;
+
+	/**
+	 * Team Roles.
+	 *
+	 * @var Collection<int, TeamMemberRole>
+	 */
+	#[ORM\ManyToMany(targetEntity: TeamMemberRole::class, inversedBy: 'teamMembers')]
+	private Collection $teamRoles;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->teamRoles = new ArrayCollection();
+	}
 
 	/**
 	 * Get id.
@@ -130,25 +196,49 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	}
 
 	/**
-	 * Get photo.
+	 * Get photo filename.
 	 *
 	 * @return string|null
 	 */
-	public function getPhoto(): ?string
+	public function getPhotoFilename(): ?string
 	{
-		return $this->photo;
+		return $this->photoFilename;
 	}
 
 	/**
-	 * Set photo.
+	 * Set photo filename.
 	 *
-	 * @param string|null $photo Photo.
+	 * @param string|null $photo Photo Filename.
 	 *
 	 * @return static
 	 */
-	public function setPhoto(?string $photo): static
+	public function setPhotoFilename(?string $photoFilename): static
 	{
-		$this->photo = $photo;
+		$this->photoFilename = $photoFilename;
+
+		return $this;
+	}
+
+	/**
+	 * Get photo file.
+	 *
+	 * @return File|null
+	 */
+	public function getPhotoFile(): ?File
+	{
+		return $this->photoFile;
+	}
+
+	/**
+	 * Set photo file.
+	 *
+	 * @param File|null $file File.
+	 *
+	 * @return static
+	 */
+	public function setPhotoFile(?File $file): static
+	{
+		$this->photoFile = $file;
 
 		return $this;
 	}
@@ -346,30 +436,25 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	}
 
 	/**
-	 * Get roles.
+	 * Get is deactivated.
 	 *
-	 * @see UserInterface
-	 *
-	 * @return array
+	 * @return bool|null
 	 */
-	public function getRoles(): array
+	public function getIsDeactivated(): ?bool
 	{
-		$roles = $this->roles;
-		$roles[] = 'staff';
-
-		return array_unique($roles);
+		return $this->isDeactivated;
 	}
 
 	/**
-	 * Set roles.
+	 * Set is deactivated.
 	 *
-	 * @param list<string> $roles Roles.
+	 * @param bool $isDeactivated Is deactivated.
 	 *
 	 * @return static
 	 */
-	public function setRoles(array $roles): static
+	public function setIsDeactivated(bool $isDeactivated): static
 	{
-		$this->roles = $roles;
+		$this->isDeactivated = $isDeactivated;
 
 		return $this;
 	}
@@ -396,6 +481,102 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	public function setPassword(string $password): static
 	{
 		$this->password = $password;
+
+		return $this;
+	}
+
+	/**
+	 * Get created datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getCreatedAt(): ?\DateTimeImmutable
+	{
+		return $this->createdAt;
+	}
+
+	/**
+	 * Set created datetime.
+	 *
+	 * @param \DateTimeImmutable $createdAt Created at.
+	 *
+	 * @return static
+	 */
+	public function setCreatedAt(\DateTimeImmutable $createdAt): static
+	{
+		$this->createdAt = $createdAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get updated datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getUpdatedAt(): ?\DateTimeImmutable
+	{
+		return $this->updatedAt;
+	}
+
+	/**
+	 * Set updated datetime.
+	 *
+	 * @param \DateTimeImmutable $updatedAt Updated at.
+	 *
+	 * @return static
+	 */
+	public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+	{
+		$this->updatedAt = $updatedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get deactivated datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getDeactivatedAt(): ?\DateTimeImmutable
+	{
+		return $this->deactivatedAt;
+	}
+
+	/**
+	 * Set deactivated datetime.
+	 *
+	 * @param \DateTimeImmutable $deactivatedAt Deactivated at.
+	 *
+	 * @return static
+	 */
+	public function setDeactivatedAt(\DateTimeImmutable $deactivatedAt): static
+	{
+		$this->deactivatedAt = $deactivatedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get deleted datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getDeletedAt(): ?\DateTimeImmutable
+	{
+		return $this->deletedAt;
+	}
+
+	/**
+	 * Set deleted datetime.
+	 *
+	 * @param \DateTimeImmutable|null $deletedAt Deleted at.
+	 *
+	 * @return static
+	 */
+	public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
+	{
+		$this->deletedAt = $deletedAt;
 
 		return $this;
 	}
@@ -431,5 +612,66 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	public function getUserIdentifier(): string
 	{
 		return (string) $this->email;
+	}
+
+	/**
+	 * Get roles.
+	 *
+	 * @return string[]
+	 */
+	public function getRoles(): array
+	{
+		$rolesAsArr = [];
+		$roles = $this->teamRoles;
+
+		foreach ($roles->getIterator() as $role) {
+			$rolesAsArr[] = 'ROLE_' . strtoupper($role->getRole());
+		}
+
+		if (empty($rolesAsArr)) {
+			$rolesAsArr[] = 'ROLE_STAFF';
+		}
+
+		return array_unique($rolesAsArr);
+	}
+
+	/**
+	 * Get team roles (as collection).
+	 *
+	 * @return Collection<int, TeamMemberRole>
+	 */
+	public function getTeamRoles(): Collection
+	{
+		return $this->teamRoles;
+	}
+
+	/**
+	 * Add roles.
+	 *
+	 * @param TeamMemberRole $teamRoles Roles.
+	 *
+	 * @return static
+	 */
+	public function addTeamRoles(TeamMemberRole $teamRoles): static
+	{
+		if (!$this->teamRoles->contains($teamRoles)) {
+			$this->teamRoles->add($teamRoles);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Remove roles.
+	 *
+	 * @param TeamMemberRole $teamRoles Roles.
+	 *
+	 * @return static
+	 */
+	public function removeTeamRoles(TeamMemberRole $teamRoles): static
+	{
+		$this->teamRoles->removeElement($teamRoles);
+
+		return $this;
 	}
 }

@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TeamMemberRoleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,6 +42,22 @@ class TeamMemberRole
 	#[ORM\Column(nullable: true)]
 	#[Assert\Type('array')]
 	private ?array $permissions = null;
+
+	/**
+	 * Team Members.
+	 *
+	 * @var Collection<int, TeamMember>
+	 */
+	#[ORM\ManyToMany(targetEntity: TeamMember::class, mappedBy: 'teamRoles')]
+	private Collection $teamMembers;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->teamMembers = new ArrayCollection();
+	}
 
 	/**
 	 * Get id.
@@ -95,6 +113,49 @@ class TeamMemberRole
 	public function setPermissions(?array $permissions): static
 	{
 		$this->permissions = $permissions;
+
+		return $this;
+	}
+
+	/**
+	 * Get team members.
+	 *
+	 * @return Collection<int, TeamMember>
+	 */
+	public function getTeamMembers(): Collection
+	{
+		return $this->teamMembers;
+	}
+
+	/**
+	 * Add team member.
+	 *
+	 * @param TeamMember $teamMember Team member.
+	 *
+	 * @return static
+	 */
+	public function addTeamMember(TeamMember $teamMember): static
+	{
+		if (!$this->teamMembers->contains($teamMember)) {
+			$this->teamMembers->add($teamMember);
+			$teamMember->addTeamRoles($this);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Remove team member.
+	 *
+	 * @param TeamMember $teamMember Team member.
+	 *
+	 * @return static
+	 */
+	public function removeTeamMember(TeamMember $teamMember): static
+	{
+		if ($this->teamMembers->removeElement($teamMember)) {
+			$teamMember->removeTeamRoles($this);
+		}
 
 		return $this;
 	}
