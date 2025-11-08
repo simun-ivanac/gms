@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Role Entity.
+ * Team Member Role Entity.
  */
 
 declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\RoleRepository;
+use App\Repository\TeamMemberRoleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Role.
+ * Class TeamMemberRole.
  */
-#[ORM\Entity(repositoryClass: RoleRepository::class)]
-class Role
+#[ORM\Entity(repositoryClass: TeamMemberRoleRepository::class)]
+class TeamMemberRole
 {
 	/**
 	 * Id.
@@ -32,7 +32,7 @@ class Role
 	#[ORM\Column(length: 255)]
 	#[Assert\NotBlank]
 	#[Assert\Choice(['owner', 'trainer', 'receptionist', 'staff'])]
-	private ?string $teamMemberRole = null;
+	private ?string $role = null;
 
 	/**
 	 * Permissions.
@@ -56,21 +56,21 @@ class Role
 	 *
 	 * @return string|null
 	 */
-	public function getTeamMemberRole(): ?string
+	public function getRole(): ?string
 	{
-		return $this->teamMemberRole;
+		return $this->role;
 	}
 
 	/**
 	 * Set team member role.
 	 *
-	 * @param string $teamMemberRole Team role.
+	 * @param string $role Team role.
 	 *
 	 * @return static
 	 */
-	public function setTeamMemberRole(string $teamMemberRole): static
+	public function setRole(string $role): static
 	{
-		$this->teamMemberRole = $teamMemberRole;
+		$this->role = $role;
 
 		return $this;
 	}

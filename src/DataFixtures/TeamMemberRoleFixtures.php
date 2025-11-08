@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Role Fixtures.
+ * Team Member Role Fixtures.
  */
 
 declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Role;
+use App\Entity\TeamMemberRole;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class RoleFixtures.
+ * Class TeamMemberRoleFixtures.
  */
-class RoleFixtures extends BaseFixture
+class TeamMemberRoleFixtures extends BaseFixture
 {
 	/**
 	 * Roles.
@@ -27,7 +27,7 @@ class RoleFixtures extends BaseFixture
 	];
 
 	/**
-	 * Load role fixture.
+	 * Load team member role fixture.
 	 *
 	 * @param ObjectManager $manager Object manager.
 	 *
@@ -35,8 +35,8 @@ class RoleFixtures extends BaseFixture
 	 */
 	public function loadData(ObjectManager $manager): void
 	{
-		$this->createMany(Role::class, count($this->roles), function (Role $role, $count) {
-			$role->setTeamMemberRole($this->roles[$count]);
+		$this->createMany(TeamMemberRole::class, count($this->roles), function (TeamMemberRole $role, $count) {
+			$role->setRole($this->roles[$count]);
 			$role->setPermissions($this->getRolePermissions($this->roles[$count]));
 		});
 

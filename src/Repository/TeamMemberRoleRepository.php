@@ -1,23 +1,23 @@
 <?php
 
 /**
- * Role Repository.
+ * Team Member Role Repository.
  */
 
 declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Role;
+use App\Entity\TeamMemberRole;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * Class RoleRepository.
+ * Class TeamMemberRoleRepository.
  *
  * @extends ServiceEntityRepository<Role>
  */
-class RoleRepository extends ServiceEntityRepository
+class TeamMemberRoleRepository extends ServiceEntityRepository
 {
 	/**
 	 * Constructor.
@@ -26,6 +26,6 @@ class RoleRepository extends ServiceEntityRepository
 	 */
 	public function __construct(ManagerRegistry $registry)
 	{
-		parent::__construct($registry, Role::class);
+		parent::__construct($registry, TeamMemberRole::class);
 	}
 }
