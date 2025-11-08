@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{# Title #}
+{% block title %}Add Team Member{% endblock %}
+
+{# Content #}
+{% block content %}
+	<h1 class="heading main-heading heading-new-member">Add team member</h1>
+	<div id="new-team-member" class="new-team-member">
+		{# Personal Data - form. #}
+		{{ include('_form/_team_member_personal_data.html.twig') }}
+	</div>
+{% endblock %}
+

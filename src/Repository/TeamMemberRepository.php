@@ -50,4 +50,27 @@ class TeamMemberRepository extends ServiceEntityRepository implements PasswordUp
 		$this->getEntityManager()->persist($user);
 		$this->getEntityManager()->flush();
 	}
+
+	/**
+	 * Find latest.
+	 *
+	 * @param array $options Options.
+	 *
+	 * @return mixed
+	 */
+	public function findLatest(array $options = []): mixed
+	{
+		$offset = $options['offset'] ?? 0;
+		$perPage = $options['perPage'] ?? 20;
+		$order = $options['order'] ?? 'ASC';
+
+		$qb = $this->createQueryBuilder('m')
+			->addOrderBy('m.createdAt', $order)
+			->addOrderBy('m.id', $order)
+			->setFirstResult($offset)
+			->setMaxResults($perPage)
+			->getQuery();
+
+		return $qb->getResult();
+	}
 }
