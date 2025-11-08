@@ -10,7 +10,6 @@ domReady(async() => {
 		return;
 	}
 
-	// eslint-disable-next-line
 	const { Notice } = await import('./notice');
 
 	new Notice({

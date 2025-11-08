@@ -15,7 +15,6 @@ export class Tabs {
 		this.ACTIVE_CONTENT_CLASS = 'active';
 	}
 
-	// eslint-disable-next-line
 	init = () => {
 		this.tabs.forEach((tab) => {
 			const tabButtons = tab.querySelectorAll(`.${this.tabButtonSelector}`);

@@ -10,7 +10,6 @@ domReady(async () => {
 		return;
 	}
 
-	// eslint-disable-next-line
 	const { Tabs } = await import('./tabs');
 
 	new Tabs({

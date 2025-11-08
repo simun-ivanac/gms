@@ -10,7 +10,6 @@ domReady(async () => {
 		return;
 	}
 
-	// eslint-disable-next-line
 	const { OnFormFileUpload } = await import('./on-form-file-upload');
 
 	new OnFormFileUpload({

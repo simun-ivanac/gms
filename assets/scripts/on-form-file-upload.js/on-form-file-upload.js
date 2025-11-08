@@ -9,7 +9,6 @@ export class OnFormFileUpload {
 		this.imagePreviewSelector = imagePreviewSelector;
 	}
 
-	// eslint-disable-next-line
 	init = () => {
 		this.imageFormGroups.forEach((imageFormGroup) => {
 			const inputEl = imageFormGroup.querySelector(`.${this.inputSelector}`);

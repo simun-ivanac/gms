@@ -98,10 +98,10 @@ export default defineConfig([
 			'stylistic/arrow-spacing': 'error',
 			'stylistic/brace-style': 'error',
 			'stylistic/comma-dangle': ['error', {
-				arrays: 'always',
-				objects: 'always',
-				imports: 'always',
-				exports: 'always',
+				arrays: 'always-multiline',
+				objects: 'always-multiline',
+				imports: 'always-multiline',
+				exports: 'always-multiline',
 				functions: 'never',
 				importAttributes: 'never',
 				dynamicImports: 'never',
@@ -168,7 +168,7 @@ export default defineConfig([
 					next: ['const', 'let', 'var', 'import'],
 				},
 			],
-			'stylistic/lines-between-class-members': ['error', 'never'],
+			'stylistic/lines-between-class-members': ['error', 'always'],
 			'stylistic/max-len': [
 				'error',
 				{
@@ -198,7 +198,19 @@ export default defineConfig([
 			'stylistic/object-curly-newline': ['error', {
 				consistent: true,
 			}],
-			'stylistic/object-curly-spacing': ['error', 'never'],
+			'stylistic/object-curly-spacing': [
+				'error',
+				'never',
+				{
+					'overrides': {
+						ObjectPattern : 'always',
+						ObjectExpression  : 'always',
+						ImportDeclaration: 'always',
+						ImportAttributes: 'always'
+					},
+					emptyObjects: 'never'
+				}
+			],
 			'stylistic/quote-props': ['error', 'consistent'],
 			'stylistic/quotes': ['error', 'single'],
 			'stylistic/rest-spread-spacing': ['error', 'never'],

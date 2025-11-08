@@ -7,7 +7,6 @@ export class Notice {
 		this.removeButtonSelector = removeButtonSelector;
 	}
 
-	// eslint-disable-next-line
 	init = () => {
 		this.notices.forEach((notice) => {
 			const removeBtn = notice.querySelector(`.${this.removeButtonSelector}`);
