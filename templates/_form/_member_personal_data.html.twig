@@ -91,7 +91,7 @@
 	<div class="form-group gender">
 		<div class="form-label">Gender *</div>
 		<div class="form-group-radio-options">
-			{%- block choice_widget_expanded -%}
+			{%- block _member_personal_data_form_gender_choice_widget_expanded -%}
 				{%- for child in personalDataForm.gender %}
 					<div class="radio-group">
 						{{- form_widget(child, {
@@ -102,7 +102,7 @@
 						})-}}
 					</div>
 				{% endfor -%}
-			{%- endblock choice_widget_expanded -%}
+			{%- endblock _member_personal_data_form_gender_choice_widget_expanded -%}
 		</div>
 		{% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.gender.vars.errors} only %}
 	</div>
@@ -159,7 +159,7 @@
 	{% if personalDataForm.save is defined %}
 		<div class="form-group submit">
 			{{ form_widget(personalDataForm.save, {
-				'label': 'Update',
+				'label': personalDataForm.id is defined ? 'Update' : 'Save',
 				'attr': {'class': 'button submit-btn'}
 			})}}
 		</div>
