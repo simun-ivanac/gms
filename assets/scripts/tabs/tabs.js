@@ -37,6 +37,32 @@ export class Tabs {
 					});
 				});
 			});
+
+			this.setActiveTabOnLoad(tab);
 		});
+	};
+
+	setActiveTabOnLoad = (tab) => {
+		// If 'tab' query parameter exist in URL on load, set it as active tab.
+		const searchParams = new URLSearchParams(window.location.search);
+
+		if (!searchParams.size || !searchParams.has('tab')) {
+			return;
+		}
+
+		const queryTab = searchParams.get('tab');
+		const dataTargets = tab.querySelectorAll(`.${this.tabButtonSelector}[data-target]`);
+
+		if (!dataTargets.length) {
+			return;
+		}
+
+		const activeBtn = [
+			...dataTargets,
+		].find((btn) => btn.getAttribute('data-target') === queryTab);
+
+		if (activeBtn) {
+			activeBtn.click();
+		}
 	};
 }
