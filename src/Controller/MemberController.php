@@ -80,7 +80,11 @@ final class MemberController extends AbstractController
 
 			$this->addFlash('success', 'New member created successfully!');
 
-			return $this->redirectToRoute('member_index', [], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute(
+				'member_edit',
+				['id' => $member->getId()],
+				Response::HTTP_SEE_OTHER
+			);
 		}
 
 		return $this->render('member/new.html.twig', [
@@ -137,10 +141,11 @@ final class MemberController extends AbstractController
 
 			$this->addFlash('success', 'Member updated successfully!');
 
-			return $this->redirectToRoute('member_edit', [
-				'id' => $memberId,
-				'httpResponse' => Response::HTTP_SEE_OTHER,
-			]);
+			return $this->redirectToRoute(
+				'member_edit',
+				['id' => $memberId],
+				Response::HTTP_SEE_OTHER
+			);
 		}
 
 		// Settings form.
@@ -155,10 +160,14 @@ final class MemberController extends AbstractController
 		if ($settingsForm->isSubmitted() && $settingsForm->isValid()) {
 			$allowUserEdit = $settingsForm->get('userEdit')->getData();
 
-			$response = $this->redirectToRoute('member_edit', [
-				'id' => $memberId,
-				'httpResponse' => Response::HTTP_SEE_OTHER,
-			]);
+			$response = $this->redirectToRoute(
+				'member_edit',
+				[
+					'id' => $memberId,
+					'tab' => 'settings',
+				],
+				Response::HTTP_SEE_OTHER
+			);
 
 			$memberSettingsInCookie->updateCookie($memberId, [MemberSettingsInCookie::IS_EDITING_ALLOWED => $allowUserEdit], $response);
 			$this->addFlash('success', 'Settings saved!');
@@ -190,7 +199,14 @@ final class MemberController extends AbstractController
 		if (!$this->isCsrfTokenValid('deactivate', $token)) {
 			$this->addFlash('error', 'Some security thing failed!');
 
-			return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute(
+				'member_edit',
+				[
+					'id' => $member->getId(),
+					'tab' => 'settings',
+				],
+				Response::HTTP_SEE_OTHER
+			);
 		}
 
 		$member->setIsDeactivated(true);
@@ -199,7 +215,14 @@ final class MemberController extends AbstractController
 
 		$this->addFlash('success', 'Member deactivated successfully!');
 
-		return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+		return $this->redirectToRoute(
+			'member_edit',
+			[
+				'id' => $member->getId(),
+				'tab' => 'settings',
+			],
+			Response::HTTP_SEE_OTHER
+		);
 	}
 
 	/**
@@ -219,7 +242,14 @@ final class MemberController extends AbstractController
 		if (!$this->isCsrfTokenValid('activate', $token)) {
 			$this->addFlash('error', 'Some security thing failed!');
 
-			return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute(
+				'member_edit',
+				[
+					'id' => $member->getId(),
+					'tab' => 'settings',
+				],
+				Response::HTTP_SEE_OTHER
+			);
 		}
 
 		$member->setIsDeactivated(false);
@@ -228,7 +258,14 @@ final class MemberController extends AbstractController
 
 		$this->addFlash('success', 'Member activated successfully!');
 
-		return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+		return $this->redirectToRoute(
+			'member_edit',
+			[
+				'id' => $member->getId(),
+				'tab' => 'settings',
+			],
+			Response::HTTP_SEE_OTHER
+		);
 	}
 
 	/**
@@ -247,7 +284,14 @@ final class MemberController extends AbstractController
 		if (!$this->isCsrfTokenValid('delete', $token)) {
 			$this->addFlash('error', 'Some security thing is not good!');
 
-			return $this->redirectToRoute('member_edit', ['id' => $member->getId()], Response::HTTP_SEE_OTHER);
+			return $this->redirectToRoute(
+				'member_edit',
+				[
+					'id' => $member->getId(),
+					'tab' => 'settings',
+				],
+				Response::HTTP_SEE_OTHER
+			);
 		}
 
 		$entityManager->remove($member);
