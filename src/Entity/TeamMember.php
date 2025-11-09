@@ -428,7 +428,7 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	 *
 	 * @return static
 	 */
-	public function setIsActive(bool $isActive): static
+	public function setIsActive(?bool $isActive): static
 	{
 		$this->isActive = $isActive;
 
@@ -452,7 +452,7 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	 *
 	 * @return static
 	 */
-	public function setIsDeactivated(bool $isDeactivated): static
+	public function setIsDeactivated(?bool $isDeactivated): static
 	{
 		$this->isDeactivated = $isDeactivated;
 
