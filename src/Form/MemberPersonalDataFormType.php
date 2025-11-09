@@ -83,11 +83,6 @@ class MemberPersonalDataFormType extends AbstractType
 			->add('save', SubmitType::class)
 		;
 
-		// Set default member status to "inactive" (for new members).
-		if ($options['formAction'] === 'new') {
-			$builder->addEventSubscriber(new SetIsActiveFieldSubscriber());
-		}
-
 		// If in edit mode, show member ID.
 		if ($options['formAction'] === 'edit') {
 			$builder->add('id', TextType::class, [

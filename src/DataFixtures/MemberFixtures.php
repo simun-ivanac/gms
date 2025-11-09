@@ -46,7 +46,6 @@ class MemberFixtures extends BaseFixture
 			$member->setEmail($this->faker->email());
 			$member->setPhoneNumber($this->faker->e164PhoneNumber());
 			$member->setPin((string) $this->faker->numberBetween(10000000000, 99999999999));
-			$member->setIsActive(false);
 		});
 
 		$manager->flush();

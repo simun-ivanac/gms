@@ -117,7 +117,7 @@ class Member
 	/**
 	 * Is member active.
 	 */
-	#[ORM\Column]
+	#[ORM\Column(nullable: true)]
 	#[Assert\Type('bool')]
 	private ?bool $isActive = null;
 
@@ -398,7 +398,7 @@ class Member
 	 *
 	 * @return static
 	 */
-	public function setIsActive(bool $isActive): static
+	public function setIsActive(?bool $isActive): static
 	{
 		$this->isActive = $isActive;
 
@@ -422,7 +422,7 @@ class Member
 	 *
 	 * @return static
 	 */
-	public function setIsDeactivated(bool $isDeactivated): static
+	public function setIsDeactivated(?bool $isDeactivated): static
 	{
 		$this->isDeactivated = $isDeactivated;
 
