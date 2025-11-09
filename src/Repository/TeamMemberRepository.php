@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\TeamMember;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -64,13 +65,14 @@ class TeamMemberRepository extends ServiceEntityRepository implements PasswordUp
 		$perPage = $options['perPage'] ?? 20;
 		$order = $options['order'] ?? 'ASC';
 
-		$qb = $this->createQueryBuilder('m')
-			->addOrderBy('m.createdAt', $order)
-			->addOrderBy('m.id', $order)
+		$qb = $this->createQueryBuilder('tm')
+			->addOrderBy('tm.createdAt', $order)
+			->addOrderBy('tm.id', $order)
+			->leftJoin('tm.teamRoles', 'tr')
+			->addSelect('tr')
 			->setFirstResult($offset)
-			->setMaxResults($perPage)
-			->getQuery();
+			->setMaxResults($perPage);
 
-		return $qb->getResult();
+		return new Paginator($qb->getQuery());
 	}
 }
