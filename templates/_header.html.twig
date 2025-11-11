@@ -5,9 +5,15 @@
 		</div>
 		<div class="navigation">
 			<ul class="list navigation__list">
-				<li class="navigation__item">
-					<a href="#logout" class="navigation__link">Logout</a>
-				</li>
+				{% if app.user %}
+					<li class="navigation__item">
+						<a href="{{ path('app_logout') }}" class="navigation__link">Logout</a>
+					</li>
+				{% else %}
+					<li class="navigation__item">
+						<a href="{{ path('app_login') }}" class="navigation__link">Login</a>
+					</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>
