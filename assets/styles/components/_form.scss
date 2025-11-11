@@ -66,6 +66,13 @@
 				transform: translateX(1.15rem);
 			}
 		}
+
+		&.remember-me {
+			#{$form}-group-checkbox-options {
+				overflow: visible;
+				max-height: none;
+			}
+		}
 	}
 
 	// Form Labels.
