@@ -8,23 +8,18 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Factory\MemberFactory;
+use App\Factory\TeamMemberFactory;
+use App\Factory\TeamMemberRoleFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
-use Faker\Generator;
+use Zenstruck\Foundry\Object\Instantiator;
 
 /**
  * Class BaseFixture.
  */
-abstract class BaseFixture extends Fixture
+class BaseFixture extends Fixture
 {
-	/**
-	 * Faker.
-	 *
-	 * @var Generator
-	 */
-	protected $faker;
-
 	/**
 	 * Object manager.
 	 *
@@ -36,38 +31,105 @@ abstract class BaseFixture extends Fixture
 	 * Load fixture.
 	 *
 	 * @param ObjectManager $manager Object manager.
+	 *
+	 * @return void
 	 */
 	public function load(ObjectManager $manager): void
 	{
-		$this->faker = Factory::create();
+		// Set manager.
 		$this->manager = $manager;
-		$this->loadData($manager);
+
+		// Populate database.
+		$this->createMembers(30);
+		$teamMemberRoles = $this->createRoles();
+		$this->createOwner(['owner' => $teamMemberRoles['owner']]);
+		$this->createTeamMembers(array_diff_key($teamMemberRoles, ['owner' => true]), 10);
 	}
 
 	/**
-	 * Persist data.
+	 * Create members.
 	 *
-	 * @param ObjectManager $manager Object manager.
+	 * @param int $number Number of members.
+	 *
+	 * @return void
 	 */
-	abstract protected function loadData(ObjectManager $manager);
+	public function createMembers(int $number): void
+	{
+		MemberFactory::createMany($number);
+	}
 
 	/**
-	 * Helper function for creating many entries at the same time.
+	 * Create roles.
 	 *
-	 * @param string $className Class name.
-	 * @param int    $count     Count.
-	 * @param callable $factory Factory.
+	 * @return array
 	 */
-	protected function createMany(string $className, int $count, callable $factory)
+	public function createRoles(): array
 	{
-		for ($i = 0; $i < $count; $i++) {
-			$entity = new $className();
-			$factory($entity, $i);
+		$owner = TeamMemberRoleFactory::new()->withRole('owner')->create();
+		$trainer = TeamMemberRoleFactory::new()->withRole('trainer')->create();
+		$receptionist = TeamMemberRoleFactory::new()->withRole('receptionist')->create();
+		$staff = TeamMemberRoleFactory::new()->withRole('staff')->create();
 
-			$this->manager->persist($entity);
+		return [
+			'owner' => $owner,
+			'trainer' => $trainer,
+			'receptionist' => $receptionist,
+			'staff' => $staff,
+		];
+	}
 
-			// Store for usage later as App\Entity\ClassName_#COUNT#.
-			$this->addReference($className . '_' . $i, $entity);
-		}
+	/**
+	 * Create owner.
+	 *
+	 * @param array $owner Owner role.
+	 *
+	 * @return void
+	 */
+	public function createOwner(array $owner): void
+	{
+		TeamMemberFactory::new()
+			->instantiateWith(Instantiator::withConstructor()->allowExtra('plainPassword', 'roles'))
+			->create([
+				'photoFilename' => 'imgroot.png',
+				'firstName' => 'I Am',
+				'lastName' => 'Groot',
+				'gender' => 'male',
+				'email' => 'groot@avengers.example',
+				'phoneNumber' => '1234567890',
+				'pin' => '1234567890',
+				'plainPassword' => 'we are groot!',
+				'roles' => [
+					$owner['owner'],
+				],
+			]);
+	}
+
+	/**
+	 * Create team members.
+	 *
+	 * @param array $secTeamRoles Secondary team member roles.
+	 * @param int $number Number of team members.
+	 *
+	 * @return void
+	 */
+	public function createTeamMembers(array $secTeamRoles, int $number): void
+	{
+		TeamMemberFactory::new()
+			->instantiateWith(Instantiator::withConstructor()->allowExtra('plainPassword', 'roles'))
+			->many($number)
+			->create(function () use ($secTeamRoles) {
+				// Select random roles (allowed are: trainer, receptionist, staff, max 2 roles).
+				$selectedRoles = [];
+				$randomRoles = array_rand($secTeamRoles, rand(1, count($secTeamRoles) - 1));
+				$randomRoles = is_array($randomRoles) ? array_unique($randomRoles) : [$randomRoles];
+
+				foreach ($randomRoles as $role) {
+					$selectedRoles[] = $secTeamRoles[$role];
+				}
+
+				return [
+					'roles' => $selectedRoles,
+				];
+			});
 	}
 }

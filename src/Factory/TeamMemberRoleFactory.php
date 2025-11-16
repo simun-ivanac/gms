@@ -1,46 +1,78 @@
 <?php
 
 /**
- * Team Member Role Fixtures.
+ * Team Member Role Factory.
  */
 
 declare(strict_types=1);
 
-namespace App\DataFixtures;
+namespace App\Factory;
 
 use App\Entity\TeamMemberRole;
-use Doctrine\Persistence\ObjectManager;
+use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 
 /**
- * Class TeamMemberRoleFixtures.
+ * Class TeamMemberRoleFactory.
  */
-class TeamMemberRoleFixtures extends BaseFixture
+final class TeamMemberRoleFactory extends PersistentProxyObjectFactory
 {
 	/**
-	 * Roles.
+	 * Role.
 	 */
-	private array $roles = [
-		'owner',
-		'trainer',
-		'receptionist',
-		'staff',
-	];
+	private ?string $role = null;
 
 	/**
-	 * Load team member role fixture.
-	 *
-	 * @param ObjectManager $manager Object manager.
-	 *
-	 * @return void
+	 * Constructor.
 	 */
-	public function loadData(ObjectManager $manager): void
+	public function __construct()
 	{
-		$this->createMany(TeamMemberRole::class, count($this->roles), function (TeamMemberRole $role, $count) {
-			$role->setRole($this->roles[$count]);
-			$role->setPermissions($this->getRolePermissions($this->roles[$count]));
-		});
+	}
 
-		$manager->flush();
+	/**
+	 * Entity class.
+	 *
+	 * @return string
+	 */
+	public static function class(): string
+	{
+		return TeamMemberRole::class;
+	}
+
+	/**
+	 * Default values.
+	 *
+	 * @return array|callable
+	 */
+	protected function defaults(): array|callable
+	{
+		return [
+			'role' => $this->role,
+			'permissions' => $this->getRolePermissions($this->role),
+		];
+	}
+
+	/**
+	 * Initialize factory.
+	 *
+	 * @return static
+	 */
+	protected function initialize(): static
+	{
+		return $this;
+	}
+
+	/**
+	 * Set role.
+	 *
+	 * @param string $role Role.
+	 *
+	 * @return static
+	 */
+	public function withRole(string $role): self
+	{
+		$this->role = $role;
+
+		return $this;
 	}
 
 	/**
