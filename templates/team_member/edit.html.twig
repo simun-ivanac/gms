@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{# Title #}
+{% block title %}Edit Team Member{% endblock %}
+
+{# Content #}
+{% block content %}
+	<h1 class="heading main-heading heading-edit-team-member">Edit Team Member</h1>
+	{% block tabContent %}{% endblock %}
+	<div id="edit-team-member" class="edit-team-member">
+		<div class="tabs">
+			<div class="tablinks">
+				<a href="#personal-details" class="tab-btn active" data-target="personal-details">Personal Details</a>
+				<a href="#groups" class="tab-btn" data-target="groups">Groups</a>
+				<a href="#visitations" class="tab-btn" data-target="visitations">Visitations</a>
+				<a href="#settings" class="tab-btn" data-target="settings">Settings</a>
+			</div>
+			<div class="tab-content active" data-tab="personal-details">
+				{{ include('team_member/tabs/_personal_details.html.twig') }}
+			</div>
+			<div class="tab-content" data-tab="groups">
+				{{ include('team_member/tabs/_groups.html.twig') }}
+			</div>
+			<div class="tab-content" data-tab="visitations">
+				{{ include('team_member/tabs/_visitations.html.twig') }}
+			</div>
+			<div class="tab-content" data-tab="settings">
+				{{ include('team_member/tabs/_settings.html.twig') }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

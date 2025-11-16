@@ -101,6 +101,8 @@ class TeamMemberPersonalDataFormType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => TeamMember::class,
+			'formAction' => '',
+			'disabled' => true,
 		]);
 	}
 }

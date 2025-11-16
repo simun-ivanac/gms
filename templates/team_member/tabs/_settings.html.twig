@@ -1,0 +1,51 @@
+<div class="settings">
+	{{ form_start(settingsForm, {
+		'attr': { 'class': 'form form-edit-member-settings' }
+	})}}
+
+		{# Allow editing user? (toggle) #}
+		<div class="form-group toggle-switch">
+			<label for="{{ settingsForm.teamUserEdit.vars.id }}" class="switch form-label {{ settingsForm.teamUserEdit.vars.required ? 'required' }}">
+				<div class="form-checkbox-slider">
+					{{ form_widget(settingsForm.teamUserEdit, {
+						'attr': { 'class': 'form-checkbox hidden' }
+					})}}
+					<span class="form-checkbox-toggle-el"></span>
+				</div>
+				<span class="form-label-text">{{ settingsForm.teamUserEdit.vars.label }}</span>
+			</label>
+			{% include '_form/_errors.html.twig' with {'displayErrors': settingsForm.teamUserEdit.vars.errors} only %}
+		</div>
+
+		{# Submit Button #}
+		<div class="form-group submit">
+			{{ form_widget(settingsForm.update, {
+				'label': 'Update',
+				'attr': {'class': 'button submit-btn'}
+			})}}
+		</div>
+
+	{{ form_end(settingsForm) }}
+
+	<div class="danger-zone">
+		<div class="danger-zone-option deactivate-account">
+			<form action="{{ path(teamMember.isDeactivated ? 'team_member_activate' : 'team_member_deactivate', {id: teamMember.id}) }}" method="post">
+				<input type="hidden" name="token" value="{{ csrf_token(teamMember.isDeactivated ? 'activate' : 'deactivate') }}" />
+				<button type="submit" class="button deactivate-account-btn">{{ teamMember.isDeactivated ? 'Reactivate' : 'Freeze' }} User</button>
+			</form>
+			<p class="action-description">
+				{{teamMember.isDeactivated ?
+					'The user account is in suspend mode. It can be reactivated at any time.' :
+					'Put user account in suspend mode. It can be reactivated at any time.'
+				}}
+			</p>
+		</div>
+		<div class="danger-zone-option delete-account">
+			<form action="{{ path('team_member_delete', {id: teamMember.id}) }}" method="post">
+				<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+				<button type="submit" class="button delete-account-btn">Delete User</button>
+			</form>
+			<p class="action-description">Delete user permanently. This action is irreversible.</p>
+		</div>
+	</div>
+</div>
