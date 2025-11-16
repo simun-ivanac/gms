@@ -98,6 +98,7 @@ class BaseFixture extends Fixture
 				'phoneNumber' => '1234567890',
 				'pin' => '1234567890',
 				'plainPassword' => 'we are groot!',
+				'is_active' => true,
 				'roles' => [
 					$owner['owner'],
 				],
