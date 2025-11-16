@@ -95,8 +95,8 @@ class BaseFixture extends Fixture
 				'lastName' => 'Groot',
 				'gender' => 'male',
 				'email' => 'groot@avengers.example',
-				'phoneNumber' => '1234567890',
-				'pin' => '1234567890',
+				'phoneNumber' => '+14875699103',
+				'pin' => '12345678901',
 				'plainPassword' => 'we are groot!',
 				'is_active' => true,
 				'roles' => [
