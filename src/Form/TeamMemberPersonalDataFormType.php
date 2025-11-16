@@ -88,6 +88,22 @@ class TeamMemberPersonalDataFormType extends AbstractType
 			])
 			->add('save', SubmitType::class)
 		;
+
+		// If in edit mode, show team member ID.
+		if ($options['formAction'] === 'edit') {
+			$builder->add('id', TextType::class, [
+				'mapped' => false,
+				'attr' => [
+					'value' => isset($options['data']) ? ($options['data'])->getId() : null,
+					'disabled' => true,
+				],
+			]);
+		}
+
+		// Remove save button if editing member is not allowed.
+		if ($options['formAction'] === 'edit' && $options['disabled']) {
+			$builder->remove('save');
+		}
 	}
 
 	/**
