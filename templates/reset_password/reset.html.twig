@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block content %}
+	<h1 class="heading main-heading heading-reset-password">Reset your password</h1>
+
+	{{ form_start(resetForm) }}
+		{# Reset Password #}
+		<div class="form-group reset-password">
+			{{ form_row(resetForm.plainPassword) }}
+		</div>
+
+		{# Submit #}
+		<div class="form-group submit">
+			{{ form_widget(resetForm.save, {
+				'label': 'Reset password',
+				'attr': {'class': 'button submit-btn'}
+			})}}
+		</div>
+
+	{{ form_end(resetForm) }}
+{% endblock %}

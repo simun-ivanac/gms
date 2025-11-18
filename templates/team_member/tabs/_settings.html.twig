@@ -28,6 +28,12 @@
 	{{ form_end(settingsForm) }}
 
 	<div class="danger-zone">
+		<div class="danger-zone-option reset-password">
+			<form action="{{ path('send_reset_email', {id: teamMember.id}) }}" method="post">
+				<input type="hidden" name="token" value="{{ csrf_token('reset_password') }}" />
+				<button type="submit" class="button reset-password-link">Send password reset link</button>
+			</form>
+		</div>
 		<div class="danger-zone-option deactivate-account">
 			<form action="{{ path(teamMember.isDeactivated ? 'team_member_activate' : 'team_member_deactivate', {id: teamMember.id}) }}" method="post">
 				<input type="hidden" name="token" value="{{ csrf_token(teamMember.isDeactivated ? 'activate' : 'deactivate') }}" />
