@@ -5,19 +5,40 @@
 {% block content %}
 	<h1 class="heading main-heading heading-reset-password">Reset your password</h1>
 
-	{{ form_start(resetForm) }}
-		{# Reset Password #}
-		<div class="form-group reset-password">
-			{{ form_row(resetForm.plainPassword) }}
-		</div>
+	<div id="reset-password" class="reset-password">
+		{{ form_start(resetForm, {
+			'attr': {'class': 'form form-reset-password'}
+		})}}
+			{# New Password #}
+			<div class="form-group set-new-password new-password">
+				{{ form_label(resetForm.plainPassword.first, 'New Password *', {
+					'label_attr': {'class': 'form-label'}
+				})}}
+				{{ form_widget(resetForm.plainPassword.first, {
+					'attr': {'class': 'form-input'}
+				})}}
 
-		{# Submit #}
-		<div class="form-group submit">
-			{{ form_widget(resetForm.save, {
-				'label': 'Reset password',
-				'attr': {'class': 'button submit-btn'}
-			})}}
-		</div>
+				{% include '_form/_errors.html.twig' with {'displayErrors': resetForm.plainPassword.first.vars.errors} only %}
+			</div>
 
-	{{ form_end(resetForm) }}
+			{# Repeat Password #}
+			<div class="form-group set-new-password repeat-password">
+				{{ form_label(resetForm.plainPassword.second, 'Repeat Password *', {
+					'label_attr': {'class': 'form-label'}
+				})}}
+				{{ form_widget(resetForm.plainPassword.second, {
+					'attr': {'class': 'form-input'}
+				})}}
+				{% include '_form/_errors.html.twig' with {'displayErrors': resetForm.plainPassword.second.vars.errors} only %}
+			</div>
+
+			{# Submit #}
+			<div class="form-group submit">
+				{{ form_widget(resetForm.save, {
+					'label': 'Update',
+					'attr': {'class': 'button submit-btn'}
+				})}}
+			</div>
+		{{ form_end(resetForm) }}
+	</div>
 {% endblock %}
