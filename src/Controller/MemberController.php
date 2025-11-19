@@ -169,7 +169,12 @@ final class MemberController extends AbstractController
 				Response::HTTP_SEE_OTHER
 			);
 
-			$memberSettingsInCookie->updateCookie($memberId, [MemberSettingsInCookie::IS_EDITING_ALLOWED => $allowUserEdit], $response);
+			$memberSettingsInCookie->updateCookie(
+				$memberId,
+				[MemberSettingsInCookie::IS_EDITING_ALLOWED => $allowUserEdit],
+				$response
+			);
+
 			$this->addFlash('success', 'Settings saved!');
 
 			return $response;
@@ -282,7 +287,7 @@ final class MemberController extends AbstractController
 		$token = $request->getPayload()->get('token');
 
 		if (!$this->isCsrfTokenValid('delete', $token)) {
-			$this->addFlash('error', 'Some security thing is not good!');
+			$this->addFlash('error', 'Some security thing failed!');
 
 			return $this->redirectToRoute(
 				'member_edit',

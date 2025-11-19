@@ -89,7 +89,7 @@ class MemberSettingsInCookie
 		$cookie = array_merge($this->memberCookie, $newData);
 		$this->memberCookie = $cookie;
 
-		$newCookie = Cookie::create('user_' . $memberId, json_encode($cookie))
+		$newCookie = Cookie::create(self::COOKIE_NAME . $memberId, json_encode($cookie))
 			->withExpires(strtotime('+1 hour'))
 			->withPath('/')
 			->withSecure(true)
@@ -115,7 +115,7 @@ class MemberSettingsInCookie
 			$this->memberCookie = [];
 		}
 
-		$response->headers->clearCookie('user_' . $memberId, '/');
+		$response->headers->clearCookie(self::COOKIE_NAME . $memberId, '/');
 
 		return true;
 	}

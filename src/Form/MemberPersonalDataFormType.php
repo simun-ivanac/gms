@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Member;
-use App\Form\EventSubscriber\SetIsActiveFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
