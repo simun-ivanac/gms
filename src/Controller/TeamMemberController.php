@@ -207,7 +207,7 @@ final class TeamMemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route(path: '/member/deactivate/{id<\d+>}', name: 'team_member_deactivate', methods: ['POST'])]
+	#[Route(path: '/team/member/deactivate/{id<\d+>}', name: 'team_member_deactivate', methods: ['POST'])]
 	public function deactivate(TeamMember $teamMember, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$token = $request->getPayload()->get('token');

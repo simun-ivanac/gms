@@ -29,7 +29,7 @@
 
 	<div class="danger-zone">
 		<div class="danger-zone-option deactivate-account">
-			<form action="{{ path(member.isDeactivated ? 'member_activate' : 'member_deactivate', {id: member.id}) }}" method="post">
+			<form action="{{ path(member.isDeactivated ? 'member_activate' : 'member_deactivate', {id: member.id}) }}" method="post" data-confirmation="true" data-event="{{ member.isDeactivated ? 'activate' : 'deactivate' }}" class="form form-de-activate-member">
 				<input type="hidden" name="token" value="{{ csrf_token(member.isDeactivated ? 'activate' : 'deactivate') }}" />
 				<button type="submit" class="button deactivate-account-btn">{{ member.isDeactivated ? 'Reactivate' : 'Freeze' }} User</button>
 			</form>
@@ -41,7 +41,7 @@
 			</p>
 		</div>
 		<div class="danger-zone-option delete-account">
-			<form action="{{ path('member_delete', {id: member.id}) }}" method="post">
+			<form action="{{ path('member_delete', {id: member.id}) }}" method="post" data-confirmation="true" data-event="delete" class="form form-delete-member">
 				<input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
 				<button type="submit" class="button delete-account-btn">Delete User</button>
 			</form>

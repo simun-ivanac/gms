@@ -93,7 +93,7 @@ export default defineConfig([
 			'require-await': 'error',
 			'yoda': 'error',
 			// Deprecated and replaced with new ones.
-			'stylistic/array-bracket-newline': ['error', 'always'],
+			'stylistic/array-bracket-newline': ['error', 'consistent'],
 			'stylistic/array-bracket-spacing': ['error', 'never'],
 			'stylistic/arrow-spacing': 'error',
 			'stylistic/brace-style': 'error',
@@ -134,6 +134,7 @@ export default defineConfig([
 				'error',
 				'tab',
 				{
+					SwitchCase: 1,
 					ignoredNodes: ['ConditionalExpression'],
 				}
 			],

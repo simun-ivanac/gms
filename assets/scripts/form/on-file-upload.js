@@ -1,16 +1,22 @@
-export class OnFormFileUpload {
+export class OnFileUpload {
 	constructor({
-		imageFormGroups,
+		withImageGroupPresent,
 		inputSelector,
 		imagePreviewSelector,
 	}) {
-		this.imageFormGroups = imageFormGroups;
+		this.forms = withImageGroupPresent;
 		this.inputSelector = inputSelector;
 		this.imagePreviewSelector = imagePreviewSelector;
 	}
 
 	init = () => {
-		this.imageFormGroups.forEach((imageFormGroup) => {
+		this.forms.forEach((form) => {
+			const imageFormGroup = form.querySelector('.form-group.image');
+
+			if (!imageFormGroup) {
+				return;
+			}
+
 			const inputEl = imageFormGroup.querySelector(`.${this.inputSelector}`);
 			const imagePreviewEl = imageFormGroup.querySelector(`.${this.imagePreviewSelector}`);
 
