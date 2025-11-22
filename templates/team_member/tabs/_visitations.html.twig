@@ -1,0 +1,15 @@
+<div class="visitations">
+	<div class="n-days-metrics">
+		<span class="metric-label">Visitations in the last 30 days:</span>
+		<span class="metric-value"></span>
+	</div>
+	<div class="logs">
+		{% for visitation in visitations %}
+		<div class="log-item{{ visitation.status == 'error' ? ' error' : ''}}">
+			<span class="log-item-date">{{ visitation.timestamp|date("d-m-Y") }}</span>
+			<span class="log-item-time">{{ visitation.timestamp|date("H:i A", "Europe/Zagreb") }}</span>
+			<span class="log-item-description">{{ visitation.message }}</span>
+		</div>
+		{% endfor %}
+	</div>
+</div>

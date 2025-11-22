@@ -178,11 +178,20 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	private Collection $teamRoles;
 
 	/**
+	 * Visitations.
+	 *
+	 * @var Collection<int, Visitation>
+	 */
+	#[ORM\OneToMany(targetEntity: Visitation::class, mappedBy: 'teamMember')]
+	private Collection $visitations;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct()
 	{
 		$this->teamRoles = new ArrayCollection();
+		$this->visitations = new ArrayCollection();
 	}
 
 	/**
@@ -671,6 +680,51 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	public function removeTeamRoles(TeamMemberRole $teamRoles): static
 	{
 		$this->teamRoles->removeElement($teamRoles);
+
+		return $this;
+	}
+
+	/**
+	 * Get visitations (as collection).
+	 *
+	 * @return Collection<int, Visitation>
+	 */
+	public function getVisitations(): Collection
+	{
+		return $this->visitations;
+	}
+
+	/**
+	 * Add visitation.
+	 *
+	 * @param Visitation $visitation Visitation.
+	 *
+	 * @return static
+	 */
+	public function addVisitation(Visitation $visitation): static
+	{
+		if (!$this->visitations->contains($visitation)) {
+			$this->visitations->add($visitation);
+			$visitation->setTeamMember($this);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Remove visitation.
+	 *
+	 * @param Visitation $visitation Visitation.
+	 *
+	 * @return static
+	 */
+	public function removeVisitation(Visitation $visitation): static
+	{
+		if ($this->visitations->removeElement($visitation)) {
+			if ($visitation->getTeamMember() === $this) {
+				$visitation->setTeamMember(null);
+			}
+		}
 
 		return $this;
 	}

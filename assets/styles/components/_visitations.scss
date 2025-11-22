@@ -1,0 +1,27 @@
+.visitations {
+	.n-days-metrics {
+		font-weight: 500;
+		margin-bottom: 1.5rem;
+	}
+
+	.log-item {
+		display: grid;
+		grid-template-columns: auto auto 1fr;
+		gap: 1.5rem;
+		padding: 0.5rem 1rem;
+		margin-bottom: 0.75rem;
+		font-size: 0.875rem;
+		background-color: #FAFAFA;
+		border-left: 2px solid #21252D;
+
+		&.error {
+			background-color: #FFE6E6;
+			border-color: #FF8080;
+		}
+
+		&.success {
+			background-color: #E6FFED;
+			border-color: #00E65C;
+		}
+	}
+}

@@ -11,6 +11,7 @@ namespace App\DataFixtures;
 use App\Factory\MemberFactory;
 use App\Factory\TeamMemberFactory;
 use App\Factory\TeamMemberRoleFactory;
+use App\Factory\VisitationFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Zenstruck\Foundry\Object\Instantiator;
@@ -40,8 +41,9 @@ class BaseFixture extends Fixture
 		$this->manager = $manager;
 
 		// Populate database.
-		$this->createMembers(30);
 		$teamMemberRoles = $this->createRoles();
+
+		$this->createMembers(30);
 		$this->createOwner(['owner' => $teamMemberRoles['owner']]);
 		$this->createTeamMembers(array_diff_key($teamMemberRoles, ['owner' => true]), 10);
 	}
@@ -55,7 +57,9 @@ class BaseFixture extends Fixture
 	 */
 	public function createMembers(int $number): void
 	{
-		MemberFactory::createMany($number);
+		MemberFactory::new()->many($number)->create([
+			'visitations' => VisitationFactory::new()->many(10, 20),
+		]);
 	}
 
 	/**
@@ -102,6 +106,7 @@ class BaseFixture extends Fixture
 				'roles' => [
 					$owner['owner'],
 				],
+				'visitations' => VisitationFactory::new()->many(10, 20),
 			]);
 	}
 
@@ -109,7 +114,7 @@ class BaseFixture extends Fixture
 	 * Create team members.
 	 *
 	 * @param array $secTeamRoles Secondary team member roles.
-	 * @param int $number Number of team members.
+	 * @param int   $number       Number of team members.
 	 *
 	 * @return void
 	 */
@@ -121,7 +126,7 @@ class BaseFixture extends Fixture
 			->create(function () use ($secTeamRoles) {
 				// Select random roles (allowed are: trainer, receptionist, staff, max 2 roles).
 				$selectedRoles = [];
-				$randomRoles = array_rand($secTeamRoles, rand(1, count($secTeamRoles) - 1));
+				$randomRoles = array_rand($secTeamRoles, rand(1, 2));
 				$randomRoles = is_array($randomRoles) ? array_unique($randomRoles) : [$randomRoles];
 
 				foreach ($randomRoles as $role) {
@@ -130,6 +135,7 @@ class BaseFixture extends Fixture
 
 				return [
 					'roles' => $selectedRoles,
+					'visitations' => VisitationFactory::new()->many(10, 20),
 				];
 			});
 	}

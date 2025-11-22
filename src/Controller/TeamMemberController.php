@@ -194,6 +194,7 @@ final class TeamMemberController extends AbstractController
 		return $this->render('team_member/edit.html.twig', [
 			'teamMember' => $teamMember,
 			'personalDataForm' => $personalDataForm,
+			'visitations' => $teamMember->getVisitations(),
 			'settingsForm' => $settingsForm,
 		]);
 	}

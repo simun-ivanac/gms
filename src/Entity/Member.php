@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Timestampable;
@@ -154,6 +156,22 @@ class Member
 	 */
 	#[ORM\Column(nullable: true)]
 	private ?\DateTimeImmutable $deletedAt = null;
+
+	/**
+	 * Visitations.
+	 *
+	 * @var Collection<int, Visitation>
+	 */
+	#[ORM\OneToMany(targetEntity: Visitation::class, mappedBy: 'member')]
+	private Collection $visitations;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->visitations = new ArrayCollection();
+	}
 
 	/**
 	 * Get id.
@@ -521,6 +539,51 @@ class Member
 	public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
 	{
 		$this->deletedAt = $deletedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get visitations (as collection).
+	 *
+	 * @return Collection<int, Visitation>
+	 */
+	public function getVisitations(): Collection
+	{
+		return $this->visitations;
+	}
+
+	/**
+	 * Add visitation.
+	 *
+	 * @param Visitation $visitation Visitation.
+	 *
+	 * @return static
+	 */
+	public function addVisitation(Visitation $visitation): static
+	{
+		if (!$this->visitations->contains($visitation)) {
+			$this->visitations->add($visitation);
+			$visitation->setMember($this);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Remove visitation.
+	 *
+	 * @param Visitation $visitation Visitation.
+	 *
+	 * @return static
+	 */
+	public function removeVisitation(Visitation $visitation): static
+	{
+		if ($this->visitations->removeElement($visitation)) {
+			if ($visitation->getMember() === $this) {
+				$visitation->setMember(null);
+			}
+		}
 
 		return $this;
 	}
