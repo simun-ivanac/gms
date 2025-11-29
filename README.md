@@ -56,6 +56,12 @@ Clone the repository into the root folder of your local server:
 git clone https://github.com/simun-ivanac/gms.git
 ```
 
+Rename .env-example to .env.
+
+```
+.env-example -> .env
+```
+
 > Note: the site domain I'm using in the project is ```https://gms.wip```.
 > All paths are relative, so changing it to some other shouldn't hurt anything.
 
