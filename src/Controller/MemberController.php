@@ -33,7 +33,7 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/members', name: 'member_index', methods: ['GET'])]
+	#[Route(path: '/members', name: 'member_index', methods: ['GET'])]
 	public function index(MemberRepository $repository): Response
 	{
 		return $this->render('member/index.html.twig', [
@@ -53,7 +53,7 @@ final class MemberController extends AbstractController
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/member/new', name: 'member_new', methods: ['GET', 'POST'])]
+	#[Route(path: '/member/new', name: 'member_new', methods: ['GET', 'POST'])]
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
@@ -96,13 +96,15 @@ final class MemberController extends AbstractController
 	/**
 	 * Edit existing Member.
 	 *
-	 * @param Member                 $member        Member entity.
-	 * @param Request                $request       HTTP request.
-	 * @param EntityManagerInterface $entityManager Entity Manager.
+	 * @param Member                 $member                 Member entity.
+	 * @param Request                $request                HTTP request.
+	 * @param EntityManagerInterface $entityManager          Entity Manager.
+	 * @param ImageUploader          $imageUploader          Image Uploader.
+	 * @param MemberSettingsInCookie $memberSettingsInCookie Member settings in cookie.
 	 *
 	 * @return Response HTTP response.
 	 */
-	#[Route('/member/{id<\d+>}', name: 'member_edit', methods: ['GET', 'POST'])]
+	#[Route(path: '/member/{id<\d+>}', name: 'member_edit', methods: ['GET', 'POST'])]
 	public function edit(
 		Member $member,
 		Request $request,
@@ -183,6 +185,7 @@ final class MemberController extends AbstractController
 		return $this->render('member/edit.html.twig', [
 			'member' => $member,
 			'personalDataForm' => $personalDataForm,
+			'visitations' => $member->getVisitations(),
 			'settingsForm' => $settingsForm,
 		]);
 	}
