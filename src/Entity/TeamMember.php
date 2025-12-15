@@ -183,6 +183,7 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	 * @var Collection<int, Visitation>
 	 */
 	#[ORM\OneToMany(targetEntity: Visitation::class, mappedBy: 'teamMember')]
+	#[ORM\OrderBy(['timestamp' => 'DESC'])]
 	private Collection $visitations;
 
 	/**
