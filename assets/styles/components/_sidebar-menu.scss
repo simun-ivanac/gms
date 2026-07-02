@@ -16,6 +16,12 @@
 			background-color: #F5F5F5;
 			padding-left: 0.5rem;
 		}
+
+		&.disabled {
+			cursor: not-allowed;
+			pointer-events: none;
+			color: #6C757D;
+		}
 	}
 
 	&__item:last-child .menu-list__link {
