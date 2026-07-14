@@ -5,7 +5,7 @@
 {% include '_form/_errors.html.twig' with {'displayErrors': personalDataForm.vars.errors} only %}
 
 {{ form_start(personalDataForm, {
-	'attr': {'class': 'form form-team-member-personal-data'}
+	'attr': {'class': 'form form-team-member-personal-data' ~ (personalDataForm.vars.disabled ? ' disabled' : '')}
 })}}
 
 	{# Photo #}

@@ -7,6 +7,23 @@
 		cursor: default;
 	}
 
+	&.disabled {
+		#{$form}-file-browse {
+			display: none;
+		}
+
+		.radio-group,
+		.checkbox-group {
+			.form-label {
+				color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
+			}
+		}
+
+		.form-help {
+			display: none;
+		}
+	}
+
 	// Form Groups.
 	&-group {
 		margin-bottom: 1.75rem;
