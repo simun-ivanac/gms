@@ -11,24 +11,43 @@ domReady(async () => {
 	}
 
 	// On file upload.
-	const withImageGroupPresent = [...forms].filter((form) => form.querySelector('.form-group.image'));
+	const formWwithImageGroup = [...forms].filter((form) => form.querySelector('.form-group.image'));
 
-	if (withImageGroupPresent.length) {
+	if (formWwithImageGroup.length) {
 		const { OnFileUpload } = await import('./on-file-upload');
 
 		new OnFileUpload({
-			withImageGroupPresent,
+			formWwithImageGroup,
 			inputSelector: 'form-input',
 			imagePreviewSelector: 'image-preview-img',
 		}).init();
 	}
 
 	// Confirmation on form submit.
-	const requiresConfirmation = [...forms].filter((form) => form.getAttribute('data-confirmation'));
+	const formRequiresConfirmation = [...forms].filter((form) => form.getAttribute('data-confirmation'));
 
-	if (requiresConfirmation.length) {
+	if (formRequiresConfirmation.length) {
 		const { OnSubmit } = await import('./on-submit');
 
-		new OnSubmit({ requiresConfirmation }).init();
+		new OnSubmit({ formRequiresConfirmation }).init();
 	}
+
+	// Toggle form fields.
+	const formWithToggleableFields = [...forms].filter((form) => form.querySelector('.form-group.field-toggleable'));
+
+	if (formWithToggleableFields.length) {
+		const { ToggleFormFields } = await import('./toggle-form-fields');
+
+		new ToggleFormFields({ formWithToggleableFields }).init();
+	}
+
+	// Calculate total visitations in plan.
+	const formWithVisitations = [...forms].filter((form) => form.classList.contains('form-plan-data'));
+
+	if (formWithVisitations.length) {
+		const { CalculateTotalVisitations } = await import('./calculate-total-visitations');
+
+		new CalculateTotalVisitations({ formWithVisitations }).init();
+	}
+
 });

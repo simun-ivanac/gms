@@ -1,8 +1,8 @@
 export class OnSubmit {
 	constructor({
-		requiresConfirmation,
+		formRequiresConfirmation,
 	}) {
-		this.forms = requiresConfirmation;
+		this.forms = formRequiresConfirmation;
 	}
 
 	init = async () => {

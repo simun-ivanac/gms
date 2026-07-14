@@ -1,10 +1,10 @@
 export class OnFileUpload {
 	constructor({
-		withImageGroupPresent,
+		formWwithImageGroup,
 		inputSelector,
 		imagePreviewSelector,
 	}) {
-		this.forms = withImageGroupPresent;
+		this.forms = formWwithImageGroup;
 		this.inputSelector = inputSelector;
 		this.imagePreviewSelector = imagePreviewSelector;
 	}

@@ -25,6 +25,12 @@ export class Tabs {
 					event.preventDefault();
 					const target = button.getAttribute(`${this.tabButtonTargetAttribute}`);
 
+					// Update URL query parameter.
+					const searchParams = new URLSearchParams(window.location.search);
+					searchParams.set('tab', target);
+					window.history.pushState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+
+					// Toggle active class on buttons and contents.
 					tabButtons.forEach((btn) => btn.classList.remove(this.ACTIVE_BUTTON_CLASS));
 					button.classList.add(this.ACTIVE_BUTTON_CLASS);
 
