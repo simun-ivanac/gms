@@ -10,6 +10,8 @@ namespace App\Form;
 
 use App\Entity\TeamMember;
 use App\Entity\TeamMemberRole;
+use App\EventSubscriber\AddIdFieldSubscriber;
+use App\EventSubscriber\RemoveSubmitSubscriber;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -87,23 +89,9 @@ class TeamMemberPersonalDataFormType extends AbstractType
 				'multiple' => true,
 			])
 			->add('save', SubmitType::class)
+			->addEventSubscriber(new AddIdFieldSubscriber($options))
+			->addEventSubscriber(new RemoveSubmitSubscriber($options))
 		;
-
-		// If in edit mode, show team member ID.
-		if ($options['formAction'] === 'edit') {
-			$builder->add('id', TextType::class, [
-				'mapped' => false,
-				'attr' => [
-					'value' => isset($options['data']) ? ($options['data'])->getId() : null,
-					'disabled' => true,
-				],
-			]);
-		}
-
-		// Remove save button if editing member is not allowed.
-		if ($options['formAction'] === 'edit' && $options['disabled']) {
-			$builder->remove('save');
-		}
 	}
 
 	/**

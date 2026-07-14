@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Member;
+use App\EventSubscriber\AddIdFieldSubscriber;
+use App\EventSubscriber\RemoveSubmitSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -80,23 +82,9 @@ class MemberPersonalDataFormType extends AbstractType
 			])
 			->add('pin', IntegerType::class)
 			->add('save', SubmitType::class)
+			->addEventSubscriber(new AddIdFieldSubscriber($options))
+			->addEventSubscriber(new RemoveSubmitSubscriber($options))
 		;
-
-		// If in edit mode, show member ID.
-		if ($options['formAction'] === 'edit') {
-			$builder->add('id', TextType::class, [
-				'mapped' => false,
-				'attr' => [
-					'value' => isset($options['data']) ? ($options['data'])->getId() : null,
-					'disabled' => true,
-				],
-			]);
-		}
-
-		// Remove save button if editing member is not allowed.
-		if ($options['formAction'] === 'edit' && $options['disabled']) {
-			$builder->remove('save');
-		}
 	}
 
 	/**
