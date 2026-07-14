@@ -90,6 +90,37 @@
 				max-height: none;
 			}
 		}
+
+		&.price,
+		&.duration,
+		&.num-of-visitations-per-week .form-input-wrapper {
+			position: relative;
+		}
+
+		.input-tag {
+			position: absolute;
+			bottom: 1.25rem;
+			right: 2.5rem;
+			transform: translateY(50%);
+			pointer-events: none;
+			font-size: 0.938rem;
+			color: #8F8F8F;
+		}
+
+		&.num-of-visitations-per-week {
+			.total-visitations {
+				margin-top: 0.25rem;
+				font-size: 0.875rem;
+
+				&-value {
+					font-weight: 500;
+				}
+			}
+		}
+
+		&.hide-field {
+			display: none;
+		}
 	}
 
 	// Form Labels.

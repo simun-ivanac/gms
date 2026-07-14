@@ -47,7 +47,7 @@ class Plan
 	 */
 	#[ORM\Column]
 	#[Assert\NotBlank]
-	#[Assert\Positive]
+	#[Assert\PositiveOrZero]
 	private ?int $price = null;
 
 	/**
@@ -55,7 +55,7 @@ class Plan
 	 */
 	#[ORM\Column(length: 255)]
 	#[Assert\Currency]
-	private ?string $currency = null;
+	private ?string $currency = 'EUR';
 
 	/**
 	 * Duration in days.
@@ -69,7 +69,7 @@ class Plan
 	 * Are visitations limited? (yes: define manually limit, no: unlimited).
 	 */
 	#[ORM\Column]
-	#[Assert\NotBlank]
+	#[Assert\NotNull]
 	#[Assert\Type('bool')]
 	private ?bool $areVisitationsLimited = null;
 
@@ -85,7 +85,7 @@ class Plan
 	 */
 	#[ORM\Column]
 	#[Assert\Type('bool')]
-	private ?bool $isActive = null;
+	private ?bool $isActive = true;
 
 	/**
 	 * Get id.

@@ -1,0 +1,138 @@
+{# Override some default blocks #}
+{% form_theme planDataForm _self %}
+
+{# Global form errors #}
+{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.vars.errors} only %}
+
+{{ form_start(planDataForm, {
+	'attr': {'class': 'form form-plan-data' ~ (planDataForm.vars.disabled ? ' disabled' : '')}
+})}}
+
+	{# Plan ID #}
+	{% if planDataForm.id is defined %}
+		<div class="form-group id">
+			{{ form_label(planDataForm.id, 'Plan ID', {
+				'label_attr': {'class': 'form-label'}
+			})}}
+			{{ form_widget(planDataForm.id, {
+				'attr': {'class': 'form-input'}
+			})}}
+			{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.id.vars.errors} only %}
+		</div>
+	{% endif %}
+
+
+	{# Name #}
+	<div class="form-group name">
+		{{ form_label(planDataForm.name, 'Name *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(planDataForm.name, {
+			'attr': {'class': 'form-input'}
+		})}}
+		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.name.vars.errors} only %}
+	</div>
+
+	{# Type #}
+	<div class="form-group type">
+		<div class="form-label">Type *</div>
+		<div class="form-group-radio-options">
+			{%- block _plan_data_form_type_choice_widget_expanded -%}
+				{%- for child in planDataForm.type %}
+					<div class="radio-group">
+						{{- form_widget(child, {
+							'attr': {'class': 'form-radio'}
+						})-}}
+						{{- form_label(child, child.vars.label, {
+							'label_attr': {'class': 'form-label'}
+						})-}}
+					</div>
+				{% endfor -%}
+			{%- endblock _plan_data_form_type_choice_widget_expanded -%}
+		</div>
+		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.type.vars.errors} only %}
+	</div>
+
+	{# Price (in euros) #}
+	<div class="form-group price">
+		{{ form_label(planDataForm.price, 'Price (in euros) *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(planDataForm.price, {
+			'attr': {
+				'class': 'form-input',
+				'min': '0',
+			}
+		})}}
+		<span class="input-tag">€</span>
+		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.price.vars.errors} only %}
+	</div>
+
+	{# Duration (in days) #}
+	<div class="form-group duration">
+		{{ form_label(planDataForm.durationInDays, 'Duration (in days) *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+		{{ form_widget(planDataForm.durationInDays, {
+			'attr': {
+				'class': 'form-input',
+				'min': '1',
+			}
+		})}}
+		<span class="input-tag">day/s</span>
+		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.durationInDays.vars.errors} only %}
+	</div>
+
+	{# Allowed Visitations #}
+	<div class="form-group allowed-visitations field-toggleable" data-toggle-field="num-of-visitations-per-week">
+		<div class="form-label">Allowed Visitations *</div>
+		<div class="form-group-radio-options">
+			{%- block _plan_data_form_are_visitations_limited_choice_widget_expanded -%}
+				{%- for child in planDataForm.areVisitationsLimited %}
+					<div class="radio-group">
+						{{- form_widget(child, {
+							'attr': {'class': 'form-radio'}
+						})-}}
+						{{- form_label(child, child.vars.label, {
+							'label_attr': {'class': 'form-label'}
+						})-}}
+					</div>
+				{% endfor -%}
+			{%- endblock _plan_data_form_are_visitations_limited_choice_widget_expanded -%}
+		</div>
+		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.areVisitationsLimited.vars.errors} only %}
+	</div>
+
+	{# Number of Allowed Visitations per Week #}
+	<div class="form-group num-of-visitations-per-week {{ planDataForm.areVisitationsLimited.vars.data ? '' : 'hide-field' }}">
+		{{ form_label(planDataForm.numOfVisitationsPerWeek, 'Number of Allowed Visitations per Week *', {
+			'label_attr': {'class': 'form-label'}
+		})}}
+
+		<div class="form-input-wrapper">
+			{{ form_widget(planDataForm.numOfVisitationsPerWeek, {
+				'attr': {
+					'class': 'form-input',
+					'min': '1',
+				}
+			})}}
+			<span class="input-tag">time/s</span>
+		</div>
+		<div class="total-visitations">
+			<span class="total-visitations-label">Total visitations in plan duration:</span>
+			<span class="total-visitations-value">0 times</span>
+		</div>
+		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.numOfVisitationsPerWeek.vars.errors} only %}
+	</div>
+
+	{# Submit Button #}
+	{% if planDataForm.save is defined %}
+		<div class="form-group submit">
+			{{ form_widget(planDataForm.save, {
+				'label': planDataForm.id is defined ? 'Update' : 'Save',
+				'attr': {'class': 'button submit-btn'}
+			})}}
+		</div>
+	{% endif %}
+
+{{ form_end(planDataForm) }}

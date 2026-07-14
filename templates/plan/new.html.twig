@@ -1,0 +1,14 @@
+{% extends "base.html.twig" %}
+
+{# Title #}
+{% block title %}Add Plan{% endblock %}
+
+{# Content #}
+{% block content %}
+	<h1 class="heading main-heading heading-new-plan">Add plan</h1>
+	<div id="new-plan" class="new-plan">
+		{# Plan Data - form. #}
+		{{ include('_form/_plan_data.html.twig') }}
+	</div>
+{% endblock %}
+
