@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Entity\TeamMember;
 use App\Form\TeamMemberPersonalDataFormType;
-use App\Form\TeamMemberPasswordFormType;
 use App\Form\TeamMemberSettingsFormType;
 use App\Repository\TeamMemberRepository;
 use App\Service\ImageUploader;

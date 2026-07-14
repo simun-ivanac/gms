@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 /**
  * Class MemberController.
  */
@@ -58,11 +59,11 @@ final class MemberController extends AbstractController
 	public function new(Request $request, EntityManagerInterface $entityManager, ImageUploader $imageUploader): Response
 	{
 		$member = new Member();
-		$newMemberform = $this->createForm(MemberPersonalDataFormType::class, $member, ['formAction' => 'new', 'disabled' => false]);
-		$newMemberform->handleRequest($request);
+		$newMemberForm = $this->createForm(MemberPersonalDataFormType::class, $member, ['formAction' => 'new', 'disabled' => false]);
+		$newMemberForm->handleRequest($request);
 
-		if ($newMemberform->isSubmitted() && $newMemberform->isValid()) {
-			$imageFile = $newMemberform->get('photoFile')->getData();
+		if ($newMemberForm->isSubmitted() && $newMemberForm->isValid()) {
+			$imageFile = $newMemberForm->get('photoFile')->getData();
 
 			if ($imageFile) {
 				try {
@@ -90,7 +91,7 @@ final class MemberController extends AbstractController
 
 		return $this->render('member/new.html.twig', [
 			'member' => $member,
-			'personalDataForm' => $newMemberform,
+			'personalDataForm' => $newMemberForm,
 		]);
 	}
 
