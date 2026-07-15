@@ -34,7 +34,7 @@ class LoginSubscriber implements EventSubscriberInterface
 			throw new CustomUserMessageAuthenticationException('Ooh, you are unexpected user... nice try!');
 		}
 
-		if (!$teamMember->getIsActive() || $teamMember->getIsDeactivated()) {
+		if (!$teamMember->getIsActive()) {
 			throw new CustomUserMessageAuthenticationException('Your account is not active. Please contact your superiors.');
 		}
 	}

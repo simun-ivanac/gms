@@ -227,7 +227,7 @@ final class TeamMemberController extends AbstractController
 			);
 		}
 
-		$teamMember->setIsDeactivated(true);
+		$teamMember->setIsActive(false);
 		$entityManager->persist($teamMember);
 		$entityManager->flush();
 
@@ -270,7 +270,7 @@ final class TeamMemberController extends AbstractController
 			);
 		}
 
-		$teamMember->setIsDeactivated(false);
+		$teamMember->setIsActive(true);
 		$entityManager->persist($teamMember);
 		$entityManager->flush();
 

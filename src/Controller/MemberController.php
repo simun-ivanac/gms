@@ -219,7 +219,7 @@ final class MemberController extends AbstractController
 			);
 		}
 
-		$member->setIsDeactivated(true);
+		$member->setIsActive(false);
 		$entityManager->persist($member);
 		$entityManager->flush();
 
@@ -262,7 +262,7 @@ final class MemberController extends AbstractController
 			);
 		}
 
-		$member->setIsDeactivated(false);
+		$member->setIsActive(true);
 		$entityManager->persist($member);
 		$entityManager->flush();
 

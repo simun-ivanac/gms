@@ -34,15 +34,15 @@
 				<button type="submit" class="button reset-password-link">Send password reset link</button>
 			</form>
 		</div>
-		<div class="danger-zone-option deactivate-account">
-			<form action="{{ path(teamMember.isDeactivated ? 'team_member_activate' : 'team_member_deactivate', {id: teamMember.id}) }}" method="post" data-confirmation="true" data-event="{{ teamMember.isDeactivated ? 'activate' : 'deactivate' }}" class="form form-de-activate-team-member">
-				<input type="hidden" name="token" value="{{ csrf_token(teamMember.isDeactivated ? 'activate' : 'deactivate') }}" />
-				<button type="submit" class="button deactivate-account-btn">{{ teamMember.isDeactivated ? 'Reactivate' : 'Freeze' }} User</button>
+		<div class="danger-zone-option change-account-status">
+			<form action="{{ path(teamMember.isActive ? 'team_member_deactivate' : 'team_member_activate', {id: teamMember.id}) }}" method="post" data-confirmation="true" data-event="{{ teamMember.isActive ? 'deactivate' : 'activate' }}" class="form form-de-activate-team-member">
+				<input type="hidden" name="token" value="{{ csrf_token(teamMember.isActive ? 'deactivate' : 'activate') }}" />
+				<button type="submit" class="button change-account-status-btn">{{ teamMember.isActive ? 'Deactivate' : 'Reactivate' }} User</button>
 			</form>
 			<p class="action-description">
-				{{teamMember.isDeactivated ?
-					'The user account is in suspend mode. It can be reactivated at any time.' :
-					'Put user account in suspend mode. It can be reactivated at any time.'
+				{{teamMember.isActive ?
+					'Put user account in suspend mode. It can be reactivated at any time.' :
+					'The user account is in suspend mode. It can be reactivated at any time.'
 				}}
 			</p>
 		</div>
