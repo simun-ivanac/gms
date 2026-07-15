@@ -54,7 +54,21 @@ class PlanDataFormType extends AbstractType
 				'expanded' => true,
 				'multiple' => false,
 			])
-			->add('numOfVisitationsPerWeek', IntegerType::class, [
+			->add('numOfVisitations', IntegerType::class, [
+				'required' => false,
+			])
+			->add('timePeriod', ChoiceType::class, [
+				'placeholder' => '-- set time period --',
+				'placeholder_attr' => [
+					'disabled' => 'disabled',
+					'selected' => 'selected',
+				],
+				'choices'  => [
+					'per day' => 'daily',
+					'per week' => 'weekly',
+					'per month' => 'monthly',
+					'in whole duration' => 'in-total',
+				],
 				'required' => false,
 			])
 			->add('save', SubmitType::class)
@@ -62,14 +76,15 @@ class PlanDataFormType extends AbstractType
 			->addEventSubscriber(new RemoveSubmitSubscriber($options))
 		;
 
-		// If visitations are unlimited in plan, set weekly visitations to null.
+		// If visitations are unlimited in plan, set number of visitations to null.
 		$builder->addEventListener(
 			FormEvents::SUBMIT,
 			function (SubmitEvent $event): void {
 				$data = $event->getData();
 
 				if (!$data->getAreVisitationsLimited()) {
-					$data->setNumOfVisitationsPerWeek(null);
+					$data->setNumOfVisitations(null);
+					$data->setTimePeriod(null);
 				}
 			}
 		);

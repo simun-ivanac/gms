@@ -51,7 +51,10 @@ final class PlanController extends AbstractController
 	public function new(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$plan = new Plan();
-		$newPlanForm = $this->createForm(PlanDataFormType::class, $plan, ['formAction' => 'new', 'disabled' => false]);
+		$newPlanForm = $this->createForm(PlanDataFormType::class, $plan, [
+			'formAction' => 'new',
+			'disabled' => false
+		]);
 		$newPlanForm->handleRequest($request);
 
 		if ($newPlanForm->isSubmitted() && $newPlanForm->isValid()) {

@@ -84,7 +84,7 @@
 	</div>
 
 	{# Allowed Visitations #}
-	<div class="form-group allowed-visitations field-toggleable" data-toggle-field="num-of-visitations-per-week">
+	<div class="form-group allowed-visitations field-toggleable" data-toggle-field="set-visitations">
 		<div class="form-label">Allowed Visitations *</div>
 		<div class="form-group-radio-options">
 			{%- block _plan_data_form_are_visitations_limited_choice_widget_expanded -%}
@@ -103,26 +103,43 @@
 		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.areVisitationsLimited.vars.errors} only %}
 	</div>
 
-	{# Number of Allowed Visitations per Week #}
-	<div class="form-group num-of-visitations-per-week {{ planDataForm.areVisitationsLimited.vars.data ? '' : 'hide-field' }}">
-		{{ form_label(planDataForm.numOfVisitationsPerWeek, 'Number of Allowed Visitations per Week *', {
-			'label_attr': {'class': 'form-label'}
-		})}}
+	{# Number of Allowed Visitations per Time Period #}
+	<div class="form-group set-visitations {{ planDataForm.areVisitationsLimited.vars.data ? '' : 'hide-field1' }}">
+		<div class="two-cols">
+			{# Number of Allowed Visitations #}
+			<div class="col-1 num-of-visitations">
+				{{ form_label(planDataForm.numOfVisitations, 'Number of Allowed Visitations *', {
+					'label_attr': {'class': 'form-label'}
+				})}}
+				<div class="form-input-wrapper">
+					{{ form_widget(planDataForm.numOfVisitations, {
+						'attr': {
+							'class': 'form-input',
+							'min': '1',
+						}
+					})}}
+					<span class="input-tag">time/s</span>
+				</div>
+				{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.numOfVisitations.vars.errors} only %}
+			</div>
 
-		<div class="form-input-wrapper">
-			{{ form_widget(planDataForm.numOfVisitationsPerWeek, {
-				'attr': {
-					'class': 'form-input',
-					'min': '1',
-				}
-			})}}
-			<span class="input-tag">time/s</span>
+			{# Time Period #}
+			<div class="col-2 time-period">
+				{{ form_label(planDataForm.timePeriod, 'Time Period *', {
+					'label_attr': {'class': 'form-label'}
+				})}}
+				<div class="form-select-dropdown-border">
+					{{ form_widget(planDataForm.timePeriod, {
+						'attr': {'class': 'form-select'}
+					})}}
+				</div>
+				{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.timePeriod.vars.errors} only %}
+			</div>
 		</div>
 		<div class="total-visitations">
 			<span class="total-visitations-label">Total visitations in plan duration:</span>
 			<span class="total-visitations-value">0 times</span>
 		</div>
-		{% include '_form/_errors.html.twig' with {'displayErrors': planDataForm.numOfVisitationsPerWeek.vars.errors} only %}
 	</div>
 
 	{# Submit Button #}

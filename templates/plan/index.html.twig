@@ -50,7 +50,7 @@
 							<td class="table-data">{{ plan.type }}</td>
 							<td class="table-data">{{ plan.price ~ ' ' ~ plan.currency|lower }}</td>
 							<td class="table-data">{{ plan.durationInDays ~ ' days' }}</td>
-							<td class="table-data">{{ plan.areVisitationsLimited ? plan.numOfVisitationsPerWeek ~ ' x per week' : 'unlimited' }}</td>
+							<td class="table-data">{{ plan.areVisitationsLimited ? plan.numOfVisitations ~ ' ' ~ plan.timePeriod : 'unlimited' }}</td>
 							<td class="table-data">0</td>
 							<td class="table-data">{{ plan.isActive ? 'active' : 'inactive' }}</td>
 							<td class="table-data edit">

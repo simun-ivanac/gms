@@ -92,9 +92,18 @@
 		}
 
 		&.price,
-		&.duration,
-		&.num-of-visitations-per-week .form-input-wrapper {
+		&.duration {
 			position: relative;
+		}
+
+		&.set-visitations .form-input-wrapper {
+			position: relative;
+		}
+
+		&.set-visitations .two-cols {
+			display: grid;
+			gap: 1.5rem;
+			grid-template-columns: 1fr 1fr;
 		}
 
 		.input-tag {
@@ -107,7 +116,7 @@
 			color: #8F8F8F;
 		}
 
-		&.num-of-visitations-per-week {
+		&.set-visitations {
 			.total-visitations {
 				margin-top: 0.25rem;
 				font-size: 0.875rem;

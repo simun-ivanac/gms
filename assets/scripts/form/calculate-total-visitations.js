@@ -7,34 +7,83 @@ export class CalculateTotalVisitations {
 
 	init = () => {
 		this.forms.forEach((form) => {
-			const numOfWeeklyVisitations = form.querySelector('.form-group.num-of-visitations-per-week');
-			const duration = form.querySelector('.form-group.duration');
+			const durationEl = form.querySelector('.form-group.duration');
+			const numOfVisitationsEl = form.querySelector('.num-of-visitations');
+			const timePeriodEl = form.querySelector('.time-period');
+			const totalVisitationsEl = form.querySelector('.total-visitations');
 
-			if (!numOfWeeklyVisitations || !duration) {
+			if (!durationEl || !numOfVisitationsEl || !timePeriodEl || !totalVisitationsEl) {
 				return;
 			}
 
-			const numOfWeeklyVisitationsInput = numOfWeeklyVisitations.querySelector('input');
-			const durationInput = duration.querySelector('input');
+			const numOfVisitationsInput = numOfVisitationsEl.querySelector('input');
+			const durationInput = durationEl.querySelector('input');
+			const timePeriodSelect = timePeriodEl.querySelector('select');
 
-			if (!numOfWeeklyVisitationsInput || !durationInput) {
+			if (!durationInput || !numOfVisitationsInput || !timePeriodSelect) {
 				return;
 			}
 
-			[numOfWeeklyVisitationsInput, durationInput].forEach((input) => {
-				input.addEventListener('input', () => {
-					const durationValue = parseInt(durationInput.value);
-					const numOfWeeklyVisitationsValue = parseInt(numOfWeeklyVisitationsInput.value);
-					let totalVisitations = 0;
+			// Initial calculation of total visitations.
+			const initResult = this.calculateTotalVisitations(
+				durationInput.value,
+				numOfVisitationsInput.value,
+				timePeriodSelect.value
+			);
 
-					if (!isNaN(Number(durationValue)) && !isNaN(Number(numOfWeeklyVisitationsValue))) {
-						const coefficientPerDay = 7 / numOfWeeklyVisitationsValue;
-						totalVisitations = durationValue / coefficientPerDay;
-					}
+			totalVisitationsEl.querySelector('.total-visitations-value').textContent = initResult + ' times';
 
-					numOfWeeklyVisitations.querySelector('.total-visitations-value').textContent = Math.round(totalVisitations) + ' times';
+			// Calculate total visitations on change.
+			[durationInput, numOfVisitationsInput, timePeriodSelect].forEach((el) => {
+				el.addEventListener('input', () => {
+					const result = this.calculateTotalVisitations(
+						durationInput.value,
+						numOfVisitationsInput.value,
+						timePeriodSelect.value
+					);
+
+					totalVisitationsEl.querySelector('.total-visitations-value').textContent = result + ' times';
 				});
 			});
 		});
 	};
+
+	calculateTotalVisitations = (durationVal, numOfVisitationsVal, timePeriodVal) => {
+		const duration = parseInt(durationVal);
+		const numOfVisitations = parseInt(numOfVisitationsVal);
+		const timePeriod = timePeriodVal;
+		let totalVisitations = 0;
+
+		if (isNaN(Number(duration)) || isNaN(Number(numOfVisitations))) {
+			return totalVisitations;
+		}
+
+		if (timePeriod === 'in-total') {
+			return numOfVisitations;
+		}
+
+		const coefficientPerDay = this.calculateCoefficientPerDay(timePeriod, numOfVisitations);
+		totalVisitations = duration / coefficientPerDay;
+
+		return Math.round(totalVisitations);
+	};
+
+	calculateCoefficientPerDay = (timePeriod, numOfVisitations) => {
+		let timePeriodInNumbers = 0;
+
+		switch (timePeriod) {
+			case 'daily':
+				timePeriodInNumbers = 1;
+				break;
+			case 'weekly':
+				timePeriodInNumbers = 7;
+				break;
+			case 'monthly':
+				timePeriodInNumbers = 30;
+				break;
+		}
+
+		return timePeriodInNumbers / numOfVisitations;
+	};
+
 }

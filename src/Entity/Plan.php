@@ -74,11 +74,18 @@ class Plan
 	private ?bool $areVisitationsLimited = null;
 
 	/**
-	 * Number of visitations per week (if limited).
+	 * Number of visitations (if limited).
 	 */
 	#[ORM\Column(nullable: true)]
 	#[Assert\Positive]
-	private ?int $numOfVisitationsPerWeek = null;
+	private ?int $numOfVisitations = null;
+
+	/**
+	 * Time period.
+	 */
+	#[ORM\Column(length: 255, nullable: true)]
+	#[Assert\Choice(['daily', 'weekly', 'monthly', 'in-total'])]
+	private ?string $timePeriod = null;
 
 	/**
 	 * Is plan active.
@@ -242,25 +249,49 @@ class Plan
 	}
 
 	/**
-	 * Get number of visitations per week.
+	 * Get number of allowed visitations.
 	 *
 	 * @return int|null
 	 */
-	public function getNumOfVisitationsPerWeek(): ?int
+	public function getNumOfVisitations(): ?int
 	{
-		return $this->numOfVisitationsPerWeek;
+		return $this->numOfVisitations;
 	}
 
 	/**
-	 * Set number of visitations per week.
+	 * Set number of allowed visitations.
 	 *
-	 * @param int|null $numOfVisitationsPerWeek Number of visitations per week.
+	 * @param int|null $numOfVisitations Number of allowed visitations.
 	 *
 	 * @return static
 	 */
-	public function setNumOfVisitationsPerWeek(?int $numOfVisitationsPerWeek): static
+	public function setNumOfVisitations(?int $numOfVisitations): static
 	{
-		$this->numOfVisitationsPerWeek = $numOfVisitationsPerWeek;
+		$this->numOfVisitations = $numOfVisitations;
+
+		return $this;
+	}
+
+	/**
+	 * Get time period.
+	 *
+	 * @return string|null
+	 */
+	public function getTimePeriod(): ?string
+	{
+		return $this->timePeriod;
+	}
+
+	/**
+	 * Set time period.
+	 *
+	 * @param string|null $timePeriod Time period.
+	 *
+	 * @return static
+	 */
+	public function setTimePeriod(?string $timePeriod): static
+	{
+		$this->timePeriod = $timePeriod;
 
 		return $this;
 	}
