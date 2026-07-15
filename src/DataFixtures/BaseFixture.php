@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Factory\MemberFactory;
+use App\Factory\PlanFactory;
 use App\Factory\TeamMemberFactory;
 use App\Factory\TeamMemberRoleFactory;
 use App\Factory\VisitationFactory;
@@ -46,6 +47,7 @@ class BaseFixture extends Fixture
 		$this->createMembers(30);
 		$this->createOwner(['owner' => $teamMemberRoles['owner']]);
 		$this->createTeamMembers(array_diff_key($teamMemberRoles, ['owner' => true]), 10);
+		$this->createPlans(20);
 	}
 
 	/**
@@ -138,5 +140,17 @@ class BaseFixture extends Fixture
 					'visitations' => VisitationFactory::new()->many(10, 20),
 				];
 			});
+	}
+
+	/**
+	 * Create plans.
+	 *
+	 * @param int $number Number of plans.
+	 *
+	 * @return void
+	 */
+	public function createPlans(int $number): void
+	{
+		PlanFactory::new()->many($number)->create();
 	}
 }
