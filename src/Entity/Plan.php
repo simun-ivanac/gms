@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\PlanRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Timestampable;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
@@ -123,6 +125,22 @@ class Plan
 	 */
 	#[ORM\Column(nullable: true)]
 	private ?\DateTimeImmutable $deletedAt = null;
+
+	/**
+	 * Memberships.
+	 *
+	 * @var Collection<int, Membership>
+	 */
+	#[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'planId')]
+	private Collection $memberships;
+
+	/**
+	 * Constructor.
+	 */
+	public function __construct()
+	{
+		$this->memberships = new ArrayCollection();
+	}
 
 	/**
 	 * Get id.
@@ -442,6 +460,51 @@ class Plan
 	public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
 	{
 		$this->deletedAt = $deletedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get memberships (as collection).
+	 *
+	 * @return Collection<int, Membership>
+	 */
+	public function getMemberships(): Collection
+	{
+		return $this->memberships;
+	}
+
+	/**
+	 * Add membership.
+	 *
+	 * @param Membership $membership Membership to add.
+	 *
+	 * @return static
+	 */
+	public function addMembership(Membership $membership): static
+	{
+		if (!$this->memberships->contains($membership)) {
+			$this->memberships->add($membership);
+			$membership->setPlanId($this);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Remove membership.
+	 *
+	 * @param Membership $membership Membership to remove.
+	 *
+	 * @return static
+	 */
+	public function removeMembership(Membership $membership): static
+	{
+		if ($this->memberships->removeElement($membership)) {
+			if ($membership->getPlanId() === $this) {
+				$membership->setPlanId(null);
+			}
+		}
 
 		return $this;
 	}

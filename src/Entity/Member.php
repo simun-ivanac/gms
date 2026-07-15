@@ -160,11 +160,20 @@ class Member
 	private Collection $visitations;
 
 	/**
+	 * Memberships.
+	 *
+	 * @var Collection<int, Membership>
+	 */
+	#[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'memberId')]
+	private Collection $memberships;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct()
 	{
 		$this->visitations = new ArrayCollection();
+		$this->memberships = new ArrayCollection();
 	}
 
 	/**
@@ -552,6 +561,51 @@ class Member
 		if ($this->visitations->removeElement($visitation)) {
 			if ($visitation->getMember() === $this) {
 				$visitation->setMember(null);
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Get memberships (as collection).
+	 *
+	 * @return Collection<int, Membership>
+	 */
+	public function getMemberships(): Collection
+	{
+		return $this->memberships;
+	}
+
+	/**
+	 * Add membership.
+	 *
+	 * @param Membership $membership Membership to add.
+	 *
+	 * @return static
+	 */
+	public function addMembership(Membership $membership): static
+	{
+		if (!$this->memberships->contains($membership)) {
+			$this->memberships->add($membership);
+			$membership->setMemberId($this);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Remove membership.
+	 *
+	 * @param Membership $membership Membership to remove.
+	 *
+	 * @return static
+	 */
+	public function removeMembership(Membership $membership): static
+	{
+		if ($this->memberships->removeElement($membership)) {
+			if ($membership->getMemberId() === $this) {
+				$membership->setMemberId(null);
 			}
 		}
 
