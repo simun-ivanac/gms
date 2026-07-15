@@ -74,4 +74,47 @@ final class PlanController extends AbstractController
 			'planDataForm' => $newPlanForm,
 		]);
 	}
+
+	/**
+	 * Edit existing Plan.
+	 *
+	 * @param Plan                   $plan          Plan entity.
+	 * @param Request                $request       HTTP request.
+	 * @param EntityManagerInterface $entityManager Entity Manager.
+	 *
+	 * @return Response HTTP response.
+	 */
+	#[Route(path: '/plan/{id<\d+>}', name: 'plan_edit', methods: ['GET', 'POST'])]
+	public function edit(
+		Plan $plan,
+		Request $request,
+		EntityManagerInterface $entityManager,
+	): Response {
+		$planId = $plan->getId();
+
+		// Plan data form.
+		$planDataForm = $this->createForm(PlanDataFormType::class, $plan, [
+			'formAction' => 'edit',
+			'disabled' => true
+		]);
+		$planDataForm->handleRequest($request);
+
+		if ($planDataForm->isSubmitted() && $planDataForm->isValid()) {
+			$entityManager->persist($plan);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Plan updated successfully!');
+
+			return $this->redirectToRoute(
+				'plan_edit',
+				['id' => $planId],
+				Response::HTTP_SEE_OTHER
+			);
+		}
+
+		return $this->render('plan/edit.html.twig', [
+			'plan' => $plan,
+			'planDataForm' => $planDataForm,
+		]);
+	}
 }

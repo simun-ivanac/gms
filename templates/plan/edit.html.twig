@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{# Title #}
+{% block title %}Edit Plan{% endblock %}
+
+{# Content #}
+{% block content %}
+	<h1 class="heading main-heading heading-edit-plan">Edit Plan</h1>
+	<div id="edit-plan" class="edit-plan">
+		<div class="tabs">
+			<div class="tablinks">
+				<a href="#details" class="tab-btn active" data-target="details">Details</a>
+				<a href="#members" class="tab-btn" data-target="members">Members</a>
+				<a href="#settings" class="tab-btn" data-target="settings">Settings</a>
+			</div>
+			<div class="tab-content active" data-tab="details">
+				{{ include('plan/tabs/_details.html.twig') }}
+			</div>
+			<div class="tab-content" data-tab="members">
+				{{ include('plan/tabs/_members.html.twig') }}
+			</div>
+			<div class="tab-content" data-tab="settings">
+				{{ include('plan/tabs/_settings.html.twig') }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
