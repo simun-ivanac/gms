@@ -10,12 +10,15 @@ namespace App\Entity;
 
 use App\Repository\PlanRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Timestampable;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Plan.
  */
 #[ORM\Entity(repositoryClass: PlanRepository::class)]
+#[SoftDeleteable(fieldName: 'deletedAt', timeAware: false, hardDelete: false)]
 class Plan
 {
 	/**
@@ -93,6 +96,33 @@ class Plan
 	#[ORM\Column]
 	#[Assert\Type('bool')]
 	private ?bool $isActive = true;
+
+	/**
+	 * Status changed at.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Timestampable(on: 'change', field: 'isActive')]
+	private ?\DateTimeImmutable $statusChangedAt = null;
+
+	/**
+	 * Created at.
+	 */
+	#[ORM\Column]
+	#[Timestampable(on: 'create')]
+	private ?\DateTimeImmutable $createdAt = null;
+
+	/**
+	 * Updated at.
+	 */
+	#[ORM\Column]
+	#[Timestampable(on: 'update')]
+	private ?\DateTimeImmutable $updatedAt = null;
+
+	/**
+	 * Deleted at.
+	 */
+	#[ORM\Column(nullable: true)]
+	private ?\DateTimeImmutable $deletedAt = null;
 
 	/**
 	 * Get id.
@@ -316,6 +346,102 @@ class Plan
 	public function setIsActive(bool $isActive): static
 	{
 		$this->isActive = $isActive;
+
+		return $this;
+	}
+
+	/**
+	 * Get status changed at datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getStatusChangedAt(): ?\DateTimeImmutable
+	{
+		return $this->statusChangedAt;
+	}
+
+	/**
+	 * Set status changed at datetime.
+	 *
+	 * @param \DateTimeImmutable|null $statusChangedAt Status changed at.
+	 *
+	 * @return static
+	 */
+	public function setStatusChangedAt(?\DateTimeImmutable $statusChangedAt): static
+	{
+		$this->statusChangedAt = $statusChangedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get created datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getCreatedAt(): ?\DateTimeImmutable
+	{
+		return $this->createdAt;
+	}
+
+	/**
+	 * Set created datetime.
+	 *
+	 * @param \DateTimeImmutable $createdAt Created at.
+	 *
+	 * @return static
+	 */
+	public function setCreatedAt(\DateTimeImmutable $createdAt): static
+	{
+		$this->createdAt = $createdAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get updated datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getUpdatedAt(): ?\DateTimeImmutable
+	{
+		return $this->updatedAt;
+	}
+
+	/**
+	 * Set updated datetime.
+	 *
+	 * @param \DateTimeImmutable $updatedAt Updated at.
+	 *
+	 * @return static
+	 */
+	public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+	{
+		$this->updatedAt = $updatedAt;
+
+		return $this;
+	}
+
+	/**
+	 * Get deleted datetime.
+	 *
+	 * @return \DateTimeImmutable|null
+	 */
+	public function getDeletedAt(): ?\DateTimeImmutable
+	{
+		return $this->deletedAt;
+	}
+
+	/**
+	 * Set deleted datetime.
+	 *
+	 * @param \DateTimeImmutable|null $deletedAt Deleted at.
+	 *
+	 * @return static
+	 */
+	public function setDeletedAt(?\DateTimeImmutable $deletedAt): static
+	{
+		$this->deletedAt = $deletedAt;
 
 		return $this;
 	}

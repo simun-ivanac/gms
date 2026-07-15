@@ -123,24 +123,24 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	private ?string $pin = null;
 
 	/**
-	 * Is team member active.
-	 */
-	#[ORM\Column(nullable: true)]
-	#[Assert\Type('bool')]
-	private ?bool $isActive = null;
-
-	/**
-	 * Is member deactivated.
-	 */
-	#[ORM\Column(nullable: true)]
-	#[Assert\Type('bool')]
-	private ?bool $isDeactivated = null;
-
-	/**
 	 * The hashed password.
 	 */
 	#[ORM\Column(nullable: true)]
 	private ?string $password = null;
+
+	/**
+	 * Is team member active.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Assert\Type('bool')]
+	private ?bool $isActive = true;
+
+	/**
+	 * Status changed at.
+	 */
+	#[ORM\Column(nullable: true)]
+	#[Timestampable(on: 'change', field: 'isActive')]
+	private ?\DateTimeImmutable $statusChangedAt = null;
 
 	/**
 	 * Created at.
@@ -155,13 +155,6 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	#[Timestampable(on: 'update')]
 	private ?\DateTimeImmutable $updatedAt = null;
-
-	/**
-	 * Deactivated at.
-	 */
-	#[ORM\Column(nullable: true)]
-	#[Timestampable(on: 'change', field: 'isDeactivated', value: true)]
-	private ?\DateTimeImmutable $deactivatedAt = null;
 
 	/**
 	 * Deleted at.
@@ -422,6 +415,32 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	}
 
 	/**
+	 * Get password.
+	 *
+	 * @see PasswordAuthenticatedUserInterface
+	 *
+	 * @return string|null
+	 */
+	public function getPassword(): ?string
+	{
+		return $this->password;
+	}
+
+	/**
+	 * Set password.
+	 *
+	 * @param string $password Password.
+	 *
+	 * @return static
+	 */
+	public function setPassword(string $password): static
+	{
+		$this->password = $password;
+
+		return $this;
+	}
+
+	/**
 	 * Get is active.
 	 *
 	 * @return bool|null
@@ -446,51 +465,25 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	}
 
 	/**
-	 * Get is deactivated.
+	 * Get status changed at datetime.
 	 *
-	 * @return bool|null
+	 * @return \DateTimeImmutable|null
 	 */
-	public function getIsDeactivated(): ?bool
+	public function getStatusChangedAt(): ?\DateTimeImmutable
 	{
-		return $this->isDeactivated;
+		return $this->statusChangedAt;
 	}
 
 	/**
-	 * Set is deactivated.
+	 * Set status changed at datetime.
 	 *
-	 * @param bool $isDeactivated Is deactivated.
+	 * @param \DateTimeImmutable|null $statusChangedAt Status changed at.
 	 *
 	 * @return static
 	 */
-	public function setIsDeactivated(?bool $isDeactivated): static
+	public function setStatusChangedAt(?\DateTimeImmutable $statusChangedAt): static
 	{
-		$this->isDeactivated = $isDeactivated;
-
-		return $this;
-	}
-
-	/**
-	 * Get password.
-	 *
-	 * @see PasswordAuthenticatedUserInterface
-	 *
-	 * @return string|null
-	 */
-	public function getPassword(): ?string
-	{
-		return $this->password;
-	}
-
-	/**
-	 * Set password.
-	 *
-	 * @param string $password Password.
-	 *
-	 * @return static
-	 */
-	public function setPassword(string $password): static
-	{
-		$this->password = $password;
+		$this->statusChangedAt = $statusChangedAt;
 
 		return $this;
 	}
@@ -539,30 +532,6 @@ class TeamMember implements UserInterface, PasswordAuthenticatedUserInterface
 	public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
 	{
 		$this->updatedAt = $updatedAt;
-
-		return $this;
-	}
-
-	/**
-	 * Get deactivated datetime.
-	 *
-	 * @return \DateTimeImmutable|null
-	 */
-	public function getDeactivatedAt(): ?\DateTimeImmutable
-	{
-		return $this->deactivatedAt;
-	}
-
-	/**
-	 * Set deactivated datetime.
-	 *
-	 * @param \DateTimeImmutable $deactivatedAt Deactivated at.
-	 *
-	 * @return static
-	 */
-	public function setDeactivatedAt(\DateTimeImmutable $deactivatedAt): static
-	{
-		$this->deactivatedAt = $deactivatedAt;
 
 		return $this;
 	}

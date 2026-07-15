@@ -124,11 +124,11 @@ class Member
 	private ?bool $isActive = null;
 
 	/**
-	 * Is member deactivated.
+	 * Status changed at.
 	 */
 	#[ORM\Column(nullable: true)]
-	#[Assert\Type('bool')]
-	private ?bool $isDeactivated = null;
+	#[Timestampable(on: 'change', field: 'isActive')]
+	private ?\DateTimeImmutable $statusChangedAt = null;
 
 	/**
 	 * Created at.
@@ -143,13 +143,6 @@ class Member
 	#[ORM\Column]
 	#[Timestampable(on: 'update')]
 	private ?\DateTimeImmutable $updatedAt = null;
-
-	/**
-	 * Deactivated at.
-	 */
-	#[ORM\Column(nullable: true)]
-	#[Timestampable(on: 'change', field: 'isDeactivated', value: true)]
-	private ?\DateTimeImmutable $deactivatedAt = null;
 
 	/**
 	 * Deleted at.
@@ -425,25 +418,25 @@ class Member
 	}
 
 	/**
-	 * Get is deactivated.
+	 * Get status changed datetime.
 	 *
-	 * @return bool|null
+	 * @return \DateTimeImmutable|null
 	 */
-	public function getIsDeactivated(): ?bool
+	public function getStatusChangedAt(): ?\DateTimeImmutable
 	{
-		return $this->isDeactivated;
+		return $this->statusChangedAt;
 	}
 
 	/**
-	 * Set is deactivated.
+	 * Set status changed datetime.
 	 *
-	 * @param bool $isDeactivated Is deactivated.
+	 * @param \DateTimeImmutable|null $statusChangedAt Status changed at.
 	 *
 	 * @return static
 	 */
-	public function setIsDeactivated(?bool $isDeactivated): static
+	public function setStatusChangedAt(?\DateTimeImmutable $statusChangedAt): static
 	{
-		$this->isDeactivated = $isDeactivated;
+		$this->statusChangedAt = $statusChangedAt;
 
 		return $this;
 	}
@@ -492,30 +485,6 @@ class Member
 	public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
 	{
 		$this->updatedAt = $updatedAt;
-
-		return $this;
-	}
-
-	/**
-	 * Get deactivated datetime.
-	 *
-	 * @return \DateTimeImmutable|null
-	 */
-	public function getDeactivatedAt(): ?\DateTimeImmutable
-	{
-		return $this->deactivatedAt;
-	}
-
-	/**
-	 * Set deactivated datetime.
-	 *
-	 * @param \DateTimeImmutable $deactivatedAt Deactivated at.
-	 *
-	 * @return static
-	 */
-	public function setDeactivatedAt(\DateTimeImmutable $deactivatedAt): static
-	{
-		$this->deactivatedAt = $deactivatedAt;
 
 		return $this;
 	}
