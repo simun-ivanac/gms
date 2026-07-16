@@ -131,7 +131,7 @@ class Plan
 	 *
 	 * @var Collection<int, Membership>
 	 */
-	#[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'planId')]
+	#[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'plan')]
 	private Collection $memberships;
 
 	/**
@@ -485,7 +485,7 @@ class Plan
 	{
 		if (!$this->memberships->contains($membership)) {
 			$this->memberships->add($membership);
-			$membership->setPlanId($this);
+			$membership->setPlan($this);
 		}
 
 		return $this;
@@ -501,8 +501,8 @@ class Plan
 	public function removeMembership(Membership $membership): static
 	{
 		if ($this->memberships->removeElement($membership)) {
-			if ($membership->getPlanId() === $this) {
-				$membership->setPlanId(null);
+			if ($membership->getPlan() === $this) {
+				$membership->setPlan(null);
 			}
 		}
 

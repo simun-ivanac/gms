@@ -38,18 +38,18 @@ class Membership
 	private ?\DateTime $endDate = null;
 
 	/**
-	 * Member id.
+	 * Member subscriber.
 	 */
 	#[ORM\ManyToOne(inversedBy: 'memberships')]
 	#[ORM\JoinColumn(nullable: false)]
-	private ?Member $memberId = null;
+	private ?Member $memberSubscriber = null;
 
 	/**
-	 * Plan id.
+	 * Plan.
 	 */
 	#[ORM\ManyToOne(inversedBy: 'memberships')]
 	#[ORM\JoinColumn(nullable: true)]
-	private ?Plan $planId = null;
+	private ?Plan $plan = null;
 
 	/**
 	 * Get id.
@@ -110,49 +110,49 @@ class Membership
 	}
 
 	/**
-	 * Get member id.
+	 * Get member subscriber.
 	 *
 	 * @return Member|null
 	 */
-	public function getMemberId(): ?Member
+	public function getMemberSubscriber(): ?Member
 	{
-		return $this->memberId;
+		return $this->memberSubscriber;
 	}
 
 	/**
-	 * Set member id.
+	 * Set member subscriber.
 	 *
-	 * @param Member|null $memberId
+	 * @param Member|null $member
 	 *
 	 * @return static
 	 */
-	public function setMemberId(?Member $memberId): static
+	public function setMemberSubscriber(?Member $memberSubscriber): static
 	{
-		$this->memberId = $memberId;
+		$this->memberSubscriber = $memberSubscriber;
 
 		return $this;
 	}
 
 	/**
-	 * Get plan id.
+	 * Get plan.
 	 *
 	 * @return Plan|null
 	 */
-	public function getPlanId(): ?Plan
+	public function getPlan(): ?Plan
 	{
-		return $this->planId;
+		return $this->plan;
 	}
 
 	/**
-	 * Set plan id.
+	 * Set plan.
 	 *
-	 * @param Plan|null $planId
+	 * @param Plan|null $plan
 	 *
 	 * @return static
 	 */
-	public function setPlanId(?Plan $planId): static
+	public function setPlan(?Plan $plan): static
 	{
-		$this->planId = $planId;
+		$this->plan = $plan;
 
 		return $this;
 	}

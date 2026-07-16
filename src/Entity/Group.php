@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Group.
  */
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
-#[ORM\Table(name: '`group`')]
 class Group
 {
 	/**

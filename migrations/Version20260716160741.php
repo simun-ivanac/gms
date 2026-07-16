@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Migration Version20260715155656.
+ * Migration Version20260716160741.
  */
 
 declare(strict_types=1);
@@ -12,9 +12,9 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Class Version20260715155656.
+ * Class Version20260716160741.
  */
-final class Version20260715155656 extends AbstractMigration
+final class Version20260716160741 extends AbstractMigration
 {
 	/**
 	 * Get the description of the migration.
@@ -39,7 +39,7 @@ final class Version20260715155656 extends AbstractMigration
 		// phpcs:disable
 		$this->addSql('CREATE TABLE `group` (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, price INT NOT NULL, currency VARCHAR(255) NOT NULL, repeatability VARCHAR(255) NOT NULL, num_of_sessions_per_week INT DEFAULT NULL, payment_frequency_in_days INT DEFAULT NULL, is_active TINYINT(1) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 		$this->addSql('CREATE TABLE `member` (id INT AUTO_INCREMENT NOT NULL, photo_filename VARCHAR(255) DEFAULT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, date_of_birth DATE NOT NULL, gender VARCHAR(255) DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, phone_number VARCHAR(255) DEFAULT NULL, pin BIGINT NOT NULL, is_active TINYINT(1) DEFAULT NULL, status_changed_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', deleted_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-		$this->addSql('CREATE TABLE membership (id INT AUTO_INCREMENT NOT NULL, member_id_id INT NOT NULL, plan_id_id INT DEFAULT NULL, start_date DATETIME NOT NULL, end_date DATETIME NOT NULL, INDEX IDX_86FFD2851D650BA4 (member_id_id), INDEX IDX_86FFD2852CE2DBAB (plan_id_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+		$this->addSql('CREATE TABLE membership (id INT AUTO_INCREMENT NOT NULL, member_subscriber_id INT NOT NULL, plan_id INT DEFAULT NULL, start_date DATETIME NOT NULL, end_date DATETIME NOT NULL, INDEX IDX_86FFD2859B1E0921 (member_subscriber_id), INDEX IDX_86FFD285E899029B (plan_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 		$this->addSql('CREATE TABLE plan (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, price INT NOT NULL, currency VARCHAR(255) NOT NULL, duration_in_days INT NOT NULL, are_visitations_limited TINYINT(1) NOT NULL, num_of_visitations INT DEFAULT NULL, time_period VARCHAR(255) DEFAULT NULL, is_active TINYINT(1) NOT NULL, status_changed_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', deleted_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 		$this->addSql('CREATE TABLE reset_password_request (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, selector VARCHAR(20) NOT NULL, hashed_token VARCHAR(100) NOT NULL, requested_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', expires_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_7CE748AA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 		$this->addSql('CREATE TABLE team_member (id INT AUTO_INCREMENT NOT NULL, photo_filename VARCHAR(255) DEFAULT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, date_of_birth DATE NOT NULL, gender VARCHAR(255) DEFAULT NULL, email VARCHAR(180) NOT NULL, phone_number VARCHAR(255) NOT NULL, pin BIGINT NOT NULL, password VARCHAR(255) DEFAULT NULL, is_active TINYINT(1) DEFAULT NULL, status_changed_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', updated_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', deleted_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
@@ -47,8 +47,8 @@ final class Version20260715155656 extends AbstractMigration
 		$this->addSql('CREATE TABLE team_member_role (id INT AUTO_INCREMENT NOT NULL, role VARCHAR(255) NOT NULL, permissions JSON DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 		$this->addSql('CREATE TABLE visitation (id INT AUTO_INCREMENT NOT NULL, member_id INT DEFAULT NULL, team_member_id INT DEFAULT NULL, timestamp DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', message LONGTEXT NOT NULL, status VARCHAR(255) NOT NULL, INDEX IDX_B39D86A7597D3FE (member_id), INDEX IDX_B39D86AC292CD19 (team_member_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 		$this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', available_at DATETIME NOT NULL COMMENT \'(DC2Type:datetime_immutable)\', delivered_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-		$this->addSql('ALTER TABLE membership ADD CONSTRAINT FK_86FFD2851D650BA4 FOREIGN KEY (member_id_id) REFERENCES `member` (id)');
-		$this->addSql('ALTER TABLE membership ADD CONSTRAINT FK_86FFD2852CE2DBAB FOREIGN KEY (plan_id_id) REFERENCES plan (id)');
+		$this->addSql('ALTER TABLE membership ADD CONSTRAINT FK_86FFD2859B1E0921 FOREIGN KEY (member_subscriber_id) REFERENCES `member` (id)');
+		$this->addSql('ALTER TABLE membership ADD CONSTRAINT FK_86FFD285E899029B FOREIGN KEY (plan_id) REFERENCES plan (id)');
 		$this->addSql('ALTER TABLE reset_password_request ADD CONSTRAINT FK_7CE748AA76ED395 FOREIGN KEY (user_id) REFERENCES team_member (id)');
 		$this->addSql('ALTER TABLE team_member_team_member_role ADD CONSTRAINT FK_BAA746ECC292CD19 FOREIGN KEY (team_member_id) REFERENCES team_member (id) ON DELETE CASCADE');
 		$this->addSql('ALTER TABLE team_member_team_member_role ADD CONSTRAINT FK_BAA746ECEE8A54CF FOREIGN KEY (team_member_role_id) REFERENCES team_member_role (id) ON DELETE CASCADE');
@@ -68,8 +68,8 @@ final class Version20260715155656 extends AbstractMigration
 	public function down(Schema $schema): void
 	{
 		// phpcs:disable
-		$this->addSql('ALTER TABLE membership DROP FOREIGN KEY FK_86FFD2851D650BA4');
-		$this->addSql('ALTER TABLE membership DROP FOREIGN KEY FK_86FFD2852CE2DBAB');
+		$this->addSql('ALTER TABLE membership DROP FOREIGN KEY FK_86FFD2859B1E0921');
+		$this->addSql('ALTER TABLE membership DROP FOREIGN KEY FK_86FFD285E899029B');
 		$this->addSql('ALTER TABLE reset_password_request DROP FOREIGN KEY FK_7CE748AA76ED395');
 		$this->addSql('ALTER TABLE team_member_team_member_role DROP FOREIGN KEY FK_BAA746ECC292CD19');
 		$this->addSql('ALTER TABLE team_member_team_member_role DROP FOREIGN KEY FK_BAA746ECEE8A54CF');

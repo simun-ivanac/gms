@@ -164,7 +164,7 @@ class Member
 	 *
 	 * @var Collection<int, Membership>
 	 */
-	#[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'memberId')]
+	#[ORM\OneToMany(targetEntity: Membership::class, mappedBy: 'memberSubscriber')]
 	private Collection $memberships;
 
 	/**
@@ -588,7 +588,7 @@ class Member
 	{
 		if (!$this->memberships->contains($membership)) {
 			$this->memberships->add($membership);
-			$membership->setMemberId($this);
+			$membership->setMemberSubscriber($this);
 		}
 
 		return $this;
@@ -604,8 +604,8 @@ class Member
 	public function removeMembership(Membership $membership): static
 	{
 		if ($this->memberships->removeElement($membership)) {
-			if ($membership->getMemberId() === $this) {
-				$membership->setMemberId(null);
+			if ($membership->getMemberSubscriber() === $this) {
+				$membership->setMemberSubscriber(null);
 			}
 		}
 
