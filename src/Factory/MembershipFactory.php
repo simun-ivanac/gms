@@ -17,11 +17,6 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 final class MembershipFactory extends PersistentProxyObjectFactory
 {
 	/**
-	 * Plan duration.
-	 */
-	private ?int $planDuration = null;
-
-	/**
 	 * Constructor.
 	 */
 	public function __construct()
@@ -45,27 +40,7 @@ final class MembershipFactory extends PersistentProxyObjectFactory
 	 */
 	protected function defaults(): array|callable
 	{
-		$startDate = self::faker()->dateTimeBetween('-10 weeks', '-3 days');
-		$endDate = $this->planDuration === null ? null : (clone $startDate)->modify("+{$this->planDuration} days");
-
-		return [
-			'startDate' => $startDate,
-			'endDate' => $endDate,
-		];
-	}
-
-	/**
-	 * Set plan duration.
-	 *
-	 * @param int $planDuration Plan duration.
-	 *
-	 * @return static
-	 */
-	public function withPlanDuration(int $planDuration): self
-	{
-		$this->planDuration = $planDuration;
-
-		return $this;
+		return [];
 	}
 
 	/**
@@ -75,6 +50,21 @@ final class MembershipFactory extends PersistentProxyObjectFactory
 	 */
 	protected function initialize(): static
 	{
-		return $this;
+		return $this
+			->beforeInstantiate(function (array $attributes): array {
+				if (!isset($attributes['planDuration']) || !is_int($attributes['planDuration'])) {
+					return $attributes;
+				}
+
+				// Set start and end date.
+				$startDate = self::faker()->dateTimeBetween('-10 weeks', '-3 days');
+				$endDate = (clone $startDate)->modify('+' . $attributes['planDuration'] . ' days');
+
+				$attributes['startDate'] = $startDate;
+				$attributes['endDate'] = $endDate;
+				unset($attributes['planDuration']);
+
+				return $attributes;
+			});
 	}
 }

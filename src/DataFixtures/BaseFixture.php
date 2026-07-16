@@ -169,16 +169,31 @@ class BaseFixture extends Fixture
 	 */
 	public function createMemberships(array $members, array $plans): void
 	{
-		foreach ($members as $member) {
-			$plan = $plans[array_rand($plans)];
+		$avoidDuplicates = [];
 
+		foreach ($members as $member) {
 			MembershipFactory::new()
-				->withPlanDuration($plan->getDurationInDays())
 				->range(0, 2)
-				->create([
-					'memberSubscriber' => $member,
-					'plan' => $plan,
-				]);
+				->create(function () use ($member, $plans, &$avoidDuplicates) {
+					$plan = $plans[array_rand($plans)];
+					$memberId = $member->getId();
+
+					// Regenerate plan if member already has this one.
+					if (
+						isset($avoidDuplicates[$memberId]) &&
+						in_array($plan->getId(), $avoidDuplicates[$memberId])
+					) {
+						$plan = $plans[array_rand($plans)];
+					}
+
+					$avoidDuplicates[$memberId][] = $plan->getId();
+
+					return [
+						'memberSubscriber' => $member,
+						'plan' => $plan,
+						'planDuration' => $plan->getDurationInDays(),
+					];
+				});
 		}
 	}
 }
