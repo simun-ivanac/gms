@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\TeamMemberRole;
 use App\Factory\MemberFactory;
+use App\Factory\MembershipFactory;
 use App\Factory\PlanFactory;
 use App\Factory\TeamMemberFactory;
 use App\Factory\TeamMemberRoleFactory;
@@ -41,27 +43,19 @@ class BaseFixture extends Fixture
 		// Set manager.
 		$this->manager = $manager;
 
-		// Populate database.
+		// Create roles and team members.
 		$teamMemberRoles = $this->createRoles();
-
-		$this->createMembers(30);
-		$this->createOwner(['owner' => $teamMemberRoles['owner']]);
+		$this->createOwner($teamMemberRoles['owner']);
 		$this->createTeamMembers(array_diff_key($teamMemberRoles, ['owner' => true]), 10);
-		$this->createPlans(20);
-	}
 
-	/**
-	 * Create members.
-	 *
-	 * @param int $number Number of members.
-	 *
-	 * @return void
-	 */
-	public function createMembers(int $number): void
-	{
-		MemberFactory::new()->many($number)->create([
-			'visitations' => VisitationFactory::new()->many(10, 20),
-		]);
+		// Create members.
+		$members = $this->createMembers(30);
+
+		// Create plans.
+		$plans = $this->createPlans(20);
+
+		// Create memberships (add between 0-2 plans for each member).
+		$this->createMemberships($members, $plans);
 	}
 
 	/**
@@ -87,11 +81,11 @@ class BaseFixture extends Fixture
 	/**
 	 * Create owner.
 	 *
-	 * @param array $owner Owner role.
+	 * @param TeamMemberRole $owner Owner role.
 	 *
 	 * @return void
 	 */
-	public function createOwner(array $owner): void
+	public function createOwner(TeamMemberRole $owner): void
 	{
 		TeamMemberFactory::new()
 			->instantiateWith(Instantiator::withConstructor()->allowExtra('plainPassword', 'roles'))
@@ -105,9 +99,7 @@ class BaseFixture extends Fixture
 				'pin' => '12345678901',
 				'plainPassword' => 'we are groot!',
 				'is_active' => true,
-				'roles' => [
-					$owner['owner'],
-				],
+				'roles' => [$owner],
 				'visitations' => VisitationFactory::new()->many(10, 20),
 			]);
 	}
@@ -126,14 +118,9 @@ class BaseFixture extends Fixture
 			->instantiateWith(Instantiator::withConstructor()->allowExtra('plainPassword', 'roles'))
 			->many($number)
 			->create(function () use ($secTeamRoles) {
-				// Select random roles (allowed are: trainer, receptionist, staff, max 2 roles).
-				$selectedRoles = [];
+				// Select random roles (allowed are: trainer / receptionist / staff, max 2 roles).
 				$randomRoles = array_rand($secTeamRoles, rand(1, 2));
-				$randomRoles = is_array($randomRoles) ? array_unique($randomRoles) : [$randomRoles];
-
-				foreach ($randomRoles as $role) {
-					$selectedRoles[] = $secTeamRoles[$role];
-				}
+				$selectedRoles = array_map(fn($role) => $secTeamRoles[$role], (array) $randomRoles);
 
 				return [
 					'roles' => $selectedRoles,
@@ -143,14 +130,55 @@ class BaseFixture extends Fixture
 	}
 
 	/**
+	 * Create members.
+	 *
+	 * @param int $number Number of members.
+	 *
+	 * @return array
+	 */
+	public function createMembers(int $number): array
+	{
+		$members = MemberFactory::new()->many($number)->create([
+			'visitations' => VisitationFactory::new()->many(10, 20),
+		]);
+
+		return $members;
+	}
+
+	/**
 	 * Create plans.
 	 *
 	 * @param int $number Number of plans.
 	 *
+	 * @return array
+	 */
+	public function createPlans(int $number): array
+	{
+		$plans = PlanFactory::new()->many($number)->create();
+
+		return $plans;
+	}
+
+	/**
+	 * Create memberships (add between 0-2 plans for each member).
+	 *
+	 * @param array $members Members.
+	 * @param array $plans   Plans.
+	 *
 	 * @return void
 	 */
-	public function createPlans(int $number): void
+	public function createMemberships(array $members, array $plans): void
 	{
-		PlanFactory::new()->many($number)->create();
+		foreach ($members as $member) {
+			$plan = $plans[array_rand($plans)];
+
+			MembershipFactory::new()
+				->withPlanDuration($plan->getDurationInDays())
+				->range(0, 2)
+				->create([
+					'memberSubscriber' => $member,
+					'plan' => $plan,
+				]);
+		}
 	}
 }
