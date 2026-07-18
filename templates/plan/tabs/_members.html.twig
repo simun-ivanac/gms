@@ -1,3 +1,46 @@
 <div class="members">
-	<p>This is where the list of plan members would be displayed.</p>
+	<h2 class="h-size-4 heading-members">Members in this plan:</h2>
+	<div class="members-listing">
+		<table class="table members-items">
+			<thead class="table-head">
+				<tr class="table-head-row">
+					<th class="table-head-heading">ID</th>
+					<th class="table-head-heading">Photo</th>
+					<th class="table-head-heading">Name</th>
+					<th class="table-head-heading">Email</th>
+					<th class="table-head-heading">Phone</th>
+					<th class="table-head-heading">Actions</th>
+				</tr>
+			</thead>
+			<tbody class="table-body">
+				{% for member in members %}
+					<tr class="table-body-row">
+						<td class="table-data">{{ member.id }}</td>
+						<td class="table-data image">
+							<picture class="user-profile-picture">
+								<img
+									src="{{ asset(member.photoFilename ? 'uploads/user-photos/' ~ member.photoFilename : 'build/images/placeholder-user-profile.png') }}"
+									alt="{{ member.firstName ~ ' ' ~ member.lastName }} photo"
+									class="user-profile-img"
+								>
+							</picture>
+						</td>
+						<td class="table-data">{{ member.firstName ~ ' ' ~ member.lastName }}</td>
+						<td class="table-data">{{ member.email }}</td>
+						<td class="table-data">{{ member.phoneNumber }}</td>
+						<td class="table-data actions">
+							<a href="{{ path('member_edit', {'id': member.id}) }}" class="go-to-member-link" target="_blank">
+								<span class="go-to-member-text">Visit profile</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="new-tab-svg" width="20" height="20" fill="none">
+									<path d="M9.71 3.903H2.5a1.5 1.5 0 0 0-1.5 1.5V17.5A1.5 1.5 0 0 0 2.5 19h12.097a1.5 1.5 0 0 0 1.5-1.5v-7.21" stroke="currentColor" stroke-linecap="round" fill="none"></path>
+									<path d="M9.13 10.871 19 1m0 0h-6.387M19 1v6.387" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+								</svg>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot class="table-footer"></tfoot>
+		</table>
+	</div>
 </div>

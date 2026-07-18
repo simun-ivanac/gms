@@ -1,0 +1,96 @@
+.members {
+	.heading-members {
+		margin-bottom: 1rem;
+	}
+
+	// Table.
+	.table.members-items {
+		border: 0;
+		table-layout: fixed;
+	}
+
+	// Table column widths.
+	.table-head-heading,
+	.table-data {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		&:nth-child(1) {
+			width: 5rem;
+		}
+
+		&:nth-child(2) {
+			width: 4.5rem;
+		}
+
+		&:nth-child(4) {
+			width: 13rem;
+		}
+
+		&:nth-child(5) {
+			width: 10rem;
+		}
+
+		&:nth-child(6) {
+			width: 7rem;
+		}
+	}
+
+	.table-data {
+		&.actions {
+			font-size: 0.875rem;
+
+			.go-to-member-link {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 0.25rem;
+				margin: 0;
+			}
+
+			.new-tab-svg {
+				width: 0.9rem;
+				height: 0.9rem;
+			}
+		}
+	}
+
+	// Table head.
+	.table-head {
+		&-row {
+			border: 0;
+		}
+
+		&-heading {
+			font-weight: 500;
+			margin-bottom: 0;
+			padding: 0.75rem 0.5rem;
+		}
+	}
+
+	// Table body.
+	.table-body {
+		&-row {
+			border-top: 1px solid #E0E0E0;
+
+			&:last-child {
+				border-bottom: 1px solid #E0E0E0;
+			}
+
+			&.payment-required {
+				color: #C32232;
+				border-color: #C32232;
+				border-bottom: 1px solid #C32232;
+
+				& + .table-body-row {
+					border-top: 0;
+				}
+			}
+		}
+
+		.table-data {
+			padding: 0.75rem 0.5rem;
+		}
+	}
+}

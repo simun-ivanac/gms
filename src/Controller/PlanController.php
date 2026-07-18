@@ -12,6 +12,7 @@ use App\Entity\Plan;
 use App\Form\PlanDataFormType;
 use App\Repository\PlanRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use ShipMonk\DoctrineEntityPreloader\EntityPreloader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,6 +93,7 @@ final class PlanController extends AbstractController
 		Plan $plan,
 		Request $request,
 		EntityManagerInterface $entityManager,
+		EntityPreloader $entityPreloader,
 	): Response {
 		$planId = $plan->getId();
 
@@ -115,8 +117,12 @@ final class PlanController extends AbstractController
 			);
 		}
 
+		$memberships = $entityPreloader->preload([$plan], 'memberships');
+		$members = $entityPreloader->preload($memberships, 'memberSubscriber');
+
 		return $this->render('plan/edit.html.twig', [
 			'plan' => $plan,
+			'members' => $members,
 			'planDataForm' => $planDataForm,
 		]);
 	}
