@@ -16,7 +16,7 @@
 			<tbody class="table-body">
 				{% set latestExpiration = date() %}
 				{% for membership in member.memberships %}
-					<tr class="table-body-row {{ date(membership.endDate)|date("d-m-Y") < date()|date("d-m-Y") ? 'payment-required' : '' }}">
+					<tr class="table-body-row {{ date(membership.endDate) < date() or date(membership.endDate)|date("d-m-Y") == date()|date("d-m-Y") ? 'payment-required' : '' }}">
 						<td class="table-data">{{ membership.plan.name }}</td>
 						<td class="table-data">{{ membership.startDate|date("d-m-Y") }}</td>
 						<td class="table-data">{{ membership.endDate|date("d-m-Y") }}</td>
@@ -24,13 +24,13 @@
 						<td class="table-data">{{ membership.plan.price ~ ' ' ~ membership.plan.currency|lower }}</td>
 						<td class="table-data">
 							{# Calculate days till next payment. #}
-							{% set dateDiff = date().diff(date(membership.endDate)).d %}
-							{% if date(membership.endDate)|date("d-m-Y") < date()|date("d-m-Y") %}
-								{{ "late " ~ dateDiff ~ (dateDiff == 1 ? " day" : " days") }}
-							{% elseif date(membership.endDate)|date("d-m-Y") > date()|date("d-m-Y") %}
-								{{ "in " ~ dateDiff ~ (dateDiff == 1 ? " day" : " days") }}
-							{% else %}
+							{% set dateDiff = date().diff(date(membership.endDate)).days %}
+							{% if date(membership.endDate)|date("d-m-Y") == date()|date("d-m-Y") %}
 								{{ "today" }}
+							{% elseif date(membership.endDate) < date() %}
+								{{ "late " ~ dateDiff ~ (dateDiff == 1 ? " day" : " days") }}
+							{% elseif date(membership.endDate) > date() %}
+								{{ "in " ~ dateDiff ~ (dateDiff == 1 ? " day" : " days") }}
 							{% endif %}
 						</td>
 						<td class="table-data">actions</td>
