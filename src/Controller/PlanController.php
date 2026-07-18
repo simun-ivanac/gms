@@ -35,7 +35,10 @@ final class PlanController extends AbstractController
 	public function index(PlanRepository $repository): Response
 	{
 		return $this->render('plan/index.html.twig', [
-			'plans' => $repository->findAll(),
+			'plans' => iterator_to_array($repository->findLatest([
+				'perPage' => 20,
+				'order' => 'DESC',
+			])),
 		]);
 	}
 
