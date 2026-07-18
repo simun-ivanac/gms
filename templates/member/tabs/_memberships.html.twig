@@ -1,0 +1,53 @@
+<div class="memberships">
+	<h2 class="h-size-4 heading-memberships">Active programs:</h2>
+	<div class="memberships-listing">
+		<table class="table memberships-items">
+			<thead class="table-head">
+				<tr class="table-head-row">
+					<th class="table-head-heading">Program</th>
+					<th class="table-head-heading">Start Date</th>
+					<th class="table-head-heading">End Date</th>
+					<th class="table-head-heading">Type</th>
+					<th class="table-head-heading">Price</th>
+					<th class="table-head-heading">Next Payment</th>
+					<th class="table-head-heading">Actions</th>
+				</tr>
+			</thead>
+			<tbody class="table-body">
+				{% set latestExpiration = date() %}
+				{% for membership in member.memberships %}
+					<tr class="table-body-row {{ date(membership.endDate)|date("d-m-Y") < date()|date("d-m-Y") ? 'payment-required' : '' }}">
+						<td class="table-data">{{ membership.plan.name }}</td>
+						<td class="table-data">{{ membership.startDate|date("d-m-Y") }}</td>
+						<td class="table-data">{{ membership.endDate|date("d-m-Y") }}</td>
+						<td class="table-data">plan</td>
+						<td class="table-data">{{ membership.plan.price ~ ' ' ~ membership.plan.currency|lower }}</td>
+						<td class="table-data">
+							{# Calculate days till next payment. #}
+							{% set dateDiff = date().diff(date(membership.endDate)).d %}
+							{% if date(membership.endDate)|date("d-m-Y") < date()|date("d-m-Y") %}
+								{{ "late " ~ dateDiff ~ (dateDiff == 1 ? " day" : " days") }}
+							{% elseif date(membership.endDate)|date("d-m-Y") > date()|date("d-m-Y") %}
+								{{ "in " ~ dateDiff ~ (dateDiff == 1 ? " day" : " days") }}
+							{% else %}
+								{{ "today" }}
+							{% endif %}
+						</td>
+						<td class="table-data">actions</td>
+					</tr>
+
+					{# Get latest expiration date. #}
+					{% if date(membership.endDate) > latestExpiration %}
+						{% set latestExpiration = date(membership.endDate) %}
+					{% endif %}
+
+				{% endfor %}
+			</tbody>
+			<tfoot class="table-footer"></tfoot>
+		</table>
+	</div>
+	<div class="total-expiration-date">
+		<span class="total-expiration-date-label">Latest expiration date:</span>
+		<span class="total-expiration-date-value">{{ latestExpiration|date("d-m-Y") == date()|date("d-m-Y") ? "expired" : latestExpiration|date("d-m-Y") }}</span>
+	</div>
+</div>

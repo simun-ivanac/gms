@@ -13,20 +13,6 @@
 		padding: 1rem 0;
 	}
 
-	&-body-row {
-		&:first-child {
-			.table-data {
-				padding-top: 0.5rem;
-			}
-		}
-
-		&:last-child {
-			.table-data {
-				padding-bottom: 0.5rem;
-			}
-		}
-	}
-
 	&-data {
 		padding: 0.25rem 0;
 

@@ -1,0 +1,72 @@
+.memberships {
+	.heading-memberships {
+		margin-bottom: 1rem;
+	}
+
+	.total-expiration-date {
+		margin-top: 1.5rem;
+
+		&-label {
+			font-weight: 500;
+		}
+	}
+
+	// Table.
+	.table.memberships-items {
+		border: 0;
+	}
+
+	// Table column widths.
+	.table-head-heading,
+	.table-data {
+		&:nth-child(2),
+		&:nth-child(3),
+		&:nth-child(6) {
+			width: 7.5rem;
+		}
+
+		&:nth-child(4),
+		&:nth-child(5),
+		&:nth-child(7) {
+			width: 6rem;
+		}
+	}
+
+	// Table head.
+	.table-head {
+		&-row {
+			border: 0;
+		}
+
+		&-heading {
+			font-weight: 500;
+			margin-bottom: 0;
+			padding: 0.75rem 0.5rem;
+		}
+	}
+
+	// Table body.
+	.table-body {
+		&-row {
+			border-top: 1px solid #E0E0E0;
+
+			&:last-child {
+				border-bottom: 1px solid #E0E0E0;
+			}
+
+			&.payment-required {
+				color: #C32232;
+				border-color: #C32232;
+				border-bottom: 1px solid #C32232;
+
+				& + .table-body-row {
+					border-top: 0;
+				}
+			}
+		}
+
+		.table-data {
+			padding: 0.75rem 0.5rem;
+		}
+	}
+}
