@@ -62,6 +62,18 @@
             "./bin/phpunit"
         ]
     },
+    "shipmonk/doctrine-entity-preloader": {
+        "version": "1.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "6bee147a5ee0ca3cc07b24c1d3c28a67710d090c"
+        },
+        "files": [
+            "./config/packages/doctrine_entity_preloader.yaml"
+        ]
+    },
     "squizlabs/php_codesniffer": {
         "version": "3.13",
         "recipe": {

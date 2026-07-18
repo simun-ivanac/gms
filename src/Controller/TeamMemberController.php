@@ -15,6 +15,7 @@ use App\Repository\TeamMemberRepository;
 use App\Service\ImageUploader;
 use App\Service\TeamMemberSettingsInCookie;
 use Doctrine\ORM\EntityManagerInterface;
+use ShipMonk\DoctrineEntityPreloader\EntityPreloader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,13 +38,18 @@ final class TeamMemberController extends AbstractController
 	 * @return Response HTTP response.
 	 */
 	#[Route('/team', name: 'team_member_index', methods: ['GET'])]
-	public function index(TeamMemberRepository $repository): Response
+	public function index(TeamMemberRepository $repository, EntityPreloader $entityPreloader): Response
 	{
+		$teamMembers = $repository->findLatest([
+			'perPage' => 30,
+			'order' => 'DESC',
+		]);
+
+		$teamMembers = iterator_to_array($teamMembers);
+		$entityPreloader->preload($teamMembers, 'teamRoles');
+
 		return $this->render('team_member/index.html.twig', [
-			'teamMembers' => $repository->findLatest([
-				'perPage' => 15,
-				'order' => 'DESC',
-			]),
+			'teamMembers' => $teamMembers,
 		]);
 	}
 

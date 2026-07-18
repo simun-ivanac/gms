@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1b6bb2b958dc64de44e05c8679896d1",
+    "content-hash": "1c54447bc811568f101272262ca5be30",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -2021,6 +2021,74 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
             "time": "2024-09-11T13:17:53+00:00"
+        },
+        {
+            "name": "shipmonk/doctrine-entity-preloader",
+            "version": "1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/shipmonk-rnd/doctrine-entity-preloader.git",
+                "reference": "0eae48b7fdd6c3ce038c91f5d6ba13bf8bc898ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/shipmonk-rnd/doctrine-entity-preloader/zipball/0eae48b7fdd6c3ce038c91f5d6ba13bf8bc898ad",
+                "reference": "0eae48b7fdd6c3ce038c91f5d6ba13bf8bc898ad",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^3.7 || ^4.0",
+                "doctrine/orm": "^2.19.7 || ^3.2",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "composer/semver": "^3.0",
+                "doctrine/collections": "^2.2",
+                "doctrine/persistence": "^3.4.3 || ^4.0",
+                "editorconfig-checker/editorconfig-checker": "^10.6.0",
+                "ergebnis/composer-normalize": "^2.42.0",
+                "nette/utils": "^4",
+                "nikic/php-parser": "^5.6",
+                "phpstan/phpstan": "^2.1.26",
+                "phpstan/phpstan-doctrine": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0",
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^10.5.60",
+                "psr/log": "^3",
+                "shipmonk/coding-standard": "^0.2.0",
+                "shipmonk/composer-dependency-analyser": "^1.7",
+                "shipmonk/name-collision-detector": "^2.1.1",
+                "shipmonk/phpstan-dev": "^0.1.2",
+                "shipmonk/phpstan-rules": "^4.0",
+                "symfony/cache": "^6 || ^7 || ^8"
+            },
+            "suggest": {
+                "phpstan/phpstan-doctrine": "For enhanced Doctrine metadata resolution using real ORM mappings (^2.0)"
+            },
+            "type": "library",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon",
+                        "rules.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ShipMonk\\DoctrineEntityPreloader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Efficient & easy to use solution to n+1 problem in Doctrine ORM",
+            "support": {
+                "issues": "https://github.com/shipmonk-rnd/doctrine-entity-preloader/issues",
+                "source": "https://github.com/shipmonk-rnd/doctrine-entity-preloader/tree/1.4.1"
+            },
+            "time": "2025-12-15T16:20:43+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",

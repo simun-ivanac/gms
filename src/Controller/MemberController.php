@@ -15,6 +15,7 @@ use App\Repository\MemberRepository;
 use App\Service\ImageUploader;
 use App\Service\MemberSettingsInCookie;
 use Doctrine\ORM\EntityManagerInterface;
+use ShipMonk\DoctrineEntityPreloader\EntityPreloader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,7 @@ final class MemberController extends AbstractController
 	{
 		return $this->render('member/index.html.twig', [
 			'members' => $repository->findLatest([
-				'perPage' => 15,
+				'perPage' => 30,
 				'order' => 'DESC',
 			]),
 		]);
@@ -113,6 +114,7 @@ final class MemberController extends AbstractController
 		EntityManagerInterface $entityManager,
 		ImageUploader $imageUploader,
 		MemberSettingsInCookie $memberSettingsInCookie,
+		EntityPreloader $entityPreloader,
 	): Response {
 		$memberId = $member->getId();
 		$isEditingAllowed = $memberSettingsInCookie->getCookieKey($memberId, MemberSettingsInCookie::IS_EDITING_ALLOWED, false);
@@ -184,10 +186,15 @@ final class MemberController extends AbstractController
 			return $response;
 		}
 
+		$visitations = $entityPreloader->preload([$member], 'visitations');
+		$memberships = $entityPreloader->preload([$member], 'memberships');
+		$entityPreloader->preload($memberships, 'plan');
+
 		return $this->render('member/edit.html.twig', [
 			'member' => $member,
 			'personalDataForm' => $personalDataForm,
-			'visitations' => $member->getVisitations(),
+			'visitations' => $visitations,
+			'memberships' => $memberships,
 			'settingsForm' => $settingsForm,
 		]);
 	}

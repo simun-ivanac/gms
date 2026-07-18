@@ -58,7 +58,7 @@
 							<td class="table-data">{{ teamMember.id }}</td>
 							<td class="table-data">{{ teamMember.email }}</td>
 							<td class="table-data">{{ teamMember.phoneNumber }}</td>
-							<td class="table-data">{{ teamMember.teamRoles|map(u => u.role)|join(', ') }}</td>
+							<td class="table-data">{{ teamMember.getTeamRoles()|map(u => u.role)|join(', ') }}</td>
 							<td class="table-data edit">
 								<a href="{{ path('team_member_edit', {'id': teamMember.id}) }}" class="edit-link">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="edit-svg" width="20" height="20" fill="none">

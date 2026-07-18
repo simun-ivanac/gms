@@ -68,8 +68,6 @@ class TeamMemberRepository extends ServiceEntityRepository implements PasswordUp
 		$qb = $this->createQueryBuilder('tm')
 			->addOrderBy('tm.createdAt', $order)
 			->addOrderBy('tm.id', $order)
-			->leftJoin('tm.teamRoles', 'tr')
-			->addSelect('tr')
 			->setFirstResult($offset)
 			->setMaxResults($perPage);
 

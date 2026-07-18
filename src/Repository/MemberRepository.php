@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -46,9 +47,8 @@ class MemberRepository extends ServiceEntityRepository
 			->addOrderBy('m.createdAt', $order)
 			->addOrderBy('m.id', $order)
 			->setFirstResult($offset)
-			->setMaxResults($perPage)
-			->getQuery();
+			->setMaxResults($perPage);
 
-		return $qb->getResult();
+		return new Paginator($qb->getQuery());
 	}
 }
