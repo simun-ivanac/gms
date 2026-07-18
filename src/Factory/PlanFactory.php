@@ -46,7 +46,7 @@ final class PlanFactory extends PersistentProxyObjectFactory
 			'name' => self::faker()->word(),
 			'type' => self::faker()->randomElement(['one-time', 'recurring']),
 			'price' => self::faker()->numberBetween(10, 150),
-			'durationInDays' => self::faker()->numberBetween(1, 60),
+			'durationInDays' => self::faker()->numberBetween(5, 60),
 			'areVisitationsLimited' => $areVisitationsLimited,
 			'numOfVisitations' => $areVisitationsLimited ? self::faker()->numberBetween(1, 10) : null,
 			'timePeriod' => $areVisitationsLimited ? self::faker()->randomElement(['daily', 'weekly', 'monthly', 'in-total']) : null,

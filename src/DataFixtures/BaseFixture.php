@@ -17,6 +17,8 @@ use App\Factory\TeamMemberRoleFactory;
 use App\Factory\VisitationFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
+use Faker\Generator;
 use Zenstruck\Foundry\Object\Instantiator;
 
 /**
@@ -32,6 +34,13 @@ class BaseFixture extends Fixture
 	protected $manager;
 
 	/**
+	 * Faker.
+	 *
+	 * @var Generator
+	 */
+	private Generator $faker;
+
+	/**
 	 * Load fixture.
 	 *
 	 * @param ObjectManager $manager Object manager.
@@ -40,8 +49,9 @@ class BaseFixture extends Fixture
 	 */
 	public function load(ObjectManager $manager): void
 	{
-		// Set manager.
+		// Set manager and faker.
 		$this->manager = $manager;
+		$this->faker = Factory::create();
 
 		// Create roles and team members.
 		$teamMemberRoles = $this->createRoles();
@@ -188,10 +198,21 @@ class BaseFixture extends Fixture
 
 					$avoidDuplicates[$memberId][] = $plan->getId();
 
+					// Set start and end date.
+					$startDate = $this->faker->dateTimeBetween('-4 weeks', '-5 days');
+					$endDate = (clone $startDate)->modify('+' . $plan->getDurationInDays() . ' days');
+
+					// Update member status to active if end date is in the future.
+					if ($endDate > new \DateTime() && !$member->getIsActive()) {
+						$member->setIsActive(true);
+						$member->_save();
+					}
+
 					return [
 						'memberSubscriber' => $member,
 						'plan' => $plan,
-						'planDuration' => $plan->getDurationInDays(),
+						'startDate' => $startDate,
+						'endDate' => $endDate,
 					];
 				});
 		}

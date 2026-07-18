@@ -50,21 +50,6 @@ final class MembershipFactory extends PersistentProxyObjectFactory
 	 */
 	protected function initialize(): static
 	{
-		return $this
-			->beforeInstantiate(function (array $attributes): array {
-				if (!isset($attributes['planDuration']) || !is_int($attributes['planDuration'])) {
-					return $attributes;
-				}
-
-				// Set start and end date.
-				$startDate = self::faker()->dateTimeBetween('-10 weeks', '-3 days');
-				$endDate = (clone $startDate)->modify('+' . $attributes['planDuration'] . ' days');
-
-				$attributes['startDate'] = $startDate;
-				$attributes['endDate'] = $endDate;
-				unset($attributes['planDuration']);
-
-				return $attributes;
-			});
+		return $this;
 	}
 }
