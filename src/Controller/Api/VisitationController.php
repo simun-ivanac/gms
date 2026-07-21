@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Dto\VisitationEntry;
 use App\Entity\Member;
 use App\Entity\TeamMember;
 use App\Entity\Visitation;
@@ -16,8 +17,10 @@ use App\Repository\TeamMemberRepository;
 use App\Repository\VisitationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -26,11 +29,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 final class VisitationController extends AbstractController
 {
-	/**
-	 * API token.
-	 */
-	private const TEMP_VISITATION_TOKEN = 'Nud5jk7TFi!grHu';
-
 	/**
 	 * API main response.
 	 *
@@ -66,48 +64,42 @@ final class VisitationController extends AbstractController
 		EntityManagerInterface $entityManager,
 		MemberRepository $memberRepository,
 		TeamMemberRepository $teamMemberRepository,
-		SerializerInterface $serializer
+		SerializerInterface $serializer,
+		#[MapRequestPayload] VisitationEntry $visitationDto,
+		#[Autowire(env: 'VISITATION_TOKEN')] string $expectedToken,
 	): JsonResponse {
-		$token = $request->getPayload()->get('token');
-		$userType = $request->getPayload()->get('userType');
-		$userId = $request->getPayload()->get('userId');
-		$toCreate = true;
+		$userType = $visitationDto->userType;
+		$userId = $visitationDto->userId;
+		$token = '';
+
+		// Get token.
+		$authHeader = $request->headers->get('Authorization');
+		if ($authHeader && str_starts_with($authHeader, 'Bearer ')) {
+			$token = substr($authHeader, 7);
+		}
 
 		// Check token.
-		if ($token !== self::TEMP_VISITATION_TOKEN) {
-			$toCreate = false;
-			$statusCode = JsonResponse::HTTP_FORBIDDEN;
-			$results['message'] = 'Access denied. You are not allowed to proceed.';
+		if (!hash_equals($expectedToken, $token)) {
+			return JsonResponse::fromJsonString(
+				$serializer->serialize([
+				'status' => 'error',
+				'message' => 'Access denied. Invalid or missing API token.',
+				], 'json'),
+				JsonResponse::HTTP_FORBIDDEN
+			);
 		}
 
-		// Check user type.
-		if ($userType !== 'member' && $userType !== 'teamMember') {
-			$toCreate = false;
-			$statusCode = JsonResponse::HTTP_BAD_REQUEST;
-			$results['message'] = 'User type field is invalid.';
-		}
-
-		// Check if user ID exists.
-		if (!$userId) {
-			$toCreate = false;
-			$statusCode = JsonResponse::HTTP_BAD_REQUEST;
-			$results['message'] = 'User ID field cannot be empty.';
-		}
-
-		// Check if user exists.
+		// Check if user with given ID exists.
 		$findUser = $userType === 'member' ? $memberRepository->find($userId) : $teamMemberRepository->find($userId);
 
 		if (!$findUser) {
-			$toCreate = false;
-			$statusCode = JsonResponse::HTTP_BAD_REQUEST;
-			$results['message'] = 'User ID field is invalid.';
-		}
-
-		// Send error?
-		if (!$toCreate) {
-			$results['status'] = 'error';
-			$jsonContent = $serializer->serialize($results, 'json');
-			return JsonResponse::fromJsonString($jsonContent, $statusCode);
+			return JsonResponse::fromJsonString(
+				$serializer->serialize([
+					'status' => 'error',
+					'message' => 'User ID field is invalid.',
+				], 'json'),
+				JsonResponse::HTTP_BAD_REQUEST
+			);
 		}
 
 		// Create entry.
@@ -131,9 +123,7 @@ final class VisitationController extends AbstractController
 			$results['teamMember'] = (int) $userId;
 		}
 
-		$jsonContent = $serializer->serialize($results, 'json');
-
-		return JsonResponse::fromJsonString($jsonContent);
+		return JsonResponse::fromJsonString($serializer->serialize($results, 'json'));
 	}
 
 	/**
